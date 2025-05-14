@@ -1,7 +1,7 @@
 export function makeMap({
   container,
   appKey,
-  center = { lat: 33.450701, lng: 126.570667 },
+  center = { lat: 35.0936, lng: 128.8542 },
   level = 3,
   markers = [], // [{ title, lat, lng }]
 }) {
