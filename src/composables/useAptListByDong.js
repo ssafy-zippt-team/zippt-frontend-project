@@ -1,5 +1,5 @@
 import { ref } from "vue";
-import { getAptListByDong } from "../api/aptListApi";
+import { getAptListByDong } from "../api/housesApi";
 
 export default function useAptListByDong() {
   // 1) reactive 상태

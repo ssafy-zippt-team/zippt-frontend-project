@@ -24,11 +24,15 @@
 </template>
 
 <script setup>
-import { inject } from "vue";
+import { inject, onMounted } from "vue";
 
 const address = inject("address");
 
 const { cityList, guList, dongList, selectedCity, selectedGu, selectedDong, loadCities } = address;
+// 화면 로드 시(컴포넌트 마운트 시) 바로 시 목록 호출
+onMounted(() => {
+  loadCities();
+});
 </script>
 
 <style scoped>
