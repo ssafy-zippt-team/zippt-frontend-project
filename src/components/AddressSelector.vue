@@ -1,30 +1,55 @@
 <template>
-  <div class="controls">
-    <select v-model="selectedCity" @focus="loadCities">
-      <option disabled value="">시 선택</option>
-      <option v-for="c in cityList" :key="c.citySeq" :value="c.citySeq">
-        {{ c.cityName }}
-      </option>
-    </select>
+  <div class="address-selector-container">
+    <!-- 시 -->
+    <div class="address-selector-group">
+      <div class="address-selector-wrapper">
+        <select v-model="selectedCity" @focus="loadCities" class="address-selector-select">
+          <option disabled value="">시/도</option>
+          <option v-for="c in cityList" :key="c.citySeq" :value="c.citySeq">
+            {{ c.cityName }}
+          </option>
+        </select>
+        <svg class="address-selector-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
+        </svg>
+      </div>
+    </div>
 
-    <select v-model="selectedGu" :disabled="!selectedCity">
-      <option disabled value="">구 선택</option>
-      <option v-for="g in guList" :key="g.guSeq" :value="g.guSeq">
-        {{ g.guName }}
-      </option>
-    </select>
+    <!-- 구 -->
+    <div class="address-selector-group">
+      <div class="address-selector-wrapper">
+        <select v-model="selectedGu" :disabled="!selectedCity" class="address-selector-select">
+          <option disabled value="">시/군/구</option>
+          <option v-for="g in guList" :key="g.guSeq" :value="g.guSeq">
+            {{ g.guName }}
+          </option>
+        </select>
+        <svg class="address-selector-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
+        </svg>
+      </div>
+    </div>
 
-    <select v-model="selectedDong" :disabled="!selectedGu">
-      <option disabled value="">동 선택</option>
-      <option v-for="d in dongList" :key="d.dongSeq" :value="d.dongSeq">
-        {{ d.dongName }}
-      </option>
-    </select>
+    <!-- 동 -->
+    <div class="address-selector-group">
+      <div class="address-selector-wrapper">
+        <select v-model="selectedDong" :disabled="!selectedGu" class="address-selector-select">
+          <option disabled value="">읍/면/동</option>
+          <option v-for="d in dongList" :key="d.dongSeq" :value="d.dongSeq">
+            {{ d.dongName }}
+          </option>
+        </select>
+        <svg class="address-selector-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
+        </svg>
+      </div>
+    </div>
   </div>
 </template>
 
 <script setup>
 import { inject, onMounted } from "vue";
+import "../assets/AddressSelector.css";
 
 const address = inject("address");
 
@@ -34,11 +59,3 @@ onMounted(() => {
   loadCities();
 });
 </script>
-
-<style scoped>
-.controls {
-  display: flex;
-  gap: 0.5rem;
-  margin-bottom: 1rem;
-}
-</style>

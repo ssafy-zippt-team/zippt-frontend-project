@@ -1,58 +1,60 @@
-/* src/assets/custom-marker.css */
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
 
 .custom-marker {
-  position: relative;
-  /* 배경색: Indigo-500, 불투명도 조금 줌 */
-  background-color: rgba(99, 102, 241, 0.9);
-  color: #fff;
-  font-family: sans-serif;
-  /* 텍스트 중앙 정렬 */
-  text-align: center;
-  /* 약간 넉넉한 패딩 */
-  padding: 0.3rem 0.4rem;
-  /* 둥근 모서리 */
-  border-radius: 0.5rem;
-  /* 그림자 */
-  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-  /* 한글 폰트 크기, 줄 높이 조정 */
-  font-size: 0.575rem;
-  line-height: 1.2;
-  /* 화살표 꼬리 위치를 맞추기 위해 위로 띄움 */
-  transform: translate(-50%, -100%);
-  white-space: nowrap;
-  z-index: 1;
-  pointer-events: auto;
+  /* 위치, 배경, 텍스트 */
+  @apply relative bg-white text-gray-800 font-sans text-center 
+         whitespace-nowrap pointer-events-auto z-10;
+
+  /* 패딩, 둥근 모서리, 그림자 */
+  @apply px-3 py-2 rounded-lg shadow-lg border border-gray-200;
+
+  /* 위치 조정 */
+  @apply transform -translate-x-1/2 -translate-y-full;
 }
 
-.custom-marker .bookmark {
-  margin-top: 0.12rem;
-  margin-bottom: 0.12rem;
-  font-size: 0.5rem;
-  color: black;
-  background-color: #fff;
-  border-radius: 0.5rem;
+/* 북마크 컨테이너 */
+.custom-marker .bookmark-container {
+  @apply relative flex justify-center mb-1;
 }
 
-/* 내부에 price, area 같은 클래스를 쓰셨다면 이렇게 세부 조정 가능 */
+/* 하트 아이콘 */
+.custom-marker .heart-icon {
+  @apply w-4 h-4;
+}
+
+/* 북마크 카운트 */
+.custom-marker .bookmark-count {
+  @apply absolute top-0 right-0 -mt-1 -mr-1
+         bg-gray-800 text-white text-[0.6rem] font-bold
+         rounded-full w-4 h-4 flex items-center justify-center;
+}
+
+/* 가격 컨테이너 */
+.custom-marker .price-container {
+  @apply flex flex-col items-center;
+}
+
+/* 평균가 */
 .custom-marker .avg {
-  font-weight: 500;
-  font-size: 0.8rem;
+  @apply font-bold text-[0.9rem] text-gray-800;
 }
+
+/* 최대가 */
 .custom-marker .max {
-  font-size: 0.5rem;
-  margin-top: 0.25rem;
-  opacity: 0.9;
+  @apply text-[0.65rem] text-gray-500 mt-1;
 }
 
 /* 꼬리(arrow) */
 .custom-marker::after {
   content: "";
   position: absolute;
-  bottom: -6px; /* 박스 바로 아래 */
+  bottom: -6px;
   left: 50%;
   transform: translateX(-50%);
-  /* 위가 박스, 아래가 뾰족 */
   border-width: 6px 6px 0 6px;
   border-style: solid;
-  border-color: rgba(99, 102, 241, 0.9) transparent transparent transparent;
+  border-color: white transparent transparent transparent;
+  filter: drop-shadow(0 1px 1px rgba(0, 0, 0, 0.1));
 }

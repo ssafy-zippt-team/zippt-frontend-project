@@ -1,53 +1,90 @@
 .apt-detail-panel {
-    position: absolute;
-    top: 1rem;
-    left: 1rem;
-    width: 320px;
-    max-height: calc(100% - 2rem);
-    background: #ffffff;
-    box-shadow: 0 4px 16px rgba(0,0,0,0.1);
-    border-radius: 8px;
-    overflow-y: auto;
-    z-index: 1000;
-    display: flex;
-    flex-direction: column;
-  }
-  
-  .apt-detail-header {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    padding: 0.75rem 1rem;
-    border-bottom: 1px solid #e5e5e5;
-  }
-  
-  .apt-detail-header h3 {
-    margin: 0;
-    font-size: 1.25rem;
-    font-weight: 600;
-  }
-  
-  .apt-detail-close {
-    background: transparent;
-    border: none;
-    font-size: 1.25rem;
-    line-height: 1;
-    cursor: pointer;
-  }
-  
-  .apt-detail-body {
-    padding: 1rem;
-    font-size: 0.9rem;
-    color: #333333;
-  }
-  
-  .apt-detail-body p {
-    margin: 0.5rem 0;
-  }
-  
-  .apt-detail-img {
-    width: 100%;
-    border-radius: 4px;
-    margin-top: 0.75rem;
-  }
-  
+  position: absolute;
+  top: 1rem;
+  left: 1rem;
+  width: 320px;
+  max-height: calc(100% - 2rem);
+  background: #ffffff;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.1);
+  border-radius: 8px;
+  overflow-y: auto;
+  z-index: 1000;
+  display: flex;
+  flex-direction: column;
+}
+
+.apt-detail-header {
+  position: relative; /* 닫기 버튼 절대위치 기준 */
+  display: flex;
+  justify-content: center; /* 제목을 가운데로 */
+  align-items: center;
+  /* padding: 0.75rem 1rem;
+  border-bottom: 1px solid #e5e5e5; */
+}
+
+.apt-detail-top {
+  justify-content: space-between;
+  margin-top: 1px;
+}
+.apt-detail-header h3 {
+  margin: 0;
+  font-size: 1.25rem;
+  font-weight: 600;
+}
+.apt-detail-close {
+  position: absolute;
+  top: 0.75rem; /* padding-top 과 동일하게 맞춤 */
+  right: 1rem; /* padding-right 과 동일하게 맞춤 */
+  background: transparent;
+  border: none;
+  font-size: 1.25rem;
+  line-height: 1;
+  cursor: pointer;
+  color: #666;
+}
+
+.apt-meta {
+  font-size: 0.875rem;
+  color: #555;
+  margin-left: 1rem;
+}
+.apt-detail-prices {
+  display: flex;
+  justify-content: space-evenly;
+  gap: 2rem;
+  padding-top: 0.75rem 1rem;
+  border-bottom: 2px solid #e5e5e5;
+}
+.recent-sale .label,
+.range-sale .label {
+  font-size: 0.5rem;
+  color: #888;
+}
+.recent-sale .price {
+  font-size: 0.75rem;
+  font-weight: bold;
+}
+.range-price {
+  font-size: 0.6rem;
+  font-weight: 500;
+}
+.sub-meta {
+  font-size: 0.75rem;
+  color: #666;
+}
+
+.apt-detail-body {
+  padding: 1rem;
+  font-size: 0.9rem;
+  color: #333333;
+}
+
+.apt-detail-body p {
+  margin: 0.5rem 0;
+}
+
+.apt-detail-img {
+  width: 100%;
+  border-radius: 4px;
+  margin-top: 0.75rem;
+}

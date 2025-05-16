@@ -1,20 +1,38 @@
 <template>
   <div v-if="apt" class="apt-detail-panel">
+    <!-- 헤더: 아파트명 + 간단 메타 (세대수·층수·면적) -->
     <div class="apt-detail-header">
-      <h3>{{ apt.aptNm || '정보 없음' }}</h3>
-      <button class="apt-detail-close" @click="emit('close')">×</button>
+      <div class="apt-detail-top">
+        <h3>{{ apt.aptNm || "정보 없음" }}</h3>
+        <!-- <div class="apt-meta">{{ apt.totalHousehold }}세대 · {{ apt.floor }}층 · {{ apt.area }}㎡</div> -->
+        <button class="apt-detail-close" @click="emit('close')">×</button>
+      </div>
     </div>
+    <!-- 가격 영역 -->
+    <div class="apt-detail-prices">
+      <!-- 최근 매매 실거래가 -->
+      <div class="recent-sale">
+        <div class="label">평균 실거래가</div>
+        <div class="price avg-price">{{ formattedAvg }}억</div>
+        <!-- 예: 2025.03.30 · 7층 · 79㎡ -->
+        <!-- <div class="sub-meta">{{ apt.dealDate }} · {{ apt.floor }}층 · {{ apt.area }}㎡</div> -->
+      </div>
+
+      <!-- 매매가 범위 -->
+      <div class="range-sale">
+        <div class="label">매매가</div>
+        <div class="price range-price">{{ formattedMin }}억 ~ {{ formattedMax }}억</div>
+      </div>
+    </div>
+
     <div class="apt-detail-body">
       <p v-if="apt.jibun"><strong>지번:</strong> {{ apt.jibun }}</p>
       <p v-if="apt.roadNm"><strong>도로명:</strong> {{ apt.roadNm }}</p>
       <p v-if="apt.buildYear != null"><strong>준공년도:</strong> {{ apt.buildYear }}년</p>
       <p v-if="apt.bookMarkCount != null"><strong>북마크:</strong> {{ apt.bookMarkCount }}</p>
-      <p v-if="apt.amountAvg != null">
-        <strong>평균가:</strong> {{ formattedAvg }}억
-      </p>
       <img
         v-if="apt.imgUrl"
-        :src="apt.imgUrl"
+        :src="`https://ssafyhomebusan.s3.ap-southeast-2.amazonaws.com${apt.imgUrl}`"
         alt="아파트 이미지"
         class="apt-detail-img"
       />
@@ -35,11 +53,15 @@ const emit = defineEmits(["close"]);
 
 // amountAvg가 null/undefined면 빈 문자열, 아니면 포맷팅
 const formattedAvg = computed(() => {
-  const val = apt.value.amountAvg;
-  return val != null ? val.toLocaleString() : "";
+  const v = apt.value.amountAvg;
+  return v != null ? v.toLocaleString() : "";
+});
+const formattedMax = computed(() => {
+  const v = apt.value.amountMax;
+  return v != null ? v.toLocaleString() : "";
+});
+const formattedMin = computed(() => {
+  const v = apt.value.amountMin;
+  return v != null ? v.toLocaleString() : "";
 });
 </script>
-
-<style scoped>
-/* 기존 CSS를 여기 남기거나 외부 파일에서 불러오시면 됩니다 */
-</style>

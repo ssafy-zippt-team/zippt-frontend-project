@@ -1,0 +1,38 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* ② 플로팅 컨테이너 */
+.address-selector-container {
+  @apply absolute top-4 left-1/2 transform -translate-x-1/2
+           bg-white rounded-full shadow-md flex
+           divide-x divide-gray-200 overflow-hidden
+           z-50; /* ← 여기에 z-50 추가 */
+}
+
+/* 시/구/동 그룹 */
+.address-selector-group {
+  @apply px-4 py-2; /* 패딩만 주고 flex는 wrapper에 */
+}
+
+/* wrapper: select + icon 같이 묶기 */
+.address-selector-wrapper {
+  @apply relative inline-block; /* 크기만큼만 차지 */
+}
+
+/* select: 영역 전체 덮기 */
+.address-selector-select {
+  @apply appearance-none bg-transparent
+           text-gray-800 text-sm focus:outline-none
+           w-full pr-6 py-1 /* 오른쪽 여유 공간 */
+           min-w-[5rem]; /* 필요 시 최소 폭 조절 */
+}
+
+/* 아이콘: select 위에 절대 위치, 클릭 투과 */
+.address-selector-icon {
+  @apply absolute right-1 top-1/2
+           -translate-y-1/2
+           w-4 h-4
+           text-gray-400
+           pointer-events-none;
+}
