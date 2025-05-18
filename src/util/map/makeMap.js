@@ -2,7 +2,7 @@ export function makeMap({
   container,
   appKey,
   center = { lat: 35.0936, lng: 128.8542 },
-  level = 3,
+  level = 5,
   markers = [], // [{ title, lat, lng }]
 }) {
   return new Promise((resolve, reject) => {

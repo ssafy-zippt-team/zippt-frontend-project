@@ -1,24 +1,19 @@
+ 
 <template>
   <div v-if="apt" class="apt-detail-panel">
     <!-- 헤더: 아파트명 + 간단 메타 (세대수·층수·면적) -->
     <div class="apt-detail-header">
       <div class="apt-detail-top">
         <h3>{{ apt.aptNm || "정보 없음" }}</h3>
-        <!-- <div class="apt-meta">{{ apt.totalHousehold }}세대 · {{ apt.floor }}층 · {{ apt.area }}㎡</div> -->
         <button class="apt-detail-close" @click="emit('close')">×</button>
       </div>
     </div>
-    <!-- 가격 영역 -->
     <div class="apt-detail-prices">
-      <!-- 최근 매매 실거래가 -->
       <div class="recent-sale">
         <div class="label">평균 실거래가</div>
         <div class="price avg-price">{{ formattedAvg }}억</div>
-        <!-- 예: 2025.03.30 · 7층 · 79㎡ -->
-        <!-- <div class="sub-meta">{{ apt.dealDate }} · {{ apt.floor }}층 · {{ apt.area }}㎡</div> -->
       </div>
 
-      <!-- 매매가 범위 -->
       <div class="range-sale">
         <div class="label">매매가</div>
         <div class="price range-price">{{ formattedMin }}억 ~ {{ formattedMax }}억</div>
@@ -42,7 +37,7 @@
 
 <script setup>
 import { defineProps, defineEmits, toRef, computed } from "vue";
-import "../assets/AptDetailPanel.css";
+import "../assets/css/AptDetailPanel.css";
 
 const props = defineProps({
   apt: Object,

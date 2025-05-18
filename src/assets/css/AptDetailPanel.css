@@ -88,3 +88,37 @@
   border-radius: 4px;
   margin-top: 0.75rem;
 }
+
+/* 추가분 */
+
+/* 이미지 밑 내비 */
+.detail-nav {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 0.5rem 0;
+  background: #fafafa;
+  border-top: 1px solid #e5e5e5;
+  border-bottom: 1px solid #e5e5e5;
+}
+.nav-item {
+  cursor: pointer;
+  padding: 0.25rem 0.5rem;
+  color: #666;
+  font-size: 0.9rem;
+}
+.nav-item.active {
+  color: #222;
+  font-weight: 600;
+}
+.divider {
+  margin: 0 0.5rem;
+  color: #ccc;
+}
+
+/* 탭 콘텐츠 영역 */
+.detail-content {
+  padding: 0.75rem 1rem;
+  overflow-y: auto;
+  flex: 1;
+} 
