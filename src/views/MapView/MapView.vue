@@ -18,6 +18,7 @@ import { makeMap } from "@/util/map/makeMap";
 import useViewHouses from "@/composables/useViewHouses";
 import useAptDetail from "@/composables/useAptDetail";
 import useSearchLocation from "@/composables/useSearchLocation";
+import useBoundaryPolygons from '@/composables/useBoundaryPolygons';
 
 const mapContainer = ref(null);
 const kakaoMap = ref(null);
@@ -26,6 +27,9 @@ const address = useAddress(kakaoMap);
 
 // ① address 상태 공유
 provide("address", address);
+
+// 경계 훅
+const { loadBoundaries } = useBoundaryPolygons(kakaoMap);
 
 // 검색 훅
 const { search } = useSearchLocation(kakaoMap);
@@ -52,6 +56,16 @@ onMounted(async () => {
     level: 8,
     markers: [],
   });
+  // 2) 시도 경계 그리기 (type='sido')
+  await loadBoundaries('sido', (feature) => {
+    console.log('클릭된 시도 feature:', feature.properties);
+    // 필요시 추가 작업…
+  });
+
+  // 만약 시군구를 따로 그리고 싶다면…
+  await loadBoundaries('sigungu', (feature) => {
+    console.log('클릭된 시도 feature:', feature.properties);
+   });
 
   // 3) 초기 한 번 호출
   updateMarkersByView();
