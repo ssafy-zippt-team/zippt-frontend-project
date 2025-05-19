@@ -87,6 +87,7 @@
   width: 100%;
   border-radius: 4px;
   margin-top: 0.75rem;
+  margin-bottom: 0.75rem;
 }
 
 /* 추가분 */
@@ -121,4 +122,4 @@
   padding: 0.75rem 1rem;
   overflow-y: auto;
   flex: 1;
-} 
+}

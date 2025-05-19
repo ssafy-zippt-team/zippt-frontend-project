@@ -1,14 +1,24 @@
 import { ref } from "vue";
-import { getHouseDetail } from "../api/housesApi";
+import Swal from "sweetalert2";
+import { getHouseDetail } from "@/api/housesApi";
+import useLatestDeals from "@/composables/useLatestDeals";
 
 export default function useAptDetail() {
   const selectedApt = ref(null);
+  const { dealsList, loadLatest } = useLatestDeals();
 
   // 상세 정보 로드
   async function loadDetail(overlayApt) {
     if (!overlayApt?.aptSeq) return;
     try {
+      Swal.fire({
+        title: "로딩 중…",
+        html: "잠시만 기다려주세요.",
+        allowOutsideClick: false,
+        didOpen: () => Swal.showLoading(),
+      });
       const { data } = await getHouseDetail(overlayApt.aptSeq);
+      console.log("data : ", data);
       if (data.isSuccess) {
         // merge the detail result with the overlay’s price fields
         selectedApt.value = {
@@ -19,9 +29,15 @@ export default function useAptDetail() {
           amountMin: overlayApt.amountMin,
         };
       }
+      // ② 실거래 정보 로드
+      await loadLatest(overlayApt.aptSeq);
+      console.log("dealsList:", dealsList.value);
     } catch (e) {
       console.error("apt detail load failed", e);
       selectedApt.value = null;
+    } finally {
+      // ★ 무조건 얼럿 닫기
+      Swal.close();
     }
   }
 
@@ -30,5 +46,6 @@ export default function useAptDetail() {
     selectedApt.value = null;
   }
 
-  return { selectedApt, loadDetail, clearDetail };
+  // return { selectedApt, loadDetail, clearDetail };
+  return { selectedApt, dealsList, loadDetail, clearDetail };
 }

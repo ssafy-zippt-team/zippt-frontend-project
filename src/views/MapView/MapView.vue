@@ -4,7 +4,7 @@
   <AddressSelector />
 
   <div ref="mapContainer" class="map">
-    <AptDetailPanel :apt="selectedApt" @close="clearDetail" />
+    <AptDetailPanel :apt="selectedApt" :deals-list="dealsList" @close="clearDetail" />
   </div>
 </template>
 
@@ -13,12 +13,11 @@ import { ref, onMounted, provide } from "vue";
 import SearchBox from "./SearchBox.vue";
 import AddressSelector from "./AddressSelector.vue";
 import AptDetailPanel from "./AptDetailPanel.vue";
-import useAddress from "../composables/useAddress";
-import { makeMap } from "../util/map/makeMap";
-import useViewHouses from "../composables/useViewHouses";
-import useAptDetail from "../composables/useAptDetail";
-import useSearchLocation from "../composables/useSearchLocation";
-
+import useAddress from "@/composables/useAddress";
+import { makeMap } from "@/util/map/makeMap";
+import useViewHouses from "@/composables/useViewHouses";
+import useAptDetail from "@/composables/useAptDetail";
+import useSearchLocation from "@/composables/useSearchLocation";
 
 const mapContainer = ref(null);
 const kakaoMap = ref(null);
@@ -29,13 +28,14 @@ const address = useAddress(kakaoMap);
 provide("address", address);
 
 // 검색 훅
-const { search }   = useSearchLocation(kakaoMap);
+const { search } = useSearchLocation(kakaoMap);
 
 // kakaoMap ref 를 하위 컴포넌트 전역(scope)에 제공
 provide("kakaoMap", kakaoMap);
 
 // --- Apt 상세 조회 훅 ---
-const { selectedApt, loadDetail, clearDetail } = useAptDetail();
+const { selectedApt, dealsList, loadDetail, clearDetail } = useAptDetail();
+provide("dealsList", dealsList);
 
 // --- 지도 + 오버레이(마커) 관리 훅 ---
 const { updateMarkersByView, bindIdle } = useViewHouses(kakaoMap, {

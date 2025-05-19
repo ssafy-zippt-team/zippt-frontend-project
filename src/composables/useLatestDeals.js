@@ -1,44 +1,60 @@
+// import { ref, watch } from "vue";
+// import { getLatestList } from "@/api/dealsApi";
+
+// export default function useLatestDeals(aptSeqRef) {
+//   const dealsList = ref([]);
+//   const loadError = ref("");
+
+//   // aptSeqRef 가 바뀔 때마다 API 호출
+//   watch(
+//     aptSeqRef,
+//     async (newSeq) => {
+//       if (!newSeq) {
+//         dealsList.value = [];
+//         return;
+//       }
+//       try {
+//         console.log("aptSeqRef : ", aptSeqRef);
+//         // ① 반드시 await
+//         const { data } = await getLatestList(newSeq);
+//         if (data.isSuccess && Array.isArray(data.result)) {
+//           dealsList.value = data.result;
+//         } else {
+//           dealsList.value = [];
+//         }
+//       } catch (e) {
+//         loadError.value = e.message || String(e);
+//         dealsList.value = [];
+//       }
+//     },
+//     { immediate: true } // 마운트 시에도 즉시 호출
+//   );
+
+//   return { dealsList, loadError };
+// }
+
 // src/composables/useLatestDeals.js
-import { ref, watch } from 'vue';
-import axios from 'axios';
+import { ref } from "vue";
+import { getLatestList } from "@/api/dealsApi";
 
-/**
- * aptSeq에 따라 최신 실거래 하나와 전체 실거래 리스트를 가져오는 훅
- * @param {import('vue').Ref<string>} aptSeqRef
- */
-export default function useLatestDeals(aptSeqRef) {
-  const latestDeal    = ref(null);
-  const allDeals      = ref([]);
-  const isLoading     = ref(false);
-  const loadError     = ref(null);
+export default function useLatestDeals() {
+  const dealsList = ref([]);
+  const loadError = ref("");
 
-  watch(
-    aptSeqRef,
-    async (aptSeq) => {
-      if (!aptSeq) return;
-      isLoading.value = true;
-      loadError.value = null;
-      try {
-        const { data } = await axios.get('/api/v1/deals/latest-list', {
-          params: { aptSeq }
-        });
-        if (data.isSuccess && Array.isArray(data.result)) {
-          allDeals.value   = data.result;
-          latestDeal.value = data.result[0] || null;
-        } else {
-          allDeals.value   = [];
-          latestDeal.value = null;
-        }
-      } catch (e) {
-        loadError.value = e;
-        latestDeal.value = null;
-        allDeals.value   = [];
-      } finally {
-        isLoading.value = false;
-      }
-    },
-    { immediate: true }
-  );
+  // 💥 async load 함수 직접 노출
+  async function loadLatest(aptSeq) {
+    if (!aptSeq) {
+      dealsList.value = [];
+      return;
+    }
+    try {
+      const { data } = await getLatestList(aptSeq);
+      dealsList.value = data.isSuccess && Array.isArray(data.result) ? data.result : [];
+    } catch (e) {
+      loadError.value = e.message || String(e);
+      dealsList.value = [];
+    }
+  }
 
-  return { latestDeal, allDeals, isLoading, loadError };
+  return { dealsList, loadError, loadLatest };
 }

@@ -1,4 +1,3 @@
- 
 <template>
   <div v-if="apt" class="apt-detail-panel">
     <!-- 헤더: 아파트명 + 간단 메타 (세대수·층수·면적) -->
@@ -31,18 +30,25 @@
         alt="아파트 이미지"
         class="apt-detail-img"
       />
+      <tabBarView :dealsList="dealsList" />
     </div>
   </div>
 </template>
 
 <script setup>
 import { defineProps, defineEmits, toRef, computed } from "vue";
-import "../assets/css/AptDetailPanel.css";
+import tabBarView from "./tabBarView.vue";
+import "@/assets/css/AptDetailPanel.css";
 
 const props = defineProps({
   apt: Object,
+  dealsList: {
+    type: Array,
+    default: () => [],
+  },
 });
 const apt = toRef(props, "apt");
+const dealsList = toRef(props, "dealsList");
 
 const emit = defineEmits(["close"]);
 

@@ -110,18 +110,18 @@
 // prefetch를 이용해 '시' 선택시 구와 각 구에 대한 동 리스트까지 내려받아놓기
 // 캐시 사용..
 import { ref, computed, watch } from "vue";
-import { getCityList, getGuList, getDongList } from "../api/addressApi";
+import { getCityList, getGuList, getDongList } from "@/api/addressApi";
 
 export default function useAddress(kakaoMap) {
-  const cityList     = ref([]);
-  const guList       = ref([]);
-  const dongList     = ref([]);
+  const cityList = ref([]);
+  const guList = ref([]);
+  const dongList = ref([]);
   const selectedCity = ref("");
-  const selectedGu   = ref("");
+  const selectedGu = ref("");
   const selectedDong = ref("");
 
   // 캐시 맵: key = citySeq, value = guList
-  const guCache   = new Map();
+  const guCache = new Map();
   // 캐시 맵: key = `${citySeq}_${guSeq}`, value = dongList
   const dongCache = new Map();
 
@@ -169,7 +169,7 @@ export default function useAddress(kakaoMap) {
   // 동 목록: 캐시 우선
   async function loadDongs() {
     const citySeq = selectedCity.value;
-    const guSeq   = selectedGu.value;
+    const guSeq = selectedGu.value;
     if (!citySeq || !guSeq) return;
 
     const key = `${citySeq}_${guSeq}`;
@@ -202,7 +202,7 @@ export default function useAddress(kakaoMap) {
     guList.value = [];
     dongList.value = [];
     if (!val) return;
-    const cityName = cityList.value.find(c => c.citySeq === val).cityName;
+    const cityName = cityList.value.find((c) => c.citySeq === val).cityName;
     geocodeAndMove(cityName, 8);
     loadGus();
   });
@@ -211,24 +211,29 @@ export default function useAddress(kakaoMap) {
     selectedDong.value = "";
     dongList.value = [];
     if (!val) return;
-    const cityName = cityList.value.find(c => c.citySeq === selectedCity.value).cityName;
-    const guName   = guList.value.find(g => g.guSeq === val).guName;
+    const cityName = cityList.value.find((c) => c.citySeq === selectedCity.value).cityName;
+    const guName = guList.value.find((g) => g.guSeq === val).guName;
     geocodeAndMove(`${cityName} ${guName}`, 6);
     loadDongs();
   });
 
   watch(selectedDong, (val) => {
     if (!val) return;
-    const cityName = cityList.value.find(c => c.citySeq === selectedCity.value).cityName;
-    const guName   = guList.value.find(g => g.guSeq === selectedGu.value).guName;
-    const dongName = dongList.value.find(d => d.dongSeq === val).dongName;
+    const cityName = cityList.value.find((c) => c.citySeq === selectedCity.value).cityName;
+    const guName = guList.value.find((g) => g.guSeq === selectedGu.value).guName;
+    const dongName = dongList.value.find((d) => d.dongSeq === val).dongName;
     geocodeAndMove(`${cityName} ${guName} ${dongName}`, 4);
   });
 
   return {
-    cityList, guList, dongList,
-    selectedCity, selectedGu, selectedDong,
-    sggCd, umdCd,
-    loadCities
+    cityList,
+    guList,
+    dongList,
+    selectedCity,
+    selectedGu,
+    selectedDong,
+    sggCd,
+    umdCd,
+    loadCities,
   };
 }

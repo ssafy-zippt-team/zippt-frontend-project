@@ -49,7 +49,8 @@
 
 <script setup>
 import { inject, onMounted } from "vue";
-import "../assets/css/AddressSelector.css";
+// import "../assets/css/AddressSelector.css";
+import "@/assets/css/AddressSelector.css";
 
 const address = inject("address");
 
