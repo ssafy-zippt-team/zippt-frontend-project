@@ -235,5 +235,7 @@ export default function useAddress(kakaoMap) {
     sggCd,
     umdCd,
     loadCities,
+    loadGus,
+    loadDongs,
   };
 }

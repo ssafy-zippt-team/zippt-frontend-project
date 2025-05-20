@@ -18,13 +18,15 @@ import { makeMap } from "@/util/map/makeMap";
 import useViewHouses from "@/composables/useViewHouses";
 import useAptDetail from "@/composables/useAptDetail";
 import useSearchLocation from "@/composables/useSearchLocation";
-import { fetchBoundary } from '@/util/map/fetchBoundary';
-import { drawPolygons }   from '@/util/map/drawPolygons';
+import { fetchBoundary } from "@/util/map/fetchBoundary";
+import { drawPolygons } from "@/util/map/drawPolygons";
 
 const mapContainer = ref(null);
 const kakaoMap = ref(null);
 const APP_KEY = process.env.VUE_APP_KAKAO_APPKEY;
 const address = useAddress(kakaoMap);
+
+const { cityList, selectedCity, selectedGu, selectedDong } = address;
 
 // ① address 상태 공유
 provide("address", address);
@@ -47,6 +49,14 @@ const { updateMarkersByView } = useViewHouses(kakaoMap, {
 });
 
 let boundaryPolygons = [];
+let lastType = null;
+function getType(level) {
+  if (level >= 12) return "sido";
+  if (level >= 9) return "sigungu";
+  if (level >= 5) return "dong";
+  // 4렙 이하 폴리곤 제거 및 미생성
+  return "delete";
+}
 
 /** 경계(폴리곤) 갱신 */
 async function updateBoundaries() {
@@ -54,20 +64,52 @@ async function updateBoundaries() {
   if (!mapInst) return;
 
   // 1) 레벨 기준 경계 피처 로드
-  const level    = mapInst.getLevel();
+  const level = mapInst.getLevel();
+
+  const type = getType(level);
+  // ── 여기가 2) 불필요한 재렌더링 방지 지점 ──
+  if (type === lastType) return;
+
+  lastType = type;
+
   const features = await fetchBoundary(level);
 
   // 2) 기존 폴리곤 제거
-  boundaryPolygons.forEach(poly => poly.setMap(null));
+  boundaryPolygons.forEach((poly) => poly.setMap(null));
   boundaryPolygons = [];
+
+  if (lastType === "delete") return;
 
   // 3) 새 폴리곤 그리기
   boundaryPolygons = drawPolygons({
     mapInstance: mapInst,
     features,
-    onClick: feature => {
-      console.log('클릭된 feature:', feature.properties);
-      // 필요 시 address.selectedDong.value = ...
+    onClick: async (feature) => {
+      console.log(feature.properties);
+      const level = mapInst.getLevel();
+      const props = feature.properties;
+
+      // ─── 1) 시도 단계 (level ≥ 12) ───────────────────────
+      if (level >= 12) {
+        // province name 필드(예: CTP_KOR_NM 혹은 sidonm)를 확인해서 city 세팅
+        const cityName = props.CTP_KOR_NM || props.sidonm;
+        const city = cityList.value.find((c) => c.cityName === cityName);
+        if (city) {
+          selectedCity.value = city.citySeq;
+          selectedGu.value = "";
+          selectedDong.value = "";
+        }
+        return;
+      }
+
+      // ─── 2) 시군구 단계 (9 ≤ level ≤ 11) ───────────────
+      if (level >= 9) {
+        // 1) 시 세팅
+        const cityName = props.CTP_KOR_NM || props.sidonm;
+        const city = cityList.value.find((c) => c.cityName === cityName);
+        if (!city) return;
+        selectedCity.value = city.citySeq;
+      }
     },
   });
 }
@@ -87,9 +129,15 @@ onMounted(async () => {
   await updateBoundaries();
 
   // 3) 줌/이동(idle) 때마다
-  window.kakao.maps.event.addListener(mapInst, 'idle', () => {
+  window.kakao.maps.event.addListener(mapInst, "idle", () => {
     updateMarkersByView();
     updateBoundaries();
+    // const level = mapInst.getLevel();
+    // if (level <= 4) {
+    //   // 2) 기존 폴리곤 제거
+    //   boundaryPolygons.forEach((poly) => poly.setMap(null));
+    //   boundaryPolygons = [];
+    // }
   });
 
   // // 3) 초기 한 번 호출
@@ -114,6 +162,7 @@ async function onKeywordSearch(keyword) {
 
 <style scoped>
 .map {
+  @apply relative;
   width: 100%;
   height: 800px;
 }
