@@ -1,4 +1,4 @@
-import { toRaw } from "vue";
+import { ref, toRaw } from "vue";
 import Swal from "sweetalert2"; 
 import { getMapBounds } from "../util/map/getMapBounds";
 import { makeMarker } from "../util/map/makeMarker";
@@ -6,6 +6,7 @@ import { getAroundHouses } from "../api/housesApi";
 
 // export default function useViewHouses(kakaoMap, { onMarkerClick, selectedDong } = {}) {
 export default function useViewHouses(kakaoMap, { onMarkerClick} = {}) {
+  const aptListRef = ref([]);
   let overlays = [];
   let isUpdating = false;
 
@@ -15,6 +16,7 @@ export default function useViewHouses(kakaoMap, { onMarkerClick} = {}) {
       catch (e) { void e; }
     });
     overlays = [];
+    aptListRef.value = [];
   }
 
   async function updateMarkersByView() {
@@ -45,6 +47,7 @@ export default function useViewHouses(kakaoMap, { onMarkerClick} = {}) {
       const { minLat, maxLat, minLng, maxLng } = getMapBounds(map);
       const { data } = await getAroundHouses(minLat, maxLat, minLng, maxLng);
       if (data.isSuccess) {
+        aptListRef.value = data.result;
         overlays = makeMarker({
           mapInstance: map,
           aptList:     data.result,
@@ -69,6 +72,6 @@ export default function useViewHouses(kakaoMap, { onMarkerClick} = {}) {
     );
   }
 
-  return { updateMarkersByView, bindIdle };
+  return { aptListRef, updateMarkersByView, bindIdle };
 }
 

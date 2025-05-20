@@ -2,9 +2,20 @@
   <SearchBox @search="onKeywordSearch" />
 
   <AddressSelector />
-
+  
   <div ref="mapContainer" class="map">
-    <AptDetailPanel :apt="selectedApt" :deals-list="dealsList" @close="clearDetail" />
+    <AptListPanel
+      v-if="aptListRef.length"
+      :apt-list="aptListRef"
+      @select-apt="loadDetail"
+      class="absolute top-0 left-0 h-full"
+    />
+    <AptDetailPanel 
+      :apt="selectedApt" 
+      :deals-list="dealsList" 
+      @close="clearDetail" 
+      :style="{ left: aptListRef.length ? '240px' : '0px' }"
+    />
   </div>
 </template>
 
@@ -12,6 +23,7 @@
 import { ref, onMounted, provide } from "vue";
 import SearchBox from "./SearchBox.vue";
 import AddressSelector from "./AddressSelector.vue";
+import AptListPanel from './AptListPanel.vue'
 import AptDetailPanel from "./AptDetailPanel.vue";
 import useAddress from "@/composables/useAddress";
 import { makeMap } from "@/util/map/makeMap";
@@ -43,7 +55,7 @@ provide("dealsList", dealsList);
 
 // --- 지도 + 오버레이(마커) 관리 훅 ---
 // const { updateMarkersByView, bindIdle } = useViewHouses(kakaoMap, {
-const { updateMarkersByView } = useViewHouses(kakaoMap, {
+const { aptListRef, updateMarkersByView } = useViewHouses(kakaoMap, {
   onMarkerClick: (apt) => loadDetail(apt),
   selectedDong: address.selectedDong,
 });

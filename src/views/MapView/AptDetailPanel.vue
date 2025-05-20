@@ -3,33 +3,19 @@
     <!-- 헤더: 아파트명 + 간단 메타 (세대수·층수·면적) -->
     <div class="apt-detail-header">
       <div class="apt-detail-top">
-        <h3>{{ apt.aptNm || "정보 없음" }}</h3>
+        <h1>[{{ apt.dongNm || "정보 없음" }}]</h1><h3> {{ apt.aptNm || "정보 없음" }}</h3>
         <button class="apt-detail-close" @click="emit('close')">×</button>
       </div>
     </div>
 
     <div class="apt-detail-body">
-      <!-- <div class="apt-detail-body-top">
-        <p v-if="apt.jibun"><strong>지번:</strong> {{ apt.jibun }}</p>
-        <p v-if="apt.roadNm"><strong>도로명:</strong> {{ apt.roadNm }}</p>
-        <p v-if="apt.buildYear != null"><strong>준공년도:</strong> {{ apt.buildYear }}년</p>
-        <p v-if="apt.bookMarkCount != null"><strong>북마크:</strong> {{ apt.bookMarkCount }}</p>
-        <div class="apt-detail-prices">
-          <div class="recent-sale">
-            <div class="label">평균 실거래가</div>
-            <div class="price avg-price">{{ formattedAvg }}억</div>
-          </div>
-
-          <div class="range-sale">
-            <div class="label">매매가</div>
-            <div class="price range-price">{{ formattedMin }}억 ~ {{ formattedMax }}억</div>
-          </div>
-        </div>
-      </div> -->
-
       <div class="apt-detail-body-top">
         <table>
           <tbody>
+            <tr v-if="apt.roadNm">
+              <th>도로명</th>
+              <td>{{ apt.roadNm }}</td>
+            </tr>
             <tr v-if="apt.buildYear">
               <th>준공년도</th>
               <td>{{ apt.buildYear }}</td>
@@ -37,10 +23,6 @@
             <tr v-if="apt.jibun">
               <th>지번</th>
               <td>{{ apt.jibun }}</td>
-            </tr>
-            <tr v-if="apt.roadNm">
-              <th>도로명</th>
-              <td>{{ apt.roadNm }}</td>
             </tr>
             <tr>
               <th>평균 실거래가</th>
@@ -55,8 +37,9 @@
       </div>
 
       <img
-        v-if="apt.imgUrl"
-        :src="`https://ssafyhomebusan.s3.ap-southeast-2.amazonaws.com${apt.imgUrl}`"
+        :src="apt.imgUrl 
+                ? `https://ssafyhomebusan.s3.ap-southeast-2.amazonaws.com${apt.imgUrl}` 
+                : errorImage"
         alt="아파트 이미지"
         class="apt-detail-img"
       />
@@ -68,7 +51,9 @@
 <script setup>
 import { defineProps, defineEmits, toRef, computed } from "vue";
 import tabBarView from "./tabBarView.vue";
+import errorImage from '@/assets/img/imgError.jpg'
 import "@/assets/css/AptDetailPanel.css";
+
 
 const props = defineProps({
   apt: Object,
