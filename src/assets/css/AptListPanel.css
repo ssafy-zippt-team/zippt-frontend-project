@@ -9,11 +9,19 @@
          z-[1000] flex flex-col;
 }
 
+.apt-list-panel h3 {
+  @apply text-base font-bold;
+}
+
+.apt-list-panel-price {
+  @apply text-sm text-blue-600 font-semibold;
+}
+
 /* 카드 */
 .apt-card {
   @apply transition-colors duration-150 flex items-start gap-3 p-3 hover:bg-gray-50 cursor-pointer border-b last:border-none;
 }
 
-.apt-card img{
-    @apply  w-16 h-16 rounded-md object-cover flex-shrink-0;
+.apt-card img {
+  @apply w-16 h-16 rounded-md object-cover flex-shrink-0;
 }

@@ -1,22 +1,19 @@
 <template>
   <div class="search-box-container">
+    <div class="search-box-changebutton">
+      <button :class="['mode-btn', mode === 'place' ? 'mode-btn--active' : '']" @click="setMode('place')">장소</button>
+      <button :class="['mode-btn', mode === 'apt' ? 'mode-btn--active' : '']" @click="setMode('apt')">아파트</button>
+    </div>
     <div class="search-box-input-wrapper">
       <input
         v-model="query"
         @focus="isFocused = true"
         @blur="onBlur"
         @keyup.enter="onSearch"
+        :placeholder="placeholder"
         type="text"
-        placeholder="장소를 입력하세요"
         class="search-box-input"
       />
-      <!-- <button
-        @click="onSearch"
-        type="button"
-        class="search-box-button"
-      >
-        <span class="text-gray-400 text-sm">🔍</span>
-      </button> -->
       <button @click="onSearch" class="search-box-button">
         <component :is="query ? SendIcon : SearchIcon" class="w-5 h-5" />
       </button>
@@ -48,8 +45,14 @@ const query = ref("");
 const debounced = useDebounce(query, 200);
 const isFocused = ref(false);
 
+// 모드: 'place' | 'apt'
+const mode = ref("place");
+
 // localStorage 히스토리 훅
 const { history, add } = useSearchHistory();
+
+// placeholder
+const placeholder = computed(() => (mode.value === "place" ? "장소를 입력해주세요" : "아파트를 입력해주세요"));
 
 // 제안 목록: 입력 비어있으면 전체 history, 아니면 부분 일치 필터
 const suggestions = computed(() => {
@@ -61,11 +64,19 @@ const suggestions = computed(() => {
   return history.value.filter((h) => h.toLowerCase().includes(q)).map((h, i) => wrap(h, i));
 });
 
+function setMode(m) {
+  mode.value = m;
+  // 입력란 비우고 다시 포커스
+  query.value = "";
+  isFocused.value = false;
+}
+
 function onSearch() {
   const term = query.value.trim();
   if (!term) return;
   add(term); // 히스토리 저장
-  emit("search", term);
+  // emit("search", term);
+  emit("search", { term, mode: mode.value });
   isFocused.value = false;
 }
 

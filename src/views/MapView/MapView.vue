@@ -2,7 +2,7 @@
   <SearchBox @search="onKeywordSearch" />
 
   <AddressSelector />
-  
+
   <div ref="mapContainer" class="map">
     <AptListPanel
       v-if="aptListRef.length"
@@ -10,10 +10,10 @@
       @select-apt="loadDetail"
       class="absolute top-0 left-0 h-full"
     />
-    <AptDetailPanel 
-      :apt="selectedApt" 
-      :deals-list="dealsList" 
-      @close="clearDetail" 
+    <AptDetailPanel
+      :apt="selectedApt"
+      :deals-list="dealsList"
+      @close="clearDetail"
       :style="{ left: aptListRef.length ? '240px' : '0px' }"
     />
   </div>
@@ -23,7 +23,7 @@
 import { ref, onMounted, provide } from "vue";
 import SearchBox from "./SearchBox.vue";
 import AddressSelector from "./AddressSelector.vue";
-import AptListPanel from './AptListPanel.vue'
+import AptListPanel from "./AptListPanel.vue";
 import AptDetailPanel from "./AptDetailPanel.vue";
 import useAddress from "@/composables/useAddress";
 import { makeMap } from "@/util/map/makeMap";
@@ -32,6 +32,7 @@ import useAptDetail from "@/composables/useAptDetail";
 import useSearchLocation from "@/composables/useSearchLocation";
 import { fetchBoundary } from "@/util/map/fetchBoundary";
 import { drawPolygons } from "@/util/map/drawPolygons";
+import { warning } from "@/util/alert/warningAlert";
 
 const mapContainer = ref(null);
 const kakaoMap = ref(null);
@@ -160,14 +161,42 @@ onMounted(async () => {
 });
 
 // 검색어로 위치 이동 + 마커 갱신
-async function onKeywordSearch(keyword) {
-  try {
-    // ① 검색 → center & level 변경
-    await search(keyword, 4);
-    // ② 마커 갱신
-    updateMarkersByView();
-  } catch (err) {
-    alert(err.message);
+// async function onKeywordSearch(keyword) {
+//   try {
+//     // ① 검색 → center & level 변경
+//     await search(keyword, 4);
+//     // ② 마커 갱신
+//     updateMarkersByView();
+//   } catch (err) {
+//     alert(err.message);
+//   }
+// }
+async function onKeywordSearch({ term, mode }) {
+  // 빈 입력 무시
+  if (!term) return;
+
+  if (mode === "place") {
+    try {
+      // 장소 검색: 기존 로직
+      await search(term, 4);
+      updateMarkersByView();
+    } catch (err) {
+      warning(err.message);
+    }
+  } else if (mode === "apt") {
+    try {
+      // 아파트명 검색: 새로운 API 호출
+      // const { data } = await searchAptByName(term);
+      // if (data.isSuccess) {
+      //   // 검색 결과를 좌측 리스트에 뿌려줍니다
+      //   aptListRef.value = data.result;
+      //   // 상세 패널 닫기
+      //   clearDetail();
+      // }
+    } catch (err) {
+      console.error("아파트 검색 실패", err);
+      alert("아파트 검색에 실패했습니다.");
+    }
   }
 }
 </script>

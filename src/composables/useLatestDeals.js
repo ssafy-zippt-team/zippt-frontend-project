@@ -1,60 +1,58 @@
-// import { ref, watch } from "vue";
-// import { getLatestList } from "@/api/dealsApi";
-
-// export default function useLatestDeals(aptSeqRef) {
-//   const dealsList = ref([]);
-//   const loadError = ref("");
-
-//   // aptSeqRef 가 바뀔 때마다 API 호출
-//   watch(
-//     aptSeqRef,
-//     async (newSeq) => {
-//       if (!newSeq) {
-//         dealsList.value = [];
-//         return;
-//       }
-//       try {
-//         console.log("aptSeqRef : ", aptSeqRef);
-//         // ① 반드시 await
-//         const { data } = await getLatestList(newSeq);
-//         if (data.isSuccess && Array.isArray(data.result)) {
-//           dealsList.value = data.result;
-//         } else {
-//           dealsList.value = [];
-//         }
-//       } catch (e) {
-//         loadError.value = e.message || String(e);
-//         dealsList.value = [];
-//       }
-//     },
-//     { immediate: true } // 마운트 시에도 즉시 호출
-//   );
-
-//   return { dealsList, loadError };
-// }
-
-// src/composables/useLatestDeals.js
 import { ref } from "vue";
 import { getLatestList } from "@/api/dealsApi";
 
 export default function useLatestDeals() {
   const dealsList = ref([]);
   const loadError = ref("");
+  const currentPage = ref(1);
+  const pageSize = ref(10);
+  const isLastPage = ref(false);
 
-  // 💥 async load 함수 직접 노출
-  async function loadLatest(aptSeq) {
+  // aptSeq와 (선택) page를 넘겨서 불러옵니
+  async function loadLatest(aptSeq, page = 1) {
+    console.log("loadLatest aptSeq : ", aptSeq);
     if (!aptSeq) {
       dealsList.value = [];
       return;
     }
     try {
-      const { data } = await getLatestList(aptSeq);
-      dealsList.value = data.isSuccess && Array.isArray(data.result) ? data.result : [];
+      const { data } = await getLatestList(aptSeq, page, pageSize.value);
+      console.log("loadLatest data : ", data);
+      if (Array.isArray(data.dtoList)) {
+        dealsList.value = data.dtoList;
+        console.log("loadLatest dealsList : ", dealsList.value);
+        currentPage.value = data.pageRequestDTO?.page || page;
+        isLastPage.value = data.dtoList.length < pageSize.value;
+      } else {
+        dealsList.value = [];
+        isLastPage.value = true;
+      }
     } catch (e) {
       loadError.value = e.message || String(e);
       dealsList.value = [];
+      isLastPage.value = true;
     }
   }
 
-  return { dealsList, loadError, loadLatest };
+  function nextPage(aptSeq) {
+    if (!isLastPage.value) {
+      loadLatest(aptSeq, currentPage.value + 1);
+    }
+  }
+
+  function prevPage(aptSeq) {
+    if (currentPage.value > 1) {
+      loadLatest(aptSeq, currentPage.value - 1);
+    }
+  }
+
+  return {
+    dealsList,
+    loadError,
+    currentPage,
+    isLastPage,
+    loadLatest,
+    nextPage,
+    prevPage,
+  };
 }

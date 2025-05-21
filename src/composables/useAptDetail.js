@@ -18,20 +18,24 @@ export default function useAptDetail() {
         didOpen: () => Swal.showLoading(),
       });
       const { data } = await getHouseDetail(overlayApt.aptSeq);
-      console.log("data : ", data);
+      console.log("useAptDetail's data : ", data);
       if (data.isSuccess) {
         // merge the detail result with the overlay’s price fields
         selectedApt.value = {
           ...data.result,
           // pull in the three fields you already had
+          umdNm: overlayApt.umdNm,
+          aptNm: overlayApt.aptNm,
+          imgUrl: overlayApt.imgUrl,
           amountAvg: overlayApt.amountAvg,
           amountMax: overlayApt.amountMax,
           amountMin: overlayApt.amountMin,
         };
       }
       // ② 실거래 정보 로드
+      console.log("useAptDetails aptSeq : ", overlayApt.aptSeq);
       await loadLatest(overlayApt.aptSeq);
-      console.log("dealsList:", dealsList.value);
+      console.log("useAptDetails dealsList : ", dealsList.value);
     } catch (e) {
       console.error("apt detail load failed", e);
       selectedApt.value = null;

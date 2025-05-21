@@ -9,8 +9,12 @@ const api = axios.create({
 /**
  * 아파트 seq로 거래내역 조회
  */
-export function getLatestList(aptSeq) {
-  return api.get("/latest-list", {
-    params: { aptSeq },
+export function getLatestList(aptSeq, page = 1, size = 10) {
+  console.log("api call : ", aptSeq, page, size);
+  return api.get(`/list/${aptSeq}`, {
+    params: { page, size },
   });
+  // return api.get(`/list/${encodeURIComponent(aptSeq)}`, {
+  //   params: { page, size },
+  // });
 }
