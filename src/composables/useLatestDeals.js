@@ -28,6 +28,7 @@ export default function useLatestDeals() {
         isLastPage.value = true;
       }
     } catch (e) {
+      console.log("loadLatest error")
       loadError.value = e.message || String(e);
       dealsList.value = [];
       isLastPage.value = true;

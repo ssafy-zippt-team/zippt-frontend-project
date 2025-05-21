@@ -42,53 +42,51 @@
         alt="아파트 이미지"
         class="apt-detail-img"
       />
-      <tabBarView
+      <TabBarView
         :deals-list="dealsList"
         :current-page="currentPage"
         :is-last-page="isLastPage"
-        @prev-page="prevPage(apt.aptSeq)"
-        @next-page="nextPage(apt.aptSeq)"
+        @go-page="$emit('go-page', $event)"
       />
     </div>
   </div>
 </template>
 
 <script setup>
-import { defineProps, defineEmits, toRef, computed, watch } from "vue";
-import tabBarView from "./tabBarView.vue";
+import { defineProps, defineEmits, toRef, computed } from "vue";
+import TabBarView from "./TabBarView.vue";
 import errorImage from "@/assets/img/imgError.jpg";
-import useLatestDeals from "@/composables/useLatestDeals";
+// import useLatestDeals from '@/composables/useLatestDeals'
 import "@/assets/css/AptDetailPanel.css";
 
 const props = defineProps({
   apt: Object,
-  // dealsList: {
-  //   type: Array,
-  //   default: () => [],
-  // },
+  dealsList: {
+    type: Array,
+    default: () => [],
+  },
+  currentPage: {
+     type: Number,
+     required: true,
+   },
+   isLastPage: {
+     type: Boolean,
+     required: true,
+   },
 });
 const apt = toRef(props, "apt");
-// const dealsList = toRef(props, "dealsList");
-// ② useLatestDeals 훅으로 로드·페이징 관리
-const { dealsList, currentPage, isLastPage, loadLatest, nextPage, prevPage } = useLatestDeals();
+const dealsList = toRef(props, "dealsList");
+const currentPage = toRef(props, "currentPage");
+const isLastPage = toRef(props, "isLastPage");
 
-// ③ aptSeq 가 바뀔 때마다 1페이지 로드
-watch(apt, (val) => {
-  if (val?.aptSeq) {
-    loadLatest(val.aptSeq, 1);
-  }
-});
-
-const emit = defineEmits(["close"]);
+// const emit = defineEmits(["close"]);
+const emit = defineEmits(["close","prev-page","next-page"]);
 
 console.log("apt ? : ", apt);
 
 // amountAvg가 null/undefined면 빈 문자열, 아니면 포맷팅
-// const formattedAvg = computed(() => {
-//   const v = apt.value.amountAvg;
-//   return v != null ? v.toLocaleString() : "";
-// });
 function formattedAvg(v) {
+
   if (v == null || isNaN(v)) return "";
   const intPart = Math.floor(v);
   const decimalHundreds = Math.round((v - intPart) * 100);

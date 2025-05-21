@@ -5,7 +5,7 @@ import useLatestDeals from "@/composables/useLatestDeals";
 
 export default function useAptDetail() {
   const selectedApt = ref(null);
-  const { dealsList, loadLatest } = useLatestDeals();
+  const { dealsList, currentPage, isLastPage, loadLatest, nextPage, prevPage } = useLatestDeals();
 
   // 상세 정보 로드
   async function loadDetail(overlayApt) {
@@ -34,8 +34,8 @@ export default function useAptDetail() {
       }
       // ② 실거래 정보 로드
       console.log("useAptDetails aptSeq : ", overlayApt.aptSeq);
-      await loadLatest(overlayApt.aptSeq);
-      console.log("useAptDetails dealsList : ", dealsList.value);
+      await loadLatest(overlayApt.aptSeq, 1);
+      // console.log("useAptDetails dealsList : ", dealsList.value);
     } catch (e) {
       console.error("apt detail load failed", e);
       selectedApt.value = null;
@@ -51,5 +51,5 @@ export default function useAptDetail() {
   }
 
   // return { selectedApt, loadDetail, clearDetail };
-  return { selectedApt, dealsList, loadDetail, clearDetail };
+  return { selectedApt, dealsList, loadDetail, clearDetail, currentPage, isLastPage, nextPage, prevPage};
 }

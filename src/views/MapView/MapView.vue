@@ -13,6 +13,9 @@
     <AptDetailPanel
       :apt="selectedApt"
       :deals-list="dealsList"
+      :current-page="currentPage"
+      :is-last-page="isLastPage"
+      @go-page="page => loadLatest(apt.aptSeq, page)"
       @close="clearDetail"
       :style="{ left: aptListRef.length ? '240px' : '0px' }"
     />
@@ -51,8 +54,11 @@ const { search } = useSearchLocation(kakaoMap);
 provide("kakaoMap", kakaoMap);
 
 // --- Apt 상세 조회 훅 ---
-const { selectedApt, dealsList, loadDetail, clearDetail } = useAptDetail();
+const { selectedApt, dealsList, currentPage, isLastPage, loadDetail, clearDetail } = useAptDetail();
+// const { selectedApt, loadDetail, clearDetail} = useAptDetail();
 provide("dealsList", dealsList);
+provide("currentPage", currentPage);
+provide("isLastPage", isLastPage);
 
 // --- 지도 + 오버레이(마커) 관리 훅 ---
 // const { updateMarkersByView, bindIdle } = useViewHouses(kakaoMap, {

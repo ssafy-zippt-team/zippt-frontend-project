@@ -14,8 +14,7 @@
         :deals-list="dealsList"
         :current-page="currentPage"
         :is-last-page="isLastPage"
-        @prev-page="$emit('prev-page')"
-        @next-page="$emit('next-page')"
+        @go-page="$emit('go-page', $event)"
       />
       <AiReportPanel v-else />
     </div>
@@ -45,28 +44,4 @@ function changeTab(tab) {
   selectedTab.value = tab;
 }
 
-// export default {
-//   name: "TabPage",
-
-//   components: { Deal, Repo },
-//   props: {
-//     dealsList: {
-//       type: Array,
-//       default: () => [],
-//     },
-//   },
-//   data() {
-//     return {
-//       selectedTab: "deal",
-//       // selectedComponent: Deal,
-//       selectedComponent: markRaw(Deal),
-//     };
-//   },
-//   methods: {
-//     changeTab(tabName) {
-//       this.selectedTab = tabName;
-//       this.selectedComponent = tabName === "repo" ? markRaw(Repo) : markRaw(Deal);
-//     },
-//   },
-// };
 </script>
