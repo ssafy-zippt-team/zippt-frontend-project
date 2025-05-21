@@ -24,6 +24,7 @@ export default function useAptDetail() {
         selectedApt.value = {
           ...data.result,
           // pull in the three fields you already had
+          aptSeq: overlayApt.aptSeq,
           umdNm: overlayApt.umdNm,
           aptNm: overlayApt.aptNm,
           imgUrl: overlayApt.imgUrl,
