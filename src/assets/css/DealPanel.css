@@ -17,7 +17,7 @@
 }
 /* 리스트 컨테이너: 최대 높이 130px, 넘칠 때 스크롤 */
 .deal-list {
-  @apply max-h-[130px] overflow-y-auto divide-y divide-gray-200;
+  @apply max-h-[240px] overflow-y-auto divide-y divide-gray-200;
 }
 
 /* 각 항목: flex 레이아웃, 상하 간격, 구분선 */
@@ -48,10 +48,10 @@
 }
 
 /* 블록 단위 페이지네이션 */
-.deal-pagiantion {
-  @apply flex items-center justify-center space-x-1 mt-2;
+.deal-pagination {
+  @apply flex items-center justify-center space-x-1 mt-1;
 }
 
-.deal-pagiantion button {
+.deal-pagination button {
   @apply px-2 py-1 border rounded disabled:opacity-50;
 }

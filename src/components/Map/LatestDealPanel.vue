@@ -22,7 +22,7 @@
         v-for="p in pages"
         :key="p"
         @click="goPage(p)"
-        :class="['px-2 py-1 border rounded', p === currentPage ? 'bg-blue-600 text-white' : 'hover:bg-gray-100']"
+        :class="[p === currentPage ? 'bg-blue-600 text-white' : 'hover:bg-gray-100']"
       >
         {{ p }}
       </button>

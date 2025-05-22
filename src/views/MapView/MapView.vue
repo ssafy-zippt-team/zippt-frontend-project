@@ -24,10 +24,10 @@
 
 <script setup>
 import { ref, onMounted, provide } from "vue";
-import SearchBox from "./SearchBox.vue";
-import AddressSelector from "./AddressSelector.vue";
-import AptListPanel from "./AptListPanel.vue";
-import AptDetailPanel from "./AptDetailPanel.vue";
+import SearchBox from "@/components/Map/SearchBox.vue";
+import AddressSelector from "@/components/Map/AddressSelector.vue";
+import AptListPanel from "@/components/Map/AptListPanel.vue";
+import AptDetailPanel from "@/components/Map/AptDetailPanel.vue";
 import useAddress from "@/composables/useAddress";
 import { makeMap } from "@/util/map/makeMap";
 import useViewHouses from "@/composables/useViewHouses";
