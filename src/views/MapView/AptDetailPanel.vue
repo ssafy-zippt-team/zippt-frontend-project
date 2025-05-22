@@ -1,10 +1,10 @@
 <template>
-  <div v-if="apt" class="apt-detail-panel">
+  <div v-if="selectedApt" class="apt-detail-panel">
     <!-- 헤더: 아파트명 + 간단 메타 (세대수·층수·면적) -->
     <div class="apt-detail-header">
       <div class="apt-detail-top">
-        <h1>[{{ apt.umdNm || "정보 없음" }}]</h1>
-        <h3>{{ apt.aptNm || "정보 없음" }}</h3>
+        <h1>[{{ selectedApt.umdNm || "정보 없음" }}]</h1>
+        <h3>{{ selectedApt.aptNm || "정보 없음" }}</h3>
         <button class="apt-detail-close" @click="emit('close')">×</button>
       </div>
     </div>
@@ -13,21 +13,21 @@
       <div class="apt-detail-body-top">
         <table>
           <tbody>
-            <tr v-if="apt.roadNm">
+            <tr v-if="selectedApt.roadNm">
               <th>도로명</th>
-              <td>{{ apt.roadNm }}</td>
+              <td>{{ selectedApt.roadNm }}</td>
             </tr>
-            <tr v-if="apt.buildYear">
+            <tr v-if="selectedApt.buildYear">
               <th>준공년도</th>
-              <td>{{ apt.buildYear }}</td>
+              <td>{{ selectedApt.buildYear }}</td>
             </tr>
-            <tr v-if="apt.jibun">
+            <tr v-if="selectedApt.jibun">
               <th>지번</th>
-              <td>{{ apt.jibun }}</td>
+              <td>{{ selectedApt.jibun }}</td>
             </tr>
             <tr>
               <th>평균 매매가</th>
-              <td>{{ formattedAvg(apt.amountAvg) }}</td>
+              <td>{{ formattedAvg(selectedApt.amountAvg) }}</td>
             </tr>
             <tr>
               <th>매매가</th>
@@ -38,7 +38,11 @@
       </div>
 
       <img
-        :src="apt.imgUrl ? `https://ssafyhomebusan.s3.ap-southeast-2.amazonaws.com${apt.imgUrl}` : errorImage"
+        :src="
+          selectedApt.imgUrl
+            ? `https://ssafyhomebusan.s3.ap-southeast-2.amazonaws.com${selectedApt.imgUrl}`
+            : errorImage
+        "
         alt="아파트 이미지"
         class="apt-detail-img"
       />
@@ -46,7 +50,7 @@
         :deals-list="dealsList"
         :current-page="currentPage"
         :is-last-page="isLastPage"
-        @go-page="$emit('go-page', $event)"
+        @go-page="(page) => emit('go-page', page)"
       />
     </div>
   </div>
@@ -60,33 +64,32 @@ import errorImage from "@/assets/img/imgError.jpg";
 import "@/assets/css/AptDetailPanel.css";
 
 const props = defineProps({
-  apt: Object,
+  selectedApt: Object,
   dealsList: {
     type: Array,
     default: () => [],
   },
   currentPage: {
-     type: Number,
-     required: true,
-   },
-   isLastPage: {
-     type: Boolean,
-     required: true,
-   },
+    type: Number,
+    required: true,
+  },
+  isLastPage: {
+    type: Boolean,
+    required: true,
+  },
 });
-const apt = toRef(props, "apt");
+const selectedApt = toRef(props, "selectedApt");
 const dealsList = toRef(props, "dealsList");
 const currentPage = toRef(props, "currentPage");
 const isLastPage = toRef(props, "isLastPage");
 
 // const emit = defineEmits(["close"]);
-const emit = defineEmits(["close","prev-page","next-page"]);
+const emit = defineEmits(["close", "go-page"]);
 
-console.log("apt ? : ", apt);
+console.log("selectedApt ? : ", selectedApt);
 
 // amountAvg가 null/undefined면 빈 문자열, 아니면 포맷팅
 function formattedAvg(v) {
-
   if (v == null || isNaN(v)) return "";
   const intPart = Math.floor(v);
   const decimalHundreds = Math.round((v - intPart) * 100);
@@ -94,11 +97,11 @@ function formattedAvg(v) {
   return `${intPart}억 ${manWon.toLocaleString()}만원`;
 }
 const formattedMax = computed(() => {
-  const v = apt.value.amountMax;
+  const v = selectedApt.value.amountMax;
   return v != null ? v.toLocaleString() : "";
 });
 const formattedMin = computed(() => {
-  const v = apt.value.amountMin;
+  const v = selectedApt.value.amountMin;
   return v != null ? v.toLocaleString() : "";
 });
 </script>

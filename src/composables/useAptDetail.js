@@ -52,5 +52,5 @@ export default function useAptDetail() {
   }
 
   // return { selectedApt, loadDetail, clearDetail };
-  return { selectedApt, dealsList, loadDetail, clearDetail, currentPage, isLastPage, nextPage, prevPage};
+  return { selectedApt, dealsList, loadDetail, clearDetail, currentPage, isLastPage, nextPage, prevPage, loadLatest };
 }

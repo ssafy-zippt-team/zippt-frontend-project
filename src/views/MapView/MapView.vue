@@ -11,12 +11,12 @@
       class="absolute top-0 left-0 h-full"
     />
     <AptDetailPanel
-      :apt="selectedApt"
+      :selected-apt="selectedApt"
       :deals-list="dealsList"
       :current-page="currentPage"
       :is-last-page="isLastPage"
-      @go-page="page => loadLatest(apt.aptSeq, page)"
       @close="clearDetail"
+      @go-page="handlePage"
       :style="{ left: aptListRef.length ? '240px' : '0px' }"
     />
   </div>
@@ -54,8 +54,15 @@ const { search } = useSearchLocation(kakaoMap);
 provide("kakaoMap", kakaoMap);
 
 // --- Apt 상세 조회 훅 ---
-const { selectedApt, dealsList, currentPage, isLastPage, loadDetail, clearDetail } = useAptDetail();
+const { selectedApt, dealsList, currentPage, isLastPage, loadDetail, clearDetail, loadLatest } = useAptDetail();
 // const { selectedApt, loadDetail, clearDetail} = useAptDetail();
+
+function handlePage(page) {
+  console.log("selectedApt.aptSeq : ", selectedApt.value.aptSeq);
+  if (!selectedApt || !selectedApt.value.aptSeq) return;
+  loadLatest(selectedApt.value.aptSeq, page);
+}
+provide("selectedApt", selectedApt);
 provide("dealsList", dealsList);
 provide("currentPage", currentPage);
 provide("isLastPage", isLastPage);
