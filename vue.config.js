@@ -11,8 +11,13 @@ module.exports = defineConfig({
         target: "https://dapi.kakao.com",
         changeOrigin: true,
         secure: true,
-        pathRewrite: { "^/kakao": "" }
-      }
+        pathRewrite: { "^/kakao": "" },
+      },
+      // 네이버 오픈API 프록시 추가
+      "^/v1": {
+        target: "https://openapi.naver.com/",
+        changeOrigin: true,
+      },
     },
   },
 });
