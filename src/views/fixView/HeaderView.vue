@@ -25,7 +25,7 @@
           </button>
           <button
             @click="$router.push('/signup')"
-            class="h-9 px-4 bg-[#115C5E] text-white rounded-full font-medium transition hover:bg-blue-700"
+            class="h-9 px-4 bg-[#115C5E] text-white rounded-full font-medium transition hover:bg-teal-900"
           >
             회원가입
           </button>

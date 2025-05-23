@@ -42,9 +42,7 @@ export async function refreshAccessToken() {
     if (token) {
       setAuthHeader(token);
       return token;
-    } else {
-      // throw new Error("No access token on refresh");
-    }
+    } 
   } catch (e) {
     // Refresh 실패(쿠키 만료 등) 시에는
   }
