@@ -29,9 +29,15 @@ const props = defineProps({
   },
 });
 
+
 // toRef 로 개별 prop 을 반응형 참조로 꺼냅니다.
 // (toRefs 를 쓰면 여러 개를 한 번에 꺼낼 수도 있어요)
 const aptList = toRef(props, "aptList");
+console.log('aptList :             ' + aptList.value[0].latitude);
+console.log(JSON.stringify(aptList.value[0], null, 2));
+aptList.value.slice(0, 3).forEach((apt, i) => {
+  console.log(`apt[${i}]`, apt);
+});
 
 function formatAmount(v) {
   if (v == null || isNaN(v)) return "";
