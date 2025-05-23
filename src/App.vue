@@ -4,15 +4,16 @@
     <header class="bg-white shadow sticky top-0 z-50">
       <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex items-center justify-between h-16">
         <div class="flex items-center">
-          <div class="h-10 w-28">
-            <img src="@/assets/img/zipptLogo.png" alt="Zippt Logo" class="w-full h-full object-cover" />
-          </div>
+          <!-- 로고 클릭 시 홈으로 이동 -->
+          <router-link to="/" class="h-16 w-44 flex items-center">
+            <img src="@/assets/img/zipptLogo.png" alt="Zippt Logo" class="w-full h-full object-contain" />
+          </router-link>
         </div>
         <nav class="hidden md:flex space-x-8">
-          <a href="#" class="text-gray-700 hover:text-blue-500 font-medium">홈</a>
-          <a href="#" class="text-gray-700 hover:text-blue-500 font-medium">서비스</a>
-          <a href="#" class="text-gray-700 hover:text-blue-500 font-medium">프로젝트</a>
-          <a href="#" class="text-gray-700 hover:text-blue-500 font-medium">문의</a>
+          <a href="#" class="text-gray-700 hover:text-[#115C5E] font-medium text-base transition">홈</a>
+          <a href="#" class="text-gray-700 hover:text-[#115C5E] font-medium text-base transition">서비스</a>
+          <a href="#" class="text-gray-700 hover:text-[#115C5E] font-medium text-base transition">프로젝트</a>
+          <a href="#" class="text-gray-700 hover:text-[#115C5E] font-medium text-base transition">문의</a>
         </nav>
       </div>
     </header>
