@@ -1,0 +1,267 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  /* 로그인 페이지 전용 CSS */
+  .login-page {
+    --background: 0 0% 100%;
+    --foreground: 222.2 84% 4.9%;
+    --card: 0 0% 100%;
+    --card-foreground: 222.2 84% 4.9%;
+    --popover: 0 0% 100%;
+    --popover-foreground: 222.2 84% 4.9%;
+    --primary: 221.2 83.2% 53.3%;
+    --primary-foreground: 210 40% 98%;
+    --secondary: 210 40% 96.1%;
+    --secondary-foreground: 222.2 47.4% 11.2%;
+    --muted: 210 40% 96.1%;
+    --muted-foreground: 215.4 16.3% 46.9%;
+    --accent: 210 40% 96.1%;
+    --accent-foreground: 222.2 47.4% 11.2%;
+    --destructive: 0 84.2% 60.2%;
+    --destructive-foreground: 210 40% 98%;
+    --border: 214.3 31.8% 91.4%;
+    --input: 214.3 31.8% 91.4%;
+    --ring: 221.2 83.2% 53.3%;
+    --radius: 0.5rem;
+  }
+
+  .login-page.dark {
+    --background: 222.2 84% 4.9%;
+    --foreground: 210 40% 98%;
+    --card: 222.2 84% 4.9%;
+    --card-foreground: 210 40% 98%;
+    --popover: 222.2 84% 4.9%;
+    --popover-foreground: 210 40% 98%;
+    --primary: 217.2 91.2% 59.8%;
+    --primary-foreground: 222.2 47.4% 11.2%;
+    --secondary: 217.2 32.6% 17.5%;
+    --secondary-foreground: 210 40% 98%;
+    --muted: 217.2 32.6% 17.5%;
+    --muted-foreground: 215 20.2% 65.1%;
+    --accent: 217.2 32.6% 17.5%;
+    --accent-foreground: 210 40% 98%;
+    --destructive: 0 62.8% 30.6%;
+    --destructive-foreground: 210 40% 98%;
+    --border: 217.2 32.6% 17.5%;
+    --input: 217.2 32.6% 17.5%;
+    --ring: 224.3 76.3% 48%;
+  }
+
+  /* 로그인 페이지 기본 스타일 */
+  .login-page {
+    background-color: hsl(var(--muted));
+    color: hsl(var(--foreground));
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 1.5rem;
+  }
+
+  @media (min-width: 768px) {
+    .login-page {
+      padding: 2.5rem;
+    }
+  }
+
+  .login-container {
+    width: 100%;
+    max-width: 24rem;
+  }
+
+  @media (min-width: 768px) {
+    .login-container {
+      max-width: 48rem;
+    }
+  }
+
+  /* 로그인 폼 스타일 */
+  .login-card {
+    overflow: hidden;
+    border-radius: var(--radius);
+    border: 1px solid hsl(var(--border));
+    background-color: hsl(var(--card));
+    color: hsl(var(--card-foreground));
+    box-shadow: 0 1px 2px 0 rgb(0 0 0 / 0.05);
+  }
+
+  .login-form {
+    padding: 1.5rem;
+  }
+
+  @media (min-width: 768px) {
+    .login-form {
+      padding: 2rem;
+    }
+  }
+
+  .login-title {
+    font-size: 1.5rem;
+    font-weight: 700;
+    text-align: center;
+  }
+
+  .login-subtitle {
+    text-align: center;
+    color: hsl(var(--muted-foreground));
+  }
+
+  .form-group {
+    display: grid;
+    gap: 0.5rem;
+    margin-top: 1.5rem;
+  }
+
+  .form-label {
+    font-size: 0.875rem;
+    font-weight: 500;
+    line-height: 1;
+  }
+
+  .form-input {
+    display: flex;
+    height: 2.5rem;
+    width: 100%;
+    border-radius: var(--radius);
+    border: 1px solid hsl(var(--input));
+    background-color: hsl(var(--background));
+    padding: 0 0.75rem;
+    font-size: 0.875rem;
+  }
+
+  .form-input:focus {
+    outline: none;
+    ring: 2px;
+    ring-offset: 2px;
+    ring-color: hsl(var(--ring));
+  }
+
+  .login-button {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: var(--radius);
+    background-color: hsl(var(--primary));
+    color: hsl(var(--primary-foreground));
+    font-size: 0.875rem;
+    font-weight: 500;
+    height: 2.5rem;
+    padding-left: 1rem;
+    padding-right: 1rem;
+    width: 100%;
+    margin-top: 1.5rem;
+  }
+
+  .login-button:hover {
+    background-color: hsl(var(--primary) / 0.9);
+  }
+
+  .divider {
+    position: relative;
+    text-align: center;
+    font-size: 0.875rem;
+    margin-top: 1.5rem;
+    margin-bottom: 1.5rem;
+  }
+
+  .divider::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    top: 50%;
+    z-index: 0;
+    display: flex;
+    align-items: center;
+    border-top: 1px solid hsl(var(--border));
+  }
+
+  .divider span {
+    position: relative;
+    z-index: 10;
+    background-color: hsl(var(--background));
+    padding-left: 0.5rem;
+    padding-right: 0.5rem;
+    color: hsl(var(--muted-foreground));
+  }
+
+  .social-buttons {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 1rem;
+  }
+
+  .social-button {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: var(--radius);
+    border: 1px solid hsl(var(--input));
+    background-color: hsl(var(--background));
+    padding: 0.5rem;
+    font-size: 0.875rem;
+    font-weight: 500;
+  }
+
+  .social-button:hover {
+    background-color: hsl(var(--accent));
+    color: hsl(var(--accent-foreground));
+  }
+
+  .signup-text {
+    text-align: center;
+    font-size: 0.875rem;
+    margin-top: 1.5rem;
+  }
+
+  .signup-link {
+    text-decoration: underline;
+    text-underline-offset: 4px;
+  }
+
+  .signup-link:hover {
+    color: hsl(var(--primary));
+  }
+
+  .terms-text {
+    text-align: center;
+    font-size: 0.75rem;
+    color: hsl(var(--muted-foreground));
+    margin-top: 1.5rem;
+  }
+
+  .terms-link {
+    text-decoration: underline;
+    text-underline-offset: 4px;
+  }
+
+  .terms-link:hover {
+    color: hsl(var(--primary));
+  }
+
+  .image-container {
+    position: relative;
+    display: none;
+    background-color: hsl(var(--muted));
+  }
+
+  @media (min-width: 768px) {
+    .image-container {
+      display: block;
+    }
+  }
+
+  .login-image {
+    position: absolute;
+    inset: 0;
+    height: 100%;
+    width: 100%;
+    object-fit: cover;
+  }
+
+  .dark .login-image {
+    filter: brightness(0.2) grayscale(1);
+  }
+}
