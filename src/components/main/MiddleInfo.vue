@@ -32,11 +32,123 @@
     </div>
 
     <!-- 오른쪽 흰색 박스(그래프 자리) -->
-    <div class="w-[48%] min-w-[340px] h-[312px] rounded-[14px] bg-white flex items-center justify-center shadow-sm">
-      <div class="text-center">
-        <h2 class="text-2xl font-semibold text-[#115C5E] mb-4">여기에 차트/그래프가 들어갑니다</h2>
-        <p class="text-gray-600">그래프나 통계, 실거래가 등 데이터 시각화 영역으로 사용할 수 있습니다.</p>
+    <div class="w-[48%] min-w-[340px] h-[312px] rounded-[14px] bg-white flex flex-col items-center justify-start shadow-sm pt-4">
+      <h2 class="text-2xl font-semibold text-[#115C5E] mb-2">{{currentYear}}년 광역시별 매물 통계</h2>
+      <div class="w-full h-full">
+        <Chart :data="chartData" :options="chartOptions" style="height: 100%; width: 100%;"/>
       </div>
     </div>
   </div>
 </template>
+
+<script setup>
+import { ref, onMounted } from 'vue'
+import { Chart as ChartJS, BarElement, LineElement, CategoryScale, LinearScale, PointElement, Tooltip, Legend } from 'chart.js'
+import { Chart } from 'vue-chartjs'
+import { getAvgPriceStat, getDealCountStat } from '@/api/dealsApi'
+
+ChartJS.register(BarElement, LineElement, CategoryScale, LinearScale, PointElement, Tooltip, Legend)
+const currentYear = new Date().getFullYear();
+
+const chartData = ref({
+  labels: [],
+  datasets: [],
+})
+
+const chartOptions = {
+  responsive: true,
+  layout: {
+    padding: {
+      top: 10,
+      bottom: 20,
+      left: 10,
+      right: 10
+    }
+  },
+  plugins: {
+    legend: {
+      position: 'top',
+    },
+  },
+  scales: {
+    y1: {
+      type: 'linear',
+      position: 'left',
+      align: 'start',
+      title: {
+        display: true,
+        text: '매매가 (억)',
+      },
+      ticks: {
+        callback: (value) => `${(value / 10000).toFixed(1)}억`
+      }
+    },
+    y2: {
+      type: 'linear',
+      position: 'right',
+      align: 'start',
+      title: {
+        display: true,
+        text: '거래 건수 (건)',
+      },
+      grid: {
+        drawOnChartArea: false,
+      },
+      ticks: {
+        callback: (value) => `${(value ).toLocaleString()}건`
+      }
+    }
+  }
+}
+
+const regionMap = {
+  seoul: '서울',
+  busan: '부산',
+  ulsan: '울산',
+  daegu: '대구',
+  incheon: '인천',
+  gwangju: '광주',
+  daejeon: '대전'
+}
+
+onMounted(async () => {
+  try {
+    const [avgRes, cntRes] = await Promise.all([
+      getAvgPriceStat(),
+      getDealCountStat()
+    ])
+
+    const regions = Object.keys(avgRes.data.result).map(code => regionMap[code] || code)
+    const avgValues = Object.values(avgRes.data.result)
+    const cntValues = Object.values(cntRes.data.result)
+
+    chartData.value = {
+      labels: regions,
+      datasets: [
+        {
+          type: 'bar',
+          label: '평균 매매가 (억)',
+          data: avgValues,
+          backgroundColor: 'rgba(75,192,192,0.6)',
+          yAxisID: 'y1'
+        },
+        {
+          type: 'line',
+          label: '거래 건수 (건)',
+          data: cntValues,
+          borderColor: 'rgba(255,99,132,1)',
+          backgroundColor: 'rgba(255,99,132,0.2)',
+          borderWidth: 2,
+          tension: 0.3,
+          yAxisID: 'y2'
+        }
+      ]
+    }
+  } catch (err) {
+    console.error('차트 데이터 로딩 실패:', err)
+  }
+})
+</script>
+
+<style scoped>
+</style>
