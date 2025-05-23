@@ -1,10 +1,11 @@
 import axios from "axios";
 
 const api = axios.create({
+
   // baseURL: "http://localhost:8080/api/v1/houses",
   baseURL: "/api/v1/houses",
   timeout: 20000,
-});
+
 
 /**
  * 현재 뷰 경계값(minLat, maxLat, minLng, maxLng)으로
@@ -29,4 +30,11 @@ export function getAptListByDong(sggCd, umdCd) {
  */
 export function getHouseDetail(aptSeq) {
   return api.get(`/${aptSeq}`);
+}
+
+/**
+ * aptSeq로 유사 아파트 조회
+ */
+export function getSimilarHouse(aptSeq){
+  return api.get(`/similar?aptSeq=${aptSeq}`);
 }

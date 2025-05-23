@@ -76,3 +76,24 @@
 .detail-content {
   @apply py-3 px-4 overflow-y-auto flex-1;
 }
+
+/*이미지 까지 스크롤 기능 추가가 (보류) */
+/*
+.apt-detail-body {
+  display: flex;
+  flex-direction: column;
+  height: 100%; 
+} 
+
+.scroll-body {
+  overflow-y: auto;
+  flex: 1 1 auto;
+  padding-right: 8px;
+}
+
+.fixed-tabbar {
+  flex-shrink: 0;
+  border-top: 1px solid #ccc;
+  background-color: #fff;
+}
+*/
