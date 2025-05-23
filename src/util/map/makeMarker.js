@@ -60,7 +60,7 @@ export function makeMarker({ mapInstance, aptList, onClick }) {
       xAnchor: 0.1,
       map,
     });
-
+    console.log("overlay : " + overlay);
     return overlay;
   });
 

@@ -15,6 +15,9 @@
       :deals-list="dealsList"
       :current-page="currentPage"
       :is-last-page="isLastPage"
+      :similar-items="similarItems"
+      :apt-seq="selectedApt?.aptSeq"
+      :selected-coords="selectedCoords" 
       @close="clearDetail"
       @go-page="handlePage"
       :style="{ left: aptListRef.length ? '240px' : '0px' }"
@@ -54,7 +57,7 @@ const { search } = useSearchLocation(kakaoMap);
 provide("kakaoMap", kakaoMap);
 
 // --- Apt 상세 조회 훅 ---
-const { selectedApt, dealsList, currentPage, isLastPage, loadDetail, clearDetail, loadLatest } = useAptDetail();
+const { selectedApt, dealsList, currentPage, isLastPage, loadDetail, clearDetail, loadLatest,similarItems , selectedCoords } = useAptDetail();
 // const { selectedApt, loadDetail, clearDetail} = useAptDetail();
 
 function handlePage(page) {

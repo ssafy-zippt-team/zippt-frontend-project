@@ -18,3 +18,18 @@ export function getLatestList(aptSeq, page = 1, size = 10) {
   //   params: { page, size },
   // });
 }
+
+
+/**
+ * 당해 광역시별 평균 매매가 조회 (amountStatResponseList)
+ */
+export function getAvgPriceStat() {
+  return api.get("/amountStatResponseList");
+}
+
+/**
+ * 당해 광역시별 매매 거래량 조회 (amountStatCntResponseList)
+ */
+export function getDealCountStat() {
+  return api.get("/amountStatCntResponseList");
+}
