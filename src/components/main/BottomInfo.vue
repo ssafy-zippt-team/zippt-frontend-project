@@ -62,7 +62,7 @@ onMounted(() => {
   axios
     .get("/v1/search/news.json", {
       params: {
-        query: "부동산",
+        query: "부동산 뉴스",
         display: 5,
         sort: "date",
       },

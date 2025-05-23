@@ -5,6 +5,7 @@
       <!-- 앞으로 추가할 다른 컴포넌트들도 여기에 -->
       <MiddleInfo />
       <BottomInfo />
+      <AiSumaryButton/>
     </div>
   </div>
 </template>
@@ -13,4 +14,5 @@
 import SearchBar from "@/components/main/SearchBar.vue";
 import MiddleInfo from "@/components/main/MiddleInfo.vue";
 import BottomInfo from "@/components/main/BottomInfo.vue";
+import AiSumaryButton from "@/components/summary/AiSumaryButton.vue"
 </script>
