@@ -12,15 +12,21 @@
           매매, 전세, 월세 매물을 시세 및 실거래가 정보와 함께<br />지도에서 쉽게 확인하세요!
         </p>
       </div>
+
+      <!-- 매물 찾기 버튼 -->
       <div class="mt-8 flex">
         <router-link
           to="/map"
-          class="mr-4 w-[11.2rem] h-[42px] border border-white/50 rounded bg-transparent text-white text-[17px] font-normal shadow-none flex items-center justify-center"
+          class="group relative overflow-hidden mr-4 w-[11.2rem] h-[42px] border border-white/50 rounded bg-transparent text-white text-[17px] font-normal shadow-none flex items-center justify-center transition-colors duration-500 ease-in-out"
         >
-          매물 찾기
+          <span class="relative z-10 transition-colors duration-300 group-hover:text-[#115C5E]">매물 찾기</span>
+          <span
+            class="absolute inset-0 bg-white translate-y-full group-hover:translate-y-0 transition-transform duration-300 ease-in-out"
+          ></span>
         </router-link>
       </div>
-      <!-- SVG 아이콘 (Home 아이콘) -->
+
+      <!-- SVG 아이콘 -->
       <svg
         class="absolute right-5 bottom-3 w-[200px] h-[200px] opacity-20"
         fill="white"
