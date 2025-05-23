@@ -9,12 +9,17 @@
   },
   "dependencies": {
     "axios": "^1.9.0",
+    "chart.js": "^4.4.9",
     "core-js": "^3.8.3",
     "jwt-decode": "^4.0.0",
     "lucide-vue-next": "^0.511.0",
     "sweetalert2": "^11.21.2",
     "vue": "^3.2.13",
-    "vue-router": "^4.5.1"
+    "vue-chartjs": "^5.3.2",
+    "vue-image-magnifier": "^0.2.1",
+    "vue-image-zoomer": "^2.4.4",
+    "vue-router": "^4.5.1",
+    "vue-zoom-on-hover": "^1.0.6"
   },
   "devDependencies": {
     "@babel/core": "^7.12.16",

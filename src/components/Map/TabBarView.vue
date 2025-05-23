@@ -1,8 +1,24 @@
 <template>
   <div class="tab-panel">
    <!-- 탭 메뉴 wrapper -->
-<div class="overflow-x-auto whitespace-nowrap border-b">
+<div
+      class="overflow-x-auto scrollbar-hide border-b"
+      ref="tabScrollRef"
+      @mousedown="startDrag"
+      @mousemove="onDrag"
+      @mouseup="stopDrag"
+      @mouseleave="stopDrag"
+    >
   <ul class="flex text-sm min-w-max">
+    <li
+      @click="changeTab('CommercialChartPanel')"
+      :class="[
+        'inline-block px-4 py-2 cursor-pointer',
+        selectedTab === 'CommercialChartPanel' ? 'border-b-2 border-black text-black' : 'text-gray-400'
+      ]"
+    >
+      상권정보
+    </li>
     <li
       @click="changeTab('deal')"
       :class="[
@@ -30,15 +46,7 @@
     >
       리뷰
     </li>
-    <li
-      @click="changeTab('CommercialChartPanel')"
-      :class="[
-        'inline-block px-4 py-2 cursor-pointer',
-        selectedTab === 'CommercialChartPanel' ? 'border-b-2 border-black text-black' : 'text-gray-400'
-      ]"
-    >
-      상권정보
-    </li>
+    
     <!-- 필요시 탭 계속 추가 가능 -->
   </ul>
 </div>
@@ -86,9 +94,43 @@ const currentPage = toRef(props, "currentPage");
 const isLastPage = toRef(props, "isLastPage");
 
 
-const selectedTab = ref("deal");
+const selectedTab = ref("CommercialChartPanel");
 function changeTab(tab) {
   selectedTab.value = tab;
 }
 
+const tabScrollRef = ref(null);
+let isDragging = false;
+let startX = 0;
+let scrollLeft = 0;
+
+function startDrag(e) {
+  isDragging = true;
+  startX = e.pageX - tabScrollRef.value.offsetLeft;
+  scrollLeft = tabScrollRef.value.scrollLeft;
+}
+
+function onDrag(e) {
+  if (!isDragging) return;
+  e.preventDefault();
+  const x = e.pageX - tabScrollRef.value.offsetLeft;
+  const walk = (x - startX) * 1.5; // 스크롤 속도
+  tabScrollRef.value.scrollLeft = scrollLeft - walk;
+}
+
+function stopDrag() {
+  isDragging = false;
+}
+
 </script>
+
+<style scoped>
+/* 스크롤바 감추기 (Tailwind 3+) */
+.scrollbar-hide::-webkit-scrollbar {
+  display: none;
+}
+.scrollbar-hide {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+</style>

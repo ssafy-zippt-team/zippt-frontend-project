@@ -1,66 +1,100 @@
 <script setup>
-// import { ref, onMounted,defineProps ,toRef} from "vue";
-// import {defineProps ,toRef} from "vue";
+import { toRef, ref, watchEffect, defineProps } from "vue"
+import { getCommercialStats } from "@/api/commercialApi"
+import { Pie } from "vue-chartjs"
+import {
+  Chart as ChartJS,
+  Title,
+  Tooltip,
+  Legend,
+  ArcElement
+} from "chart.js"
 
-// import useCommercial from "@/composables/useCommercial";
+ChartJS.register(Title, Tooltip, Legend, ArcElement)
 
-// 예시 중심 좌표 및 반경 설정 (props로 받을 수도 있음)
-// const location = ref({
-//   cx: 127.010034883981,
-//   cy: 37.5775989043871,
-//   radius: 1000,
-// });
-
-// const props = defineProps({
-//   selectedCoords: {
-//     type: Object,
-//     required: true
-//   }
-// });
-
-// const selectedCoords = toRef(props, "selectedCoords");
-// console.log("📍 selectedCoords33:", selectedCoords.value);
-
-import { defineProps, toRef, watchEffect } from "vue";
-
+// props 선언
 const props = defineProps({
   selectedCoords: {
     type: Object,
-    required: true
+    required: false
   }
-});
+})
+const coords = toRef(props, "selectedCoords")
 
-const selectedCoords = toRef(props, "selectedCoords");
+// 차트 데이터 상태
+const chartData = ref({
+  labels: [],
+  datasets: [{
+    label: "업종별 상권 수",
+    data: [],
+    backgroundColor: []
+  }]
+})
 
-watchEffect(() => {
-  if (selectedCoords.value) {
-    console.log("📍 selectedCoords33:", selectedCoords.value.lat, selectedCoords.value.lng);
-  } else {
-    console.warn("⚠️ selectedCoords가 아직 정의되지 않았습니다.");
+const chartOptions = {
+  responsive: true,
+  maintainAspectRatio: false,
+  plugins: {
+    title: {
+      display: true,
+      text: "상권 업종 통계"
+    },
+    legend: {
+      position: "bottom"
+    }
   }
-});
+}
 
-// 통계 정보 로딩
-// const { categoryCountMap, loadStats } = useCommercial(location);
-// console.log("상권 통계:", categoryCountMap);
+// coords 변경 감지 후 API 호출
+watchEffect(async () => {
+  if (!coords.value || !coords.value.lat || !coords.value.lng) return
 
+  try {
+    const { data } = await getCommercialStats({
+      cx: coords.value.lng,
+      cy: coords.value.lat,
+      radius: 1000
+    })
 
-// onMounted(() => {
-//   loadStats();
-// });
+    const map = data.result.categoryCountMap
+    const labels = Object.keys(map)
+    const values = Object.values(map)
+    const colors = labels.map(() => `hsl(${Math.random() * 360}, 70%, 70%)`)
+
+    chartData.value = {
+      labels,
+      datasets: [{
+        label: "업종별 상권 수",
+        data: values,
+        backgroundColor: colors
+      }]
+    }
+  } catch (err) {
+    console.error("❌ 상권 통계 조회 실패", err)
+  }
+})
 </script>
 
 <template>
   <div class="commercial-chart-panel">
-    <!-- TODO: Chart or Table to display categoryCountMap -->
+    <div class="chart-container">
+      <Pie :data="chartData" :options="chartOptions" />
+    </div>
   </div>
 </template>
 
 <style scoped>
 .commercial-chart-panel {
   padding: 1rem;
-  background-color: #f9f9f9;
-  border: 1px solid #ddd;
+  /* background-color: #f9f9f9; */
+  /* border: 1px solid #ddd; */
   border-radius: 8px;
+}
+
+.chart-container {
+  width: 100%;
+  max-width: 600px;
+  height: 400px;
+  margin: 0 auto;
 }
 </style>
