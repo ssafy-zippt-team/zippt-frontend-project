@@ -1,0 +1,13 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* 텍스트 색상만 시그니처 컬러로 */
+.signature-color-text {
+  @apply text-[#115C5E];
+}
+
+/* 배경색상만 시그니처 컬러로 */
+.signature-color-bg {
+  @apply bg-[#115C5E];
+}

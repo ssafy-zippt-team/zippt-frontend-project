@@ -4,10 +4,28 @@
 @tailwind utilities;
 
 .search-box-container {
-  @apply fixed top-4 right-4 z-50 w-80;
+  @apply absolute top-1 right-4 z-50 w-80;
 }
+
+.search-box-container from {
+  @apply w-full max-w-2xl mx-auto relative flex items-center;
+}
+
+.search-box-toggle {
+  @apply absolute left-2 top-1/2 -translate-y-1/2 flex flex-col items-center z-10;
+}
+
+.search-box-toggle-title {
+  @apply mb-1 text-[12px] font-semibold text-[#115C5E] select-none;
+}
+
+.search-box-toggle-placeholder {
+  @apply w-full pl-16 pr-10 py-4 rounded-full border border-gray-200 focus:outline-none focus:ring-2 focus:ring-[#115C5E] bg-white text-gray-800 placeholder:text-gray-400 text-[14px] shadow;
+}
+
 .search-box-changebutton {
-  @apply flex space-x-2 mb-2;
+  /* @apply flex space-x-2 mb-2; */
+  @apply absolute left-5 top-1/2 -translate-y-1/2 flex flex-col items-center z-10;
 }
 .mode-btn {
   @apply px-3 py-1 text-sm text-gray-600 border border-gray-300 rounded;
