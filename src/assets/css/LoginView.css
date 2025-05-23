@@ -2,16 +2,17 @@
 @tailwind components;
 @tailwind utilities;
 
+/* CSS 변수 정의 (필요 시 유지) */
 @layer base {
-  /* 로그인 페이지 전용 CSS */
   .login-page {
+    /* CSS 변수는 기존대로 유지 */
     --background: 0 0% 100%;
     --foreground: 222.2 84% 4.9%;
     --card: 0 0% 100%;
     --card-foreground: 222.2 84% 4.9%;
     --popover: 0 0% 100%;
     --popover-foreground: 222.2 84% 4.9%;
-    --primary: 221.2 83.2% 53.3%;
+    --primary: #115C5E;
     --primary-foreground: 210 40% 98%;
     --secondary: 210 40% 96.1%;
     --secondary-foreground: 222.2 47.4% 11.2%;
@@ -26,7 +27,6 @@
     --ring: 221.2 83.2% 53.3%;
     --radius: 0.5rem;
   }
-
   .login-page.dark {
     --background: 222.2 84% 4.9%;
     --foreground: 210 40% 98%;
@@ -48,220 +48,74 @@
     --input: 217.2 32.6% 17.5%;
     --ring: 224.3 76.3% 48%;
   }
+}
 
-  /* 로그인 페이지 기본 스타일 */
+@layer components {
   .login-page {
-    background-color: hsl(var(--muted));
-    color: hsl(var(--foreground));
-    min-height: 100vh;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    padding: 1.5rem;
+    @apply bg-[hsl(var(--muted))] text-[hsl(var(--foreground))] min-h-screen flex flex-col items-center justify-center p-6 md:p-10;
   }
-
-  @media (min-width: 768px) {
-    .login-page {
-      padding: 2.5rem;
-    }
-  }
-
   .login-container {
-    width: 100%;
-    max-width: 24rem;
+    @apply w-full max-w-[24rem] md:max-w-[48rem];
   }
-
-  @media (min-width: 768px) {
-    .login-container {
-      max-width: 48rem;
-    }
-  }
-
-  /* 로그인 폼 스타일 */
   .login-card {
-    overflow: hidden;
-    border-radius: var(--radius);
-    border: 1px solid hsl(var(--border));
-    background-color: hsl(var(--card));
-    color: hsl(var(--card-foreground));
-    box-shadow: 0 1px 2px 0 rgb(0 0 0 / 0.05);
+    @apply overflow-hidden rounded-[var(--radius)] border border-[hsl(var(--border))] bg-[hsl(var(--card))] text-[hsl(var(--card-foreground))] shadow-sm;
   }
-
   .login-form {
-    padding: 1.5rem;
+    @apply p-6 md:p-8;
   }
-
-  @media (min-width: 768px) {
-    .login-form {
-      padding: 2rem;
-    }
-  }
-
   .login-title {
-    font-size: 1.5rem;
-    font-weight: 700;
-    text-align: center;
+    @apply text-2xl font-bold text-center;
   }
-
   .login-subtitle {
-    text-align: center;
-    color: hsl(var(--muted-foreground));
+    @apply text-center text-[hsl(var(--muted-foreground))];
   }
-
   .form-group {
-    display: grid;
-    gap: 0.5rem;
-    margin-top: 1.5rem;
+    @apply grid gap-2 mt-6;
   }
-
   .form-label {
-    font-size: 0.875rem;
-    font-weight: 500;
-    line-height: 1;
+    @apply text-sm font-medium leading-none;
   }
-
   .form-input {
-    display: flex;
-    height: 2.5rem;
-    width: 100%;
-    border-radius: var(--radius);
-    border: 1px solid hsl(var(--input));
-    background-color: hsl(var(--background));
-    padding: 0 0.75rem;
-    font-size: 0.875rem;
+    @apply flex h-10 w-full rounded-[var(--radius)] border border-[hsl(var(--input))] bg-[hsl(var(--background))] px-3 text-sm focus:outline-none focus:ring-2 focus:ring-[hsl(var(--ring))];
   }
-
-  .form-input:focus {
-    outline: none;
-    ring: 2px;
-    ring-offset: 2px;
-    ring-color: hsl(var(--ring));
-  }
-
   .login-button {
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    border-radius: var(--radius);
-    background-color: hsl(var(--primary));
-    color: hsl(var(--primary-foreground));
-    font-size: 0.875rem;
-    font-weight: 500;
-    height: 2.5rem;
-    padding-left: 1rem;
-    padding-right: 1rem;
-    width: 100%;
-    margin-top: 1.5rem;
+    @apply inline-flex items-center justify-center rounded-[var(--radius)] bg-[--primary] text-[hsl(var(--primary-foreground))] text-sm font-medium h-10 w-full mt-6 px-4 hover:bg-teal-900;
   }
-
-  .login-button:hover {
-    background-color: hsl(var(--primary) / 0.9);
-  }
-
   .divider {
-    position: relative;
-    text-align: center;
-    font-size: 0.875rem;
-    margin-top: 1.5rem;
-    margin-bottom: 1.5rem;
+    @apply relative text-sm text-center my-6;
   }
-
   .divider::after {
     content: "";
-    position: absolute;
-    inset: 0;
-    top: 50%;
-    z-index: 0;
-    display: flex;
-    align-items: center;
-    border-top: 1px solid hsl(var(--border));
+    @apply absolute inset-0 top-1/2 block border-t border-[hsl(var(--border))];
   }
-
   .divider span {
-    position: relative;
-    z-index: 10;
-    background-color: hsl(var(--background));
-    padding-left: 0.5rem;
-    padding-right: 0.5rem;
-    color: hsl(var(--muted-foreground));
+    @apply relative z-10 bg-[hsl(var(--background))] px-2 text-[hsl(var(--muted-foreground))];
   }
-
   .social-buttons {
-    display: grid;
-    grid-template-columns: repeat(3, minmax(0, 1fr));
-    gap: 1rem;
+    @apply grid grid-cols-3 gap-4;
   }
-
   .social-button {
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    border-radius: var(--radius);
-    border: 1px solid hsl(var(--input));
-    background-color: hsl(var(--background));
-    padding: 0.5rem;
-    font-size: 0.875rem;
-    font-weight: 500;
+    @apply inline-flex items-center justify-center rounded-[var(--radius)] border border-[hsl(var(--input))] bg-[hsl(var(--background))] py-2 text-sm font-medium hover:bg-[hsl(var(--accent))] hover:text-[hsl(var(--accent-foreground))];
   }
-
-  .social-button:hover {
-    background-color: hsl(var(--accent));
-    color: hsl(var(--accent-foreground));
-  }
-
   .signup-text {
-    text-align: center;
-    font-size: 0.875rem;
-    margin-top: 1.5rem;
+    @apply text-center text-sm mt-6;
   }
-
   .signup-link {
-    text-decoration: underline;
-    text-underline-offset: 4px;
+    @apply underline underline-offset-4 hover:text-[hsl(var(--primary))];
   }
-
-  .signup-link:hover {
-    color: hsl(var(--primary));
-  }
-
   .terms-text {
-    text-align: center;
-    font-size: 0.75rem;
-    color: hsl(var(--muted-foreground));
-    margin-top: 1.5rem;
+    @apply text-center text-xs text-[hsl(var(--muted-foreground))] mt-6;
   }
-
   .terms-link {
-    text-decoration: underline;
-    text-underline-offset: 4px;
+    @apply underline underline-offset-4 hover:text-[hsl(var(--primary))];
   }
-
-  .terms-link:hover {
-    color: hsl(var(--primary));
-  }
-
   .image-container {
-    position: relative;
-    display: none;
-    background-color: hsl(var(--muted));
+    @apply relative hidden bg-[hsl(var(--muted))] md:block;
   }
-
-  @media (min-width: 768px) {
-    .image-container {
-      display: block;
-    }
-  }
-
   .login-image {
-    position: absolute;
-    inset: 0;
-    height: 100%;
-    width: 100%;
-    object-fit: cover;
+    @apply absolute inset-0 w-full h-full object-cover;
   }
-
   .dark .login-image {
-    filter: brightness(0.2) grayscale(1);
+    @apply filter brightness-50 grayscale;
   }
 }

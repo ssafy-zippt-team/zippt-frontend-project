@@ -1,11 +1,32 @@
 <template>
+  
   <SearchBox @search="onKeywordSearch" />
 
   <AddressSelector />
+  <div class="absolute top-28 right-4 bg-white rounded-md shadow-md flex flex-col overflow-hidden z-10">
+      <button
+        @click="showList"
+        class="w-10 h-10 flex items-center justify-center border-b border-gray-200 hover:bg-gray-100"
+        >
+        <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" fill="#115C5E"><path d="M80-160v-160h160v160H80Zm240 0v-160h560v160H320ZM80-400v-160h160v160H80Zm240 0v-160h560v160H320ZM80-640v-160h160v160H80Zm240 0v-160h560v160H320Z"/></svg>
+      </button>
+      <button
+        @click="zoomIn"
+        class="w-10 h-10 flex items-center justify-center border-b border-gray-200 hover:bg-gray-100"
+      >
+        <svg xmlns="http://www.w3.org/2000/svg" height="40px" viewBox="0 -960 960 960" width="30px" fill="#115C5E"><path d="M432.12-431.88H174.15v-96.44h257.97v-258.91h96.43v258.91h257.68v96.44H528.55v257.3h-96.43v-257.3Z"/></svg>
+      </button>
+      <button
+        @click="zoomOut"
+        class="w-10 h-10 flex items-center justify-center hover:bg-gray-100"
+      >
+        <svg xmlns="http://www.w3.org/2000/svg" height="40px" viewBox="0 -960 960 960" width="40px" fill="#115C5E"><path d="M174.15-431.88v-96.44h612.08v96.44H174.15Z"/></svg>
+      </button>
+  </div>
 
   <div ref="mapContainer" class="map">
     <AptListPanel
-      v-if="aptListRef.length"
+      v-if="showListView && aptListRef.length"
       :apt-list="aptListRef"
       @select-apt="loadDetail"
       class="absolute top-0 left-0 h-full"
@@ -23,6 +44,7 @@
       :style="{ left: aptListRef.length ? '240px' : '0px' }"
     />
   </div>
+  
 </template>
 
 <script setup>
@@ -44,6 +66,8 @@ const mapContainer = ref(null);
 const kakaoMap = ref(null);
 const APP_KEY = process.env.VUE_APP_KAKAO_APPKEY;
 const address = useAddress(kakaoMap);
+const showListView = ref(false);
+
 
 const { cityList, selectedCity, selectedGu, selectedDong } = address;
 
@@ -175,6 +199,21 @@ onMounted(async () => {
   // // 4) idle 이벤트 바인딩 → 드래그/줌/리사이즈 시마다 호출
   // bindIdle();
 });
+function zoomIn() {
+  if (!kakaoMap.value) return;
+  kakaoMap.value.setLevel(kakaoMap.value.getLevel() - 1);
+}
+
+// 축소 함수
+function zoomOut() {
+  if (!kakaoMap.value) return;
+  kakaoMap.value.setLevel(kakaoMap.value.getLevel() + 1);
+}
+
+// 리스트패널 view/hide
+function showList() {
+  showListView.value = !showListView.value
+}
 
 // 검색어로 위치 이동 + 마커 갱신
 // async function onKeywordSearch(keyword) {
@@ -222,5 +261,13 @@ async function onKeywordSearch({ term, mode }) {
   @apply relative;
   width: 100%;
   height: 800px;
+}
+
+.material-symbols-outlined {
+  font-variation-settings:
+  'FILL' 0,
+  'wght' 300,
+  'GRAD' 0,
+  'opsz' 24
 }
 </style>

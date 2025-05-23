@@ -2,6 +2,7 @@
 import { ref } from "vue";
 import { useRouter } from "vue-router";
 import { signup } from "@/util/auth/auth";
+import "@/assets/css/LoginView.css";
 
 export default {
   setup() {
