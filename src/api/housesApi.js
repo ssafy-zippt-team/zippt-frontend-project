@@ -3,7 +3,7 @@ import axios from "axios";
 const api = axios.create({
   // baseURL: "http://localhost:8080/api/v1/houses",
   baseURL: "/api/v1/houses",
-  timeout: 5000,
+  timeout: 20000,
 });
 
 /**
@@ -27,6 +27,6 @@ export function getAptListByDong(sggCd, umdCd) {
 /**
  * aptSeq로 아파트 정보 조회
  */
-export function getHouseDetail(aptSeq){
+export function getHouseDetail(aptSeq) {
   return api.get(`/${aptSeq}`);
 }
