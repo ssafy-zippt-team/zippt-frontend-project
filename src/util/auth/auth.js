@@ -2,7 +2,7 @@ import axios from "axios";
 import router from "@/router";
 import { ref, computed } from "vue";
 
-const api = axios.create({
+export const api = axios.create({
   baseURL: "http://localhost:8080",
   withCredentials: true, // HttpOnly 쿠키 자동 포함
 });
@@ -124,10 +124,18 @@ api.interceptors.response.use(
         originalRequest.headers["Authorization"] = `Bearer ${newToken}`;
         return api(originalRequest);
       } catch (refreshError) {
-        // (5) 재발급 실패 시 로그아웃 처리 or 로그인 페이지 이동
-        // e.g. window.location.href = '/login';
+        // ─────────────────────────────────────────────────────────────────────
+        // (4) 리프레시 실패 → 완전 로그아웃 처리 및 /login으로 이동
+        // ─────────────────────────────────────────────────────────────────────
+        // ① 서버측 로그아웃 호출 (DB에 남은 리프레시 토큰 삭제)
+        //    RefreshController 가 401 직전에 deleteToken(uuid) 을 실행하니
+        //    여기선 굳이 다시 호출하지 않아도 됩니다.
+        //
+        // 클라이언트 저장소·헤더 정리
         await api.post("/api/v1/logout");
-        router.push("/");
+
+        router.push({ path: '/login' })
+        //    혹은 full reload: window.location.href = 'http://localhost:3000/login'
         return Promise.reject(refreshError);
       }
     }
