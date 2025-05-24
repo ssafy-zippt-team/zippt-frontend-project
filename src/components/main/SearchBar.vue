@@ -6,7 +6,7 @@
   </div>
   <div class="w-[1300px] pb-[30px]">
     <form
-      @submit.prevent="onSubmit"
+      @submit.prevent="onSearch"
       class="w-full max-w-2xl mx-auto relative flex items-center"
       style="margin-top: 40px"
     >
@@ -46,15 +46,30 @@
 <script setup>
 import { ref } from "vue";
 import ToggleSwitch from "@/components/main/ToggleSwitch.vue";
+import { useRouter } from "vue-router";
 
 const isApartment = ref(false);
 const keyword = ref("");
+const router = useRouter();
 
-function onSubmit() {
-  if (isApartment.value) {
-    alert("[아파트] " + keyword.value);
-  } else {
-    alert("[장소] " + keyword.value);
-  }
+// function onSubmit() {
+//   if (isApartment.value) {
+//     alert("[아파트] " + keyword.value);
+//   } else {
+//     alert("[장소] " + keyword.value);
+//   }
+// }
+// const emit = defineEmits(["search"]);
+
+function onSearch() {
+  const term = keyword.value.trim();
+  if (!term) return;
+  router.push({
+    path: "/map",
+    query: {
+      term,
+      isApartment: isApartment.value ? "1" : "0",
+    },
+  });
 }
 </script>

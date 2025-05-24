@@ -41,7 +41,7 @@
       :selected-coords="selectedCoords" 
       @close="clearDetail"
       @go-page="handlePage"
-      :style="{ left: showListView ? '240px' : '0px' }"
+      :style="{ left: (showListView && aptListRef.length) ? '240px' : '0px' }"
     />
   </div>
   
@@ -49,6 +49,7 @@
 
 <script setup>
 import { ref, onMounted, provide } from "vue";
+import { useRoute } from "vue-router";
 import SearchBox from "@/components/Map/SearchBox.vue";
 import AddressSelector from "@/components/Map/AddressSelector.vue";
 import AptListPanel from "@/components/Map/AptListPanel.vue";
@@ -68,6 +69,7 @@ const kakaoMap = ref(null);
 const APP_KEY = process.env.VUE_APP_KAKAO_APPKEY;
 const address = useAddress(kakaoMap);
 const showListView = ref(false);
+const route = useRoute();
 
 
 const { cityList, selectedCity, selectedGu, selectedDong } = address;
@@ -212,6 +214,15 @@ onMounted(async () => {
 
   // // 4) idle 이벤트 바인딩 → 드래그/줌/리사이즈 시마다 호출
   // bindIdle();
+
+  const { term, isApartment } = route.query;
+  if (term) {
+    // isApartment는 "1" 또는 "0"
+    await onKeywordSearch({
+      term: String(term),
+      isApartment: isApartment === "1",
+    });
+  }
 });
 function zoomIn() {
   if (!kakaoMap.value) return;
