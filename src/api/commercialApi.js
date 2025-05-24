@@ -4,7 +4,7 @@
 //   baseURL: "http://localhost:8080/api/Commercials",
 //   timeout: 20000,
 // });
-import { api } from "@/util/auth/auth"
+import { api } from "@/api/authApi"
 
 // 상권 통계 조회 (cx: 경도, cy: 위도, radius: 반경)
 export function getCommercialStats({ cx, cy, radius }) {

@@ -5,7 +5,7 @@
 //   baseURL: "/api/v1/deals",
 //   timeout: 25000,
 // });
-import { api } from "@/util/auth/auth"
+import { api } from "@/api/authApi"
 
 /**
  * 아파트 seq로 거래내역 조회

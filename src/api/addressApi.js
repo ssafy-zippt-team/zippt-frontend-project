@@ -5,7 +5,7 @@
 //   baseURL: "/api/v1/addresses",
 //   timeout: 20000,
 // });
-import { api } from "@/util/auth/auth"
+import { api } from "@/api/authApi"
 
 export function getCityList() {
   return api.get("/api/v1/addresses/getCitylist");

@@ -1,5 +1,5 @@
 // import axios from "axios";
-import { api } from "@/util/auth/auth"
+import { api } from "@/api/authApi"
 
 // const api = axios.create({
 
@@ -38,4 +38,14 @@ export function getHouseDetail(aptSeq) {
  */
 export function getSimilarHouse(aptSeq){
   return api.get(`/api/v1/houses/similar?aptSeq=${aptSeq}`);
+}
+
+/**
+ * term으로 유사 매물 조회
+ */
+
+export function getSimilarAptToName(term) {
+    return api.get("/api/v1/houses/search",{
+        params: {term},
+    });
 }

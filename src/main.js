@@ -7,6 +7,7 @@ import "../src/assets/css/index.css";
 import "@/assets/css/custom-marker.css";
 
 // JWT
+// import { refreshToken } from "@/api/authApi";
 import { refreshAccessToken } from "@/util/auth/auth";
 
 // ✅ Font Awesome 관련 import
