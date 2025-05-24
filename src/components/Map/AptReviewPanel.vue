@@ -74,9 +74,10 @@
 </template>
 
 <script setup>
-import { ref, toRef, defineProps } from "vue";
+import { ref, toRef, defineProps, onMounted } from "vue";
 import useReview from "@/composables/useReview";
 import { postReview } from "@/api/reviewApi";
+import { getMemberUuid } from '@/util/auth/auth';
 
 // 📌 Props로 aptSeq 받기
 const props = defineProps({
@@ -87,8 +88,12 @@ const aptSeqRef = toRef(props, "aptSeq");
 // 📌 리뷰 데이터 로딩
 const { comments, currentPage, pageList, reload } = useReview(aptSeqRef);
 
+const memberUuid = ref('');
 
-const userUuid = "63f912c8-2b04-11f0-a5b7-0242ac110002"; // ✅ 로그인된 사용자 임시로 넣음 UUID
+onMounted(() => {
+  memberUuid.value = getMemberUuid(); // ✅ 동기 함수니까 await 불필요
+});
+
 const commentText = ref("");
 
 // ✅ 댓글 등록 기능 구현
@@ -100,7 +105,7 @@ async function submitComment() {
 
   try {
     await postReview({
-      memberUuid: userUuid,
+      memberUuid: memberUuid.value,
       aptSeq: aptSeqRef.value,
       content: commentText.value
     });
