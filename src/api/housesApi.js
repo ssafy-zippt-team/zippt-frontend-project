@@ -1,18 +1,19 @@
-import axios from "axios";
+// import axios from "axios";
+import { api } from "@/util/auth/auth"
 
-const api = axios.create({
+// const api = axios.create({
 
-  // baseURL: "http://localhost:8080/api/v1/houses",
-  baseURL: "/api/v1/houses",
-  timeout: 20000,
-})
+//   // baseURL: "http://localhost:8080/api/v1/houses",
+//   baseURL: "/api/v1/houses",
+//   timeout: 20000,
+// })
 
 /**
  * 현재 뷰 경계값(minLat, maxLat, minLng, maxLng)으로
  * 주변 아파트(이름만 예시) 리스트를 조회
  */
 export function getAroundHouses(minLat, maxLat, minLng, maxLng) {
-  return api.get("/around", {
+  return api.get("/api/v1/houses/around", {
     params: { minLat, maxLat, minLng, maxLng },
   });
 }
@@ -21,7 +22,7 @@ export function getAroundHouses(minLat, maxLat, minLng, maxLng) {
  * 구·동 코드(sggCd, umdCd) 로 아파트 리스트 조회
  */
 export function getAptListByDong(sggCd, umdCd) {
-  return api.get("/dong/apt-list", {
+  return api.get("/api/v1/houses/dong/apt-list", {
     params: { sggCd, umdCd },
   });
 }
@@ -29,12 +30,12 @@ export function getAptListByDong(sggCd, umdCd) {
  * aptSeq로 아파트 정보 조회
  */
 export function getHouseDetail(aptSeq) {
-  return api.get(`/${aptSeq}`);
+  return api.get(`/api/v1/houses/${aptSeq}`);
 }
 
 /**
  * aptSeq로 유사 아파트 조회
  */
 export function getSimilarHouse(aptSeq){
-  return api.get(`/similar?aptSeq=${aptSeq}`);
+  return api.get(`/api/v1/houses/similar?aptSeq=${aptSeq}`);
 }
