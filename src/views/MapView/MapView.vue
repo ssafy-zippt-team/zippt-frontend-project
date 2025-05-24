@@ -41,7 +41,7 @@
       :selected-coords="selectedCoords" 
       @close="clearDetail"
       @go-page="handlePage"
-      :style="{ left: aptListRef.length ? '240px' : '0px' }"
+      :style="{ left: showListView ? '240px' : '0px' }"
     />
   </div>
   
