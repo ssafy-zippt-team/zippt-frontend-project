@@ -1,16 +1,13 @@
-import axios from "axios";
 import router from "@/router";
+import { api } from "@/api/authApi";
+
 import { ref, computed } from "vue";
 
-export const api = axios.create({
-  baseURL: "http://localhost:8080",
-  withCredentials: true, // HttpOnly 쿠키 자동 포함
-});
-
 // 메모리 변수로만 보관
-// let accessToken = null;
 export const accessToken = ref(null);
 export const loggedIn = computed(() => !!accessToken.value);
+let refreshFailCount = 0;
+const MAX_REFRESH_FAIL = 3;
 
 // 1) 토큰이 있으면 헤더에 설정
 export function setAuthHeader(token) {
@@ -34,7 +31,8 @@ export async function login(username, password) {
 // 3) 초기화용: 페이지 로드 시 자동으로 호출
 export async function refreshAccessToken() {
   try {
-    console.log("리프레쉬 토큰 함수 실행");
+    refreshFailCount++;
+    console.log("리프레쉬 토큰 함수 실행 : ", refreshFailCount);
     const res = await api.post("/api/v1/refresh");
 
     const token = res.headers["authorization"]?.split(" ")[1];
@@ -43,6 +41,13 @@ export async function refreshAccessToken() {
       setAuthHeader(token);
       return token;
     } 
+
+    if (refreshFailCount >= MAX_REFRESH_FAIL) {
+      // 3회 이상 실패하면 강제 로그아웃 + 로그인 페이지로
+      await api.post("/api/v1/logout").catch(() => {});
+      accessToken.value = null;
+      router.push("/login");
+    }
   } catch (e) {
     // Refresh 실패(쿠키 만료 등) 시에는
   }
@@ -51,7 +56,7 @@ export async function refreshAccessToken() {
 }
 
 export async function signup(nickname, username, userEmail, password, phoneNumber) {
-  await api.post("/join", { nickname, username, userEmail, password, phoneNumber });
+  await api.post("/api/v1/join", { nickname, username, userEmail, password, phoneNumber });
 }
 
 export async function logout() {
@@ -114,14 +119,16 @@ api.interceptors.response.use(
   (response) => response,
   async (error) => {
     const originalRequest = error.config;
+    const status = error.response?.status;
     // (2) 401 에러, 아직 _retry 플래그가 없으면
-    if (error.response?.status === 401 && !originalRequest._retry) {
+    if (status === 401 && !originalRequest._retry && refreshFailCount < MAX_REFRESH_FAIL) {
       originalRequest._retry = true;
       try {
         // (3) 리프레시 시도
         const newToken = await refreshAccessToken();
         // (4) 헤더 갱신 후 원래 요청 재전송
-        originalRequest.headers["Authorization"] = `Bearer ${newToken}`;
+        // originalRequest.headers["Authorization"] = `Bearer ${newToken}`;
+        setAuthHeader(newToken);
         return api(originalRequest);
       } catch (refreshError) {
         // ─────────────────────────────────────────────────────────────────────
@@ -139,6 +146,13 @@ api.interceptors.response.use(
         return Promise.reject(refreshError);
       }
     }
+
+      if (status === 401 && refreshFailCount >= MAX_REFRESH_FAIL) {
+      await api.post("/api/v1/logout").catch(() => {});
+      router.push("/login");
+      // 이후엔 더 이상 인터셉터가 이 요청을 만지지 않도록
+    }
+
     return Promise.reject(error);
   }
 );

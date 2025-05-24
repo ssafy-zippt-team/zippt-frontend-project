@@ -1,4 +1,4 @@
-import { api } from "@/util/auth/auth"
+import { api } from "@/api/authApi"
 
 /**
  * aptSeq로 리뷰 정보 조회

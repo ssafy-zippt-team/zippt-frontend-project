@@ -60,6 +60,7 @@ import useAptDetail from "@/composables/useAptDetail";
 import useSearchLocation from "@/composables/useSearchLocation";
 import { fetchBoundary } from "@/util/map/fetchBoundary";
 import { drawPolygons } from "@/util/map/drawPolygons";
+import useSimilarApt from "@/composables/useSimilarApt";
 import { warning } from "@/util/alert/warningAlert";
 
 const mapContainer = ref(null);
@@ -75,13 +76,22 @@ const { cityList, selectedCity, selectedGu, selectedDong } = address;
 provide("address", address);
 
 // 검색 훅
-const { search } = useSearchLocation(kakaoMap);
+const { searchLocation } = useSearchLocation(kakaoMap);
+const { showSimilarApts } = useSimilarApt();
 
 // kakaoMap ref 를 하위 컴포넌트 전역(scope)에 제공
 provide("kakaoMap", kakaoMap);
 
 // --- Apt 상세 조회 훅 ---
-const { selectedApt, dealsList, currentPage, isLastPage, loadDetail, clearDetail, loadLatest,similarItems , selectedCoords } = useAptDetail();
+const { selectedApt, 
+  dealsList, 
+  currentPage, 
+  isLastPage, 
+  loadDetail, 
+  clearDetail, 
+  loadLatest,
+  similarItems, 
+  selectedCoords } = useAptDetail();
 // const { selectedApt, loadDetail, clearDetail} = useAptDetail();
 
 function handlePage(page) {
@@ -215,43 +225,33 @@ function showList() {
   showListView.value = !showListView.value
 }
 
-// 검색어로 위치 이동 + 마커 갱신
-// async function onKeywordSearch(keyword) {
-//   try {
-//     // ① 검색 → center & level 변경
-//     await search(keyword, 4);
-//     // ② 마커 갱신
-//     updateMarkersByView();
-//   } catch (err) {
-//     alert(err.message);
-//   }
-// }
-async function onKeywordSearch({ term, mode }) {
+async function onKeywordSearch({ term, isApartment }) {
   // 빈 입력 무시
   if (!term) return;
 
-  if (mode === "place") {
+  if (!isApartment) {
     try {
-      // 장소 검색: 기존 로직
-      await search(term, 4);
+      await searchLocation(term, 4);
       updateMarkersByView();
     } catch (err) {
       warning(err.message);
     }
-  } else if (mode === "apt") {
-    try {
-      // 아파트명 검색: 새로운 API 호출
-      // const { data } = await searchAptByName(term);
-      // if (data.isSuccess) {
-      //   // 검색 결과를 좌측 리스트에 뿌려줍니다
-      //   aptListRef.value = data.result;
-      //   // 상세 패널 닫기
-      //   clearDetail();
-      // }
-    } catch (err) {
-      console.error("아파트 검색 실패", err);
-      alert("아파트 검색에 실패했습니다.");
-    }
+  } else {
+    await showSimilarApts(term, kakaoMap.value);
+    // alert("[아파트] " + term);
+    // try {
+    //   // 아파트명 검색: 새로운 API 호출
+    //   // const { data } = await searchAptByName(term);
+    //   // if (data.isSuccess) {
+    //   //   // 검색 결과를 좌측 리스트에 뿌려줍니다
+    //   //   aptListRef.value = data.result;
+    //   //   // 상세 패널 닫기
+    //   //   clearDetail();
+    //   // }
+    // } catch (err) {
+    //   console.error("아파트 검색 실패", err);
+    //   alert("아파트 검색에 실패했습니다.");
+    // }
   }
 }
 </script>

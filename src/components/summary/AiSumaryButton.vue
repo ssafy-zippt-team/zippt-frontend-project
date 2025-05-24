@@ -12,7 +12,7 @@
 <script setup>
 import Swal from 'sweetalert2';
 // import axios from 'axios';
-import { api } from "@/util/auth/auth"
+import { api } from "@/api/authApi"
 
 async function handleClick() {
   Swal.fire({

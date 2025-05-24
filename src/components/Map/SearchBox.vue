@@ -1,7 +1,7 @@
 <template>
   <div class="search-box-container">
     <div class="search-box-container">
-      <form @submit.prevent="onSubmit">
+      <form @submit.prevent="onSearch">
         <div class="search-box-toggle">
           <span class="search-box-toggle-title">
             {{ isApartment ? "아파트" : "장소" }}
@@ -48,11 +48,24 @@ const keyword = ref("");
 
 // eslint-disable-next-line no-undef
 
-function onSubmit() {
-  if (isApartment.value) {
-    alert("[아파트] " + keyword.value);
-  } else {
-    alert("[장소] " + keyword.value);
-  }
+// function onSubmit() {
+//   if (isApartment.value) {
+//     alert("[아파트] " + keyword.value);
+//   } else {
+//     alert("[장소] " + keyword.value);
+
+//   }
+// }
+
+// no-undef 경고 무시
+// eslint-disable-next-line no-undef
+const emit = defineEmits(["search"]);
+
+function onSearch() {
+  const term = keyword.value.trim();
+  if (!term) return;
+  // add(term); // 히스토리 저장
+  // emit("search", term);
+  emit("search", { term, isApartment: isApartment.value });
 }
 </script>
