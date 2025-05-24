@@ -103,6 +103,14 @@ export function getUsername() {
   return payload?.username || null;
 }
 
+export function getMemberUuid() {
+  if (!accessToken.value) return null;
+  console.log("getMemberUuid 호출, accessToken:", accessToken.value);
+  const payload = parseJwt(accessToken.value);
+  console.log("Parsed payload:", payload.uuid);
+  return payload?.uuid || null;
+}
+
 // 인터셉터 부분
 api.interceptors.request.use(
   (config) => {

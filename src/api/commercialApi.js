@@ -8,7 +8,7 @@ import { api } from "@/api/authApi"
 
 // 상권 통계 조회 (cx: 경도, cy: 위도, radius: 반경)
 export function getCommercialStats({ cx, cy, radius }) {
-  return api.get("/api/Commercials/stat", {
+  return api.get("/api/v1/Commercials/stat", {
     params: { cx, cy, radius },
   });
 }

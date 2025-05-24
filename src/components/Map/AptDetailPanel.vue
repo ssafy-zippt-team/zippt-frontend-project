@@ -1,11 +1,39 @@
 <template>
   <div v-if="selectedApt" class="apt-detail-panel">
     <div class="apt-detail-header">
-      <div class="apt-detail-top">
-        <h1>[{{ selectedApt.umdNm || "정보 없음" }}]</h1>
-        <h3>{{ selectedApt.aptNm || "정보 없음" }}</h3>
-        <button class="apt-detail-close" @click="emit('close')">×</button>
-      </div>
+<div class="apt-detail-top">
+  <h1>[{{ selectedApt.umdNm || "정보 없음" }}]</h1>
+  <div class="apt-name-box flex items-center gap-2">
+    <h3 class="text-xl font-bold">{{ selectedApt.aptNm || "정보 없음" }}</h3>
+    <div
+  class="bookmark-box flex items-center gap-1 cursor-pointer px-2 py-1 rounded-md transition hover:bg-yellow-100"
+  @click="toggle"
+>
+  <svg
+    v-if="isBookmarked"
+    xmlns="http://www.w3.org/2000/svg"
+    fill="currentColor"
+    viewBox="0 0 24 24"
+    class="w-5 h-5 text-yellow-400"
+  >
+    <path d="M12 17.27L18.18 21 16.54 13.97 22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z"/>
+  </svg>
+  <svg
+    v-else
+    xmlns="http://www.w3.org/2000/svg"
+    fill="none"
+    stroke="currentColor"
+    viewBox="0 0 24 24"
+    class="w-5 h-5 text-gray-300"
+  >
+    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+          d="M11.049 2.927c.3-.921 1.603-.921 1.902 0l1.517 4.674a1 1 0 00.95.69h4.908c.969 0 1.371 1.24.588 1.81l-3.976 2.892a1 1 0 00-.364 1.118l1.517 4.674c.3.921-.755 1.688-1.538 1.118L12 17.77l-3.976 2.892c-.783.57-1.838-.197-1.538-1.118l1.517-4.674a1 1 0 00-.364-1.118L3.663 10.1c-.783-.57-.38-1.81.588-1.81h4.908a1 1 0 00.95-.69l1.517-4.674z"/>
+  </svg>
+  <span class="text-sm text-gray-700 font-medium">{{ bookmarkCount }}</span>
+</div>
+  </div>
+  <button class="apt-detail-close" @click="emit('close')">×</button>
+</div>
     </div>
 
     <div class="apt-detail-body">
@@ -103,10 +131,13 @@
 </template>
 
 <script setup>
-import { defineProps, defineEmits, toRef, computed, ref } from 'vue'
+import { defineProps, defineEmits, toRef, computed, ref, watch, onMounted } from 'vue'
 import TabBarView from './TabBarView.vue'
 import errorImage from '@/assets/img/imgError.jpg'
 import '@/assets/css/AptDetailPanel.css'
+import useBookmark from '@/composables/useBookmark';
+import { getMemberUuid } from '@/util/auth/auth';
+
 
 const props = defineProps({
   selectedApt: Object,
@@ -126,6 +157,15 @@ const isLastPage = toRef(props, 'isLastPage')
 const similarItems = toRef(props, 'similarItems')
 const emit = defineEmits(['close', 'go-page'])
 
+const aptSeq = computed(() => selectedApt.value?.aptSeq);
+
+const memberUuid = ref('');
+
+onMounted(() => {
+  memberUuid.value = getMemberUuid(); // ✅ 동기 함수니까 await 불필요
+});
+// console.log('memberUuid:', memberUuid.value);
+
 function formattedAvg(v) {
   if (v == null || isNaN(v)) return ''
   const intPart = Math.floor(v)
@@ -143,6 +183,21 @@ const formattedMin = computed(() => {
   const v = selectedApt.value.amountMin
   return v != null ? v.toLocaleString() : ''
 })
+
+const {
+  isBookmarked,
+  bookmarkCount,
+  fetchBookmarkStatus,
+  fetchBookmarkCount,
+  toggle,
+} = useBookmark(memberUuid, aptSeq);
+
+watch(() => selectedApt.value?.aptSeq, (newVal) => {
+  if (newVal) {
+    fetchBookmarkStatus();
+    fetchBookmarkCount();
+  }
+});
 
 const lensVisible = ref(false)
 const lensStyle = ref({})
