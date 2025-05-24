@@ -1,5 +1,5 @@
 export default function useSearchLocation(kakaoMap) {
-  async function search(keyword, level = 4) {
+  async function searchLocation(keyword, level = 4) {
     if (!kakaoMap.value || !window.kakao?.maps) return;
 
     const ps = new window.kakao.maps.services.Places();
@@ -24,5 +24,5 @@ export default function useSearchLocation(kakaoMap) {
     });
   }
 
-  return { search };
+  return { searchLocation };
 }
