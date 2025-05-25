@@ -1,5 +1,5 @@
 import router from "@/router";
-import { api } from "@/api/authApi";
+import { api, refreshApi } from "@/api/authApi";
 
 import { ref, computed } from "vue";
 
@@ -22,7 +22,7 @@ export function setAuthHeader(token) {
 // 2) 로그인 시 호출 (기존)
 export async function login(username, password) {
   const params = new URLSearchParams({ username, password });
-  const res = await api.post("/login", params);
+  const res = await refreshApi.post("/login", params);
   const token = res.headers["authorization"]?.split(" ")[1];
   if (!token) throw new Error("No access token");
   setAuthHeader(token);
@@ -33,7 +33,8 @@ export async function refreshAccessToken() {
   try {
     refreshFailCount++;
     console.log("리프레쉬 토큰 함수 실행 : ", refreshFailCount);
-    const res = await api.post("/api/v1/refresh");
+    const res = await refreshApi.post('/api/v1/refresh');
+    // const res = await refreshToken();
 
     const token = res.headers["authorization"]?.split(" ")[1];
 

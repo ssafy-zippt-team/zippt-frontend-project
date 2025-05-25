@@ -2,6 +2,7 @@
 import { ref } from "vue";
 import { useRouter } from "vue-router";
 import { signup } from "@/util/auth/auth";
+import Swal from "sweetalert2";
 import "@/assets/css/LoginView.css";
 
 export default {
@@ -36,14 +37,36 @@ export default {
         alert("올바른 휴대폰 번호 형식이 아닙니다. (예: 01012345678 또는 010-1234-5678)");
         return;
       }
+      Swal.fire({
+          title: "로그인 중…",
+          html: "잠시만 기다려주세요.",
+          allowOutsideClick: false,
+          didOpen: () => Swal.showLoading(),
+      });
 
       try {
         await signup(nickname.value, username.value, userEmail.value, password.value, phoneNumber.value);
         // signup이 성공했을 때만 실행
-        alert("회원가입 성공!");
+        // alert("회원가입 성공!");
+        Swal.update({
+          title: "SignUp Success",
+          html: "로그인 후 이용해 주세요",
+          allowOutsideClick: true,
+          showConfirmButton: true,
+          icon: "success"
+        });
+        Swal.hideLoading();
         router.push("/login");
       } catch (e) {
-        alert("회원가입 실패");
+        // alert("회원가입 실패");
+        Swal.update({
+          title: "SignUp Fail",
+          html: "입력 정보를 다시 확인해 주세요",
+          allowOutsideClick: true,
+          showConfirmButton: true,
+          icon: "error"
+        });
+        Swal.hideLoading();
       }
 
       console.log(nickname.value, username.value, userEmail.value, password.value, phoneNumber.value);

@@ -47,23 +47,20 @@
 import { ref } from "vue";
 import ToggleSwitch from "@/components/main/ToggleSwitch.vue";
 import { useRouter } from "vue-router";
+import { addSearchWord } from "@/api/cacheForSearch"
 
 const isApartment = ref(false);
 const keyword = ref("");
 const router = useRouter();
 
-// function onSubmit() {
-//   if (isApartment.value) {
-//     alert("[아파트] " + keyword.value);
-//   } else {
-//     alert("[장소] " + keyword.value);
-//   }
-// }
-// const emit = defineEmits(["search"]);
-
-function onSearch() {
+async function onSearch() {
   const term = keyword.value.trim();
   if (!term) return;
+  try {
+    await addSearchWord(term);
+  } catch (e) {
+    console.warn("최근 검색어 등록 실패", e);
+  }
   router.push({
     path: "/map",
     query: {
