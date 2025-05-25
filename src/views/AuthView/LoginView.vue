@@ -1,7 +1,9 @@
 <script setup>
-import { ref } from "vue";
+import { ref, computed } from "vue";
 import { useRouter } from "vue-router";
 import { login } from "@/util/auth/auth";
+import Swal from "sweetalert2";
+import { getUsername } from "@/util/auth/auth";
 import "@/assets/css/LoginView.css";
 
 const username = ref("");
@@ -10,15 +12,42 @@ const router = useRouter();
 
 const handleSubmit = async (event) => {
   event.preventDefault();
+
+  Swal.fire({
+      title: "로그인 중…",
+      html: "잠시만 기다려주세요.",
+      allowOutsideClick: false,
+      didOpen: () => Swal.showLoading(),
+  });
+
   try {
     event.preventDefault();
+
+
     await login(username.value, password.value);
-    alert("로그인 성공");
+    const loggedInName = computed(() => getUsername());
+    // alert("로그인 성공");
+    Swal.update({
+      title: "Login Success",
+      html: `반갑습니다, ${ loggedInName.value }님!`,
+      allowOutsideClick: true,
+      showConfirmButton: true,
+      icon: "success"
+    });
+    Swal.hideLoading();
     router.push("/");
   } catch (e) {
     console.error("로그인 에러:", e);
-    alert("로그인 실패");
-  }
+    // alert("로그인 실패");
+    Swal.update({
+      title: "Login Fail",
+      html: `Check Email & Password`,
+      allowOutsideClick: true,
+      showConfirmButton: true,
+      icon: "error"
+    });
+    Swal.hideLoading();
+  } 
 };
 </script>
 
