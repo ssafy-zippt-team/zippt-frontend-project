@@ -152,7 +152,7 @@ import '@/assets/css/AptDetailPanel.css'
 import useBookmark from '@/composables/useBookmark';
 import { getMemberUuid } from '@/util/auth/auth';
 import AiSumaryButton from "@/components/summary/AiSumaryButton.vue"
-
+import { addRecentViewHouse } from "@/api/recentApartApi";
 
 const props = defineProps({
   selectedApt: Object,
@@ -173,13 +173,11 @@ const similarItems = toRef(props, 'similarItems')
 const emit = defineEmits(['close', 'go-page'])
 
 const aptSeq = computed(() => selectedApt.value?.aptSeq);
-
 const memberUuid = ref('');
 
 onMounted(() => {
-  memberUuid.value = getMemberUuid(); // ✅ 동기 함수니까 await 불필요
+  memberUuid.value = getMemberUuid();
 });
-// console.log('memberUuid:', memberUuid.value);
 
 function formattedAvg(v) {
   if (v == null || isNaN(v)) return ''
@@ -204,16 +202,37 @@ const {
   bookmarkCount,
   fetchBookmarkStatus,
   fetchBookmarkCount,
-  toggle,
-} = useBookmark(memberUuid, aptSeq);
+  toggle, // ✅ toggle 이름을 명확히 변경
+} = useBookmark(memberUuid, aptSeq)
 
+// ✅ 최초 진입 시 북마크 정보 + 최근 본 아파트 등록
 watch(() => selectedApt.value?.aptSeq, (newVal) => {
-  if (newVal) {
-    fetchBookmarkStatus();
-    fetchBookmarkCount();
+  if (selectedApt.value && memberUuid.value) {
+    const payload = {
+      aptSeq: selectedApt.value.aptSeq,
+      umdNm: selectedApt.value.umdNm,
+      aptNm: selectedApt.value.aptNm,
+      latitude: selectedApt.value.latitude,
+      longitude: selectedApt.value.longitude,
+      jibun: selectedApt.value.jibun,
+      roadNm: selectedApt.value.roadNm,
+      buildYear: selectedApt.value.buildYear,
+      amountAvg: selectedApt.value.amountAvg,
+      amountMax: selectedApt.value.amountMax,
+      amountMin: selectedApt.value.amountMin,
+    }
+    addRecentViewHouse(payload)
+      .then(() => console.log("최근 본 아파트 등록 완료"))
+      .catch(err => console.error("최근 본 아파트 등록 실패:", err))
   }
-});
 
+  if (newVal) {
+    fetchBookmarkStatus()
+    fetchBookmarkCount() // ✅ 최초 진입 시에만 fetch
+  }
+})
+
+// 렌즈 확대 관련
 const lensVisible = ref(false)
 const lensStyle = ref({})
 const container = ref(null)
@@ -245,7 +264,6 @@ function handleMouseMove(event) {
     position: 'absolute',
     zIndex: 50,
   }
-
   lensVisible.value = true
 }
 
@@ -253,3 +271,5 @@ function hideLens() {
   lensVisible.value = false
 }
 </script>
+
+

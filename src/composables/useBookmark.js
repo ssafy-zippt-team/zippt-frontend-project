@@ -26,11 +26,11 @@ export default function useBookmark(memberUuid, aptSeq) {
 
   async function toggle() {
     try {
-        console.log('북마크 토글 시도', memberUuid.value, aptSeq.value);
+      console.log('북마크 토글 시도', memberUuid.value, aptSeq.value);
       await toggleBookmark(memberUuid.value, aptSeq.value);
-      // 북마크 상태 & 수 다시 불러오기
-      await fetchBookmarkStatus();
-      await fetchBookmarkCount();
+    
+      isBookmarked.value = !isBookmarked.value;
+      bookmarkCount.value += isBookmarked.value ? 1 : -1;
     } catch (err) {
       console.error('북마크 토글 실패', err);
     }
