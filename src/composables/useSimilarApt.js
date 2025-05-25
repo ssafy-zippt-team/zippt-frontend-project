@@ -8,7 +8,7 @@ export default function useSimilarApt(loadDetail) {
   async function showSimilarApts(term, kakaoMap) {
     // 1) 스켈레톤 로더 모달 (width 키우고 그리드 갭 적용)
     Swal.fire({
-      title: "유사 아파트 불러오는 중…",
+      title: "검색한 이름과 비슷한 아파트 불러오는 중…",
       html: `
         <div class="flex flex-wrap justify-center gap-4 px-6 py-4">
           ${Array(4)
@@ -77,7 +77,7 @@ export default function useSimilarApt(loadDetail) {
         .join("");
 
       Swal.update({
-        title: "유사 아파트를 선택하세요",
+        title: "아파트를 선택하세요",
         html: `<div class="flex flex-wrap justify-center gap-4 px-6 py-4">${cardsHtml}</div>`,
         showCancelButton: true,
         showConfirmButton: false,
@@ -122,7 +122,7 @@ export default function useSimilarApt(loadDetail) {
       );
     } catch (e) {
       Swal.close();
-      console.warn("❗ 유사 아파트 추천 요청 실패:", e);
+      console.warn("❗ 아파트 추천 요청 실패:", e);
       await Swal.fire("아파트 검색에 실패했습니다.");
     }
   }

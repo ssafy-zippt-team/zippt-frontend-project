@@ -70,6 +70,7 @@ export default function useAptDetail() {
 
   if (similarData.isSuccess && Array.isArray(similarData.result)) {
     similarItems.value = similarData.result;
+    console.log("similarItems : ", similarItems.value);
   } else {
     similarItems.value = [];
   }

@@ -22,7 +22,7 @@
         v-for="p in pages"
         :key="p"
         @click="goPage(p)"
-        :class="[p === currentPage ? 'bg-blue-600 text-white' : 'hover:bg-gray-100']"
+        :class="[p === currentPage ? 'bg-[#115C5E] text-white' : 'hover:bg-gray-200']"
       >
         {{ p }}
       </button>
@@ -56,7 +56,7 @@ const currentPage = toRef(props, "currentPage");
 const isLastPage = toRef(props, "isLastPage");
 
 // 블록 크기, 시작 페이지
-const blockSize = 9;
+const blockSize = 5;
 const blockStart = ref(1);
 
 // 이 블록의 마지막 페이지 번호
