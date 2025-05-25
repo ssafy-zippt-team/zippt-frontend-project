@@ -28,7 +28,7 @@
     >
       실거래가
     </li>
-    <li
+    <!-- <li
       @click="changeTab('repo')"
       :class="[
         'inline-block px-4 py-2 cursor-pointer',
@@ -36,7 +36,7 @@
       ]"
     >
       AI 레포트
-    </li>
+    </li> -->
     <li
       @click="changeTab('review')"
       :class="[

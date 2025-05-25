@@ -61,6 +61,14 @@
                 <th>매매가</th>
                 <td>{{ formattedMin }}억 ~ {{ formattedMax }}억</td>
               </tr>
+              <tr>
+                <th colspan="2">
+                  <AiSumaryButton
+                    :apt-seq="selectedApt.aptSeq"
+                    :selected-apt="selectedApt"
+                  />
+                </th>
+              </tr>
             </tbody>
           </table>
         </div>
@@ -83,6 +91,12 @@
             :style="lensStyle"
           ></div>
         </div>
+        <!-- <div class="relatice">
+          <AiSumaryButton
+            :apt-seq="selectedApt.aptSeq"
+            :selected-apt="selectedApt"
+          />
+        </div> -->
 
         <div class="p-1">
           <h2 class="text-[12px] font-bold mb-1">유사한 아파트 추천</h2>
@@ -137,6 +151,7 @@ import errorImage from '@/assets/img/imgError.jpg'
 import '@/assets/css/AptDetailPanel.css'
 import useBookmark from '@/composables/useBookmark';
 import { getMemberUuid } from '@/util/auth/auth';
+import AiSumaryButton from "@/components/summary/AiSumaryButton.vue"
 
 
 const props = defineProps({
