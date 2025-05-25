@@ -33,7 +33,12 @@
 
         <!-- 로그인 후 -->
         <div v-else class="flex items-center space-x-4">
-          <span class="text-gray-700 font-semibold">{{ username }}님</span>
+           <span
+    class="text-gray-700 font-semibold cursor-pointer hover:underline"
+    @click="$router.push('/mypage')"
+  >
+    {{ username }}님
+  </span>
           <button
             @click="logoutAndReload"
             class="h-9 px-4 border border-gray-200 text-gray-800 rounded-full font-medium transition hover:bg-gray-100"
