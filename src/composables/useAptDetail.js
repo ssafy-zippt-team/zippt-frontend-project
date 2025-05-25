@@ -32,6 +32,7 @@ export default function useAptDetail() {
       // ① 아파트 상세 정보 요청
       const { data } = await getHouseDetail(overlayApt.aptSeq);
       console.log("useAptDetail's data : ", data);
+      console.log("useAptDetail's amount : ", data.result);
 
       
 
@@ -42,9 +43,9 @@ export default function useAptDetail() {
           umdNm: overlayApt.umdNm,
           aptNm: overlayApt.aptNm,
           imgUrl: overlayApt.imgUrl,
-          amountAvg: overlayApt.amountAvg,
-          amountMax: overlayApt.amountMax,
-          amountMin: overlayApt.amountMin,
+          // amountAvg: overlayApt.amountAvg,
+          // amountMax: overlayApt.amountMax,
+          // amountMin: overlayApt.amountMin,
         };
       }
       // loadDetail 내에서 저장됨
