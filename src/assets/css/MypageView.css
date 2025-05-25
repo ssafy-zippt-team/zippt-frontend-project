@@ -1,0 +1,121 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* CSS 변수 정의 (필요 시 유지) */
+@layer base {
+  .login-page {
+    /* CSS 변수는 기존대로 유지 */
+    --background: 0 0% 100%;
+    --foreground: 222.2 84% 4.9%;
+    --card: 0 0% 100%;
+    --card-foreground: 222.2 84% 4.9%;
+    --popover: 0 0% 100%;
+    --popover-foreground: 222.2 84% 4.9%;
+    --primary: #115C5E;
+    --primary-foreground: 210 40% 98%;
+    --secondary: 210 40% 96.1%;
+    --secondary-foreground: 222.2 47.4% 11.2%;
+    --muted: 210 40% 96.1%;
+    --muted-foreground: 215.4 16.3% 46.9%;
+    --accent: 210 40% 96.1%;
+    --accent-foreground: 222.2 47.4% 11.2%;
+    --destructive: 0 84.2% 60.2%;
+    --destructive-foreground: 210 40% 98%;
+    --border: 214.3 31.8% 91.4%;
+    --input: 214.3 31.8% 91.4%;
+    --ring: 221.2 83.2% 53.3%;
+    --radius: 0.5rem;
+  }
+  .login-page.dark {
+    --background: 222.2 84% 4.9%;
+    --foreground: 210 40% 98%;
+    --card: 222.2 84% 4.9%;
+    --card-foreground: 210 40% 98%;
+    --popover: 222.2 84% 4.9%;
+    --popover-foreground: 210 40% 98%;
+    --primary: 217.2 91.2% 59.8%;
+    --primary-foreground: 222.2 47.4% 11.2%;
+    --secondary: 217.2 32.6% 17.5%;
+    --secondary-foreground: 210 40% 98%;
+    --muted: 217.2 32.6% 17.5%;
+    --muted-foreground: 215 20.2% 65.1%;
+    --accent: 217.2 32.6% 17.5%;
+    --accent-foreground: 210 40% 98%;
+    --destructive: 0 62.8% 30.6%;
+    --destructive-foreground: 210 40% 98%;
+    --border: 217.2 32.6% 17.5%;
+    --input: 217.2 32.6% 17.5%;
+    --ring: 224.3 76.3% 48%;
+  }
+}
+
+@layer components {
+  .login-page {
+    @apply bg-[hsl(var(--muted))] text-[hsl(var(--foreground))] min-h-screen flex flex-col items-center justify-center p-6 md:p-10;
+  }
+  .login-container {
+    @apply w-full max-w-[24rem] md:max-w-[48rem];
+  }
+  .login-card {
+    @apply overflow-hidden rounded-[var(--radius)] border border-[hsl(var(--border))] bg-[hsl(var(--card))] text-[hsl(var(--card-foreground))] shadow-sm;
+  }
+  .login-form {
+    @apply p-6 md:p-8;
+  }
+  .login-title {
+    @apply text-2xl font-bold text-center;
+  }
+  .login-subtitle {
+    @apply text-center text-[hsl(var(--muted-foreground))];
+  }
+  .form-group {
+    @apply grid gap-2 mt-6;
+  }
+  .form-label {
+    @apply text-sm font-medium leading-none;
+  }
+  .form-input {
+    @apply flex h-10 w-full rounded-[var(--radius)] border border-[hsl(var(--input))] bg-[hsl(var(--background))] px-3 text-sm focus:outline-none focus:ring-2 focus:ring-[hsl(var(--ring))];
+  }
+  .login-button {
+    @apply inline-flex items-center justify-center rounded-[var(--radius)] bg-[--primary] text-[hsl(var(--primary-foreground))] text-sm font-medium h-10 w-full mt-6 px-4 hover:bg-teal-900;
+  }
+  .divider {
+    @apply relative text-sm text-center my-6;
+  }
+  .divider::after {
+    content: "";
+    @apply absolute inset-0 top-1/2 block border-t border-[hsl(var(--border))];
+  }
+  .divider span {
+    @apply relative z-10 bg-[hsl(var(--background))] px-2 text-[hsl(var(--muted-foreground))];
+  }
+  .social-buttons {
+    @apply grid grid-cols-3 gap-4;
+  }
+  .social-button {
+    @apply inline-flex items-center justify-center rounded-[var(--radius)] border border-[hsl(var(--input))] bg-[hsl(var(--background))] py-2 text-sm font-medium hover:bg-[hsl(var(--accent))] hover:text-[hsl(var(--accent-foreground))];
+  }
+  .signup-text {
+    @apply text-center text-sm mt-6;
+  }
+  .signup-link {
+    @apply underline underline-offset-4 hover:text-[hsl(var(--primary))];
+  }
+  .terms-text {
+    @apply text-center text-xs text-[hsl(var(--muted-foreground))] mt-6;
+  }
+  .terms-link {
+    @apply underline underline-offset-4 hover:text-[hsl(var(--primary))];
+  }
+  .image-container {
+    @apply relative hidden bg-[hsl(var(--muted))] md:block;
+  }
+  .login-image {
+    @apply absolute inset-0 w-full h-full object-cover;
+  }
+  .dark .login-image {
+    @apply filter brightness-50 grayscale;
+  }
+}
