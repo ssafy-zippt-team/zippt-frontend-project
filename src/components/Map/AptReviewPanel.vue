@@ -20,8 +20,7 @@
           <span class="text-xs text-gray-400">{{ commentText.length }}/500</span>
           <button
             class="!bg-[#115C5E] text-white text-8px px-4 py-1 rounded"
-            :disabled="!commentText.trim()"
-            @click="submitComment"
+            @click="checkLogin"
           >
             등록
           </button>
@@ -78,6 +77,9 @@ import { ref, toRef, defineProps, onMounted } from "vue";
 import useReview from "@/composables/useReview";
 import { postReview } from "@/api/reviewApi";
 import { getMemberUuid } from '@/util/auth/auth';
+import { loggedIn } from "@/util/auth/auth";
+import { loginReq } from "@/util/alert/loginReqAlert"
+import { warning } from "@/util/alert/warningAlert";
 
 // 📌 Props로 aptSeq 받기
 const props = defineProps({
@@ -96,10 +98,18 @@ onMounted(() => {
 
 const commentText = ref("");
 
+function checkLogin(){
+  if(!loggedIn.value) {
+    loginReq();
+  }
+  else submitComment();
+}
+
 // ✅ 댓글 등록 기능 구현
 async function submitComment() {
+
   if (!commentText.value.trim()) {
-    alert("댓글을 입력해주세요.");
+    warning("댓글을 입력해 주세요.")
     return;
   }
 
@@ -112,7 +122,7 @@ async function submitComment() {
     commentText.value = "";
     await reload(); // 등록 후 리스트 갱신
   } catch (e) {
-    alert("리뷰 등록 실패 😢");
+    warning("리뷰 등록 실패 😢");
     console.error("리뷰 등록 실패:", e);
   }
 }

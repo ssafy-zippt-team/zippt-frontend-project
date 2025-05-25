@@ -7,7 +7,7 @@
     <h3 class="text-xl font-bold">{{ selectedApt.aptNm || "정보 없음" }}</h3>
     <div
   class="bookmark-box flex items-center gap-1 cursor-pointer px-2 py-1 rounded-md transition hover:bg-yellow-100"
-  @click="toggle"
+  @click="onBookmarkClick"
 >
   <svg
     v-if="isBookmarked"
@@ -108,8 +108,9 @@
             <div
               v-for="(item, idx) in similarItems"
               :key="idx"
-              class="border rounded overflow-hidden shadow"
-            >
+              class="border rounded overflow-hidden shadow cursor-pointer hover:shadow-lg transition"
+              @click="handleSimilarClick(item)"
+              >
               <div>
                 <img
                   :src="item.imgUrl
@@ -152,6 +153,8 @@ import '@/assets/css/AptDetailPanel.css'
 import useBookmark from '@/composables/useBookmark';
 import { getMemberUuid } from '@/util/auth/auth';
 import AiSumaryButton from "@/components/summary/AiSumaryButton.vue"
+import { loggedIn } from "@/util/auth/auth";
+import { loginReq } from "@/util/alert/loginReqAlert"
 import { addRecentViewHouse } from "@/api/recentApartApi";
 
 const props = defineProps({
@@ -162,6 +165,14 @@ const props = defineProps({
   similarItems: { type: Array, default: () => [] },
   aptSeq: String,
   selectedCoords: { type: Object, required: true },
+  loadDetail: {
+    type: Function,
+    required: true
+  },
+  kakaoMap: {
+    type: Object,
+    required: true
+  }
 })
 
 const selectedCoords = toRef(props, 'selectedCoords')
@@ -171,6 +182,10 @@ const currentPage = toRef(props, 'currentPage')
 const isLastPage = toRef(props, 'isLastPage')
 const similarItems = toRef(props, 'similarItems')
 const emit = defineEmits(['close', 'go-page'])
+
+const kakaoMap = toRef(props, 'kakaoMap')
+// const loadDetail = inject('loadDetail')
+const loadDetail = toRef(props, 'loadDetail')
 
 const aptSeq = computed(() => selectedApt.value?.aptSeq);
 const memberUuid = ref('');
@@ -269,6 +284,40 @@ function handleMouseMove(event) {
 
 function hideLens() {
   lensVisible.value = false
+}
+
+// ② similar‐item 클릭 핸들러
+function handleSimilarClick(item) {
+  if (!kakaoMap.value) return;
+  // 지도 센터 이동
+  kakaoMap.value.setCenter(
+    new window.kakao.maps.LatLng(item.latitude, item.longitude)
+  );
+  kakaoMap.value.setLevel(4);
+
+  // 패널에 로드할 객체를 showSimilarApts 와 동일한 형태로 생성
+  const [umdNm, ...rest] = item.aptNm.split(' ')
+  loadDetail.value({
+    aptSeq: item.aptSeq,
+    umdNm,
+    aptNm: rest.join(' '),
+    imgUrl: item.imgUrl,
+    amountAvg: item.amountAvg,
+    amountMax: item.amountMax,
+    amountMin: item.amountMin,
+    latitude: item.latitude,
+    longitude: item.longitude,
+  })
+}
+
+function onBookmarkClick() {
+  if (loggedIn.value) {
+    // 로그인 되어 있으면 토글 실행
+    toggle()
+  } else {
+    // 아니면 로그인 요청 얼럿
+    loginReq()
+  }
 }
 </script>
 

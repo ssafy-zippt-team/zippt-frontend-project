@@ -45,7 +45,7 @@ export async function refreshAccessToken() {
 
     if (refreshFailCount >= MAX_REFRESH_FAIL) {
       // 3회 이상 실패하면 강제 로그아웃 + 로그인 페이지로
-      await api.post("/api/v1/logout").catch(() => {});
+      await api.post("/api/v1/logout/aToken").catch(() => {});
       accessToken.value = null;
       router.push("/login");
     }
@@ -63,7 +63,11 @@ export async function signup(nickname, username, userEmail, password, phoneNumbe
 export async function logout() {
   try {
     // ① 백엔드 /logout 호출
-    await api.post("/api/v1/logout");
+    console.log("------------start logout------------")
+    // await api.post("/api/v1/logout/aToken");
+    await refreshApi.post("/api/v1/logout/rToken", null, {
+      skipAuthRefresh: true
+    });
   } catch (e) {
     console.error("Logout API error", e);
     // 그래도 다음 로컬 정리는 해 줍니다
@@ -129,6 +133,11 @@ api.interceptors.response.use(
   async (error) => {
     const originalRequest = error.config;
     const status = error.response?.status;
+
+    if (originalRequest.skipAuthRefresh || originalRequest.url.includes("/api/v1/logout")) {
+      return Promise.reject(error);
+    }
+
     // (2) 401 에러, 아직 _retry 플래그가 없으면
     if (status === 401 && !originalRequest._retry && refreshFailCount < MAX_REFRESH_FAIL) {
       originalRequest._retry = true;
@@ -148,7 +157,7 @@ api.interceptors.response.use(
         //    여기선 굳이 다시 호출하지 않아도 됩니다.
         //
         // 클라이언트 저장소·헤더 정리
-        await api.post("/api/v1/logout");
+        await api.post("/api/v1/logout/aToken");
 
         router.push({ path: '/login' })
         //    혹은 full reload: window.location.href = 'http://localhost:3000/login'
@@ -157,7 +166,7 @@ api.interceptors.response.use(
     }
 
       if (status === 401 && refreshFailCount >= MAX_REFRESH_FAIL) {
-      await api.post("/api/v1/logout").catch(() => {});
+      await api.post("/api/v1/logout/aToken").catch(() => {});
       router.push("/login");
       // 이후엔 더 이상 인터셉터가 이 요청을 만지지 않도록
     }

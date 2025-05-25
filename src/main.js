@@ -21,7 +21,7 @@ library.add(fas, fab);
 
 async function bootstrap() {
   // 1) 새로고침 시 토큰 갱신
-  await refreshAccessToken();
+  await refreshAccessToken().catch(() =>{});
 
   // 2) Vue 앱 설정 및 마운트
   const app = createApp(App);

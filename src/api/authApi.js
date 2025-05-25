@@ -17,5 +17,5 @@ export async function refreshToken() {
 }
 
 export function logout(){
-  return refreshApi.post("/api/v1/logout");
+  return refreshApi.post("/api/v1/logout/rToken");
 }

@@ -1,5 +1,6 @@
 <script setup>
 import { ref, computed } from "vue";
+// import { useRouter, useRoute } from "vue-router";
 import { useRouter } from "vue-router";
 import { login } from "@/util/auth/auth";
 import Swal from "sweetalert2";
@@ -9,6 +10,7 @@ import "@/assets/css/LoginView.css";
 const username = ref("");
 const password = ref("");
 const router = useRouter();
+// const route = useRoute();
 
 const handleSubmit = async (event) => {
   event.preventDefault();
@@ -35,7 +37,12 @@ const handleSubmit = async (event) => {
       icon: "success"
     });
     Swal.hideLoading();
-    router.push("/");
+    // router.push("/");
+    // const redirect = Array.isArray(route.query.redirect)
+    //   ? route.query.redirect[0]
+    //   : route.query.redirect || "/";
+    // router.push(redirect);
+    router.back();
   } catch (e) {
     console.error("로그인 에러:", e);
     // alert("로그인 실패");
