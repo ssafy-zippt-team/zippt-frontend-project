@@ -75,7 +75,8 @@
         </div>
 
         <div
-          class="relative w-full max-w-[500px] aspect-[4/3] mx-auto mt-2 overflow-hidden cursor-zoom-in"
+          class="relative w-full max-w-[500px] aspect-[4/3] mx-auto mt-2 overflow-hidden"
+          :class="selectedApt?.imgUrl ? 'cursor-zoom-in' : 'cursor-default'"
           ref="container"
           @mousemove="handleMouseMove"
           @mouseleave="hideLens"
@@ -266,6 +267,7 @@ const container = ref(null);
 const imageRef = ref(null);
 
 function handleMouseMove(event) {
+  if (!selectedApt.value?.imgUrl) return;
   const img = imageRef.value;
   const rect = img.getBoundingClientRect();
   const zoom = 2;
