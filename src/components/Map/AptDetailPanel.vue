@@ -148,7 +148,7 @@
 <script setup>
 import { defineProps, defineEmits, toRef, computed, ref, watch, onMounted } from 'vue'
 import TabBarView from './TabBarView.vue'
-import errorImage from '@/assets/img/imgError.jpg'
+import  errorImage from '@/assets/img/imgError.jpg' 
 import '@/assets/css/AptDetailPanel.css'
 import useBookmark from '@/composables/useBookmark';
 import { getMemberUuid } from '@/util/auth/auth';
@@ -222,14 +222,17 @@ const {
 
 // ✅ 최초 진입 시 북마크 정보 + 최근 본 아파트 등록
 watch(() => selectedApt.value?.aptSeq, (newVal) => {
+  console.log("selectedCoords : ",selectedCoords)
+  console.log(selectedCoords.value.lat,selectedCoords.value.lng);
   if (selectedApt.value && memberUuid.value) {
     const payload = {
       aptSeq: selectedApt.value.aptSeq,
       umdNm: selectedApt.value.umdNm,
       aptNm: selectedApt.value.aptNm,
-      latitude: selectedApt.value.latitude,
-      longitude: selectedApt.value.longitude,
+      latitude: selectedCoords.value.lat,
+      longitude: selectedCoords.value.lng,
       jibun: selectedApt.value.jibun,
+      imgUrl: selectedApt.value.imgUrl,
       roadNm: selectedApt.value.roadNm,
       buildYear: selectedApt.value.buildYear,
       amountAvg: selectedApt.value.amountAvg,

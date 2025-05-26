@@ -45,6 +45,10 @@
       @go-page="handlePage"
       :style="{ left: (showListView && aptListRef.length) ? '240px' : '0px' }"
     />
+    <BottomInfo
+       :load-detail="loadDetail"
+      :kakao-map="kakaoMap"
+    />
   </div>
   
 </template>
@@ -56,6 +60,7 @@ import SearchBox from "@/components/Map/SearchBox.vue";
 import AddressSelector from "@/components/Map/AddressSelector.vue";
 import AptListPanel from "@/components/Map/AptListPanel.vue";
 import AptDetailPanel from "@/components/Map/AptDetailPanel.vue";
+import BottomInfo from "@/components/main/BottomInfo.vue"
 import useAddress from "@/composables/useAddress";
 import { makeMap } from "@/util/map/makeMap";
 import useViewHouses from "@/composables/useViewHouses";
@@ -186,6 +191,7 @@ async function updateBoundaries() {
 }
 
 onMounted(async () => {
+   console.log("🧪 mapContainer:", mapContainer.value); // null이면 문제
   // 1. 맵 초기화
   kakaoMap.value = await makeMap({
     container: mapContainer,
@@ -195,7 +201,16 @@ onMounted(async () => {
     markers: [],
   });
   const mapInst = kakaoMap.value;
+   
 
+ 
+  if (!kakaoMap.value) {
+    console.error("❌ kakaoMap 생성 실패!");
+    return;
+  }
+
+  console.log("✅ kakaoMap 생성됨:", kakaoMap.value);
+  
   // 2) 초기 경계 그리기
   await updateBoundaries();
 
@@ -211,6 +226,10 @@ onMounted(async () => {
     // }
   });
 
+  
+
+
+
   // // 3) 초기 한 번 호출
   // updateMarkersByView();
 
@@ -225,6 +244,21 @@ onMounted(async () => {
       isApartment: isApartment === "1",
     });
   }
+
+  const stored = localStorage.getItem('selectedRecentApt');
+  if (stored) {
+    console.log("stored: " , stored);
+    const apt = JSON.parse(stored);
+    localStorage.removeItem('selectedRecentApt');
+
+    kakaoMap.value.setCenter(new window.kakao.maps.LatLng(apt.latitude, apt.longitude));
+    // kakaoMap.value.setCenter(new window.kakao.maps.LatLng(36.4687, 127.9099));
+
+    kakaoMap.value.setLevel(4);
+
+    loadDetail(apt); // 자동 상세패널 열기
+  }
+
 });
 function zoomIn() {
   if (!kakaoMap.value) return;
