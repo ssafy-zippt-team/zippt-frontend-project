@@ -16,25 +16,27 @@ const handleSubmit = async (event) => {
   event.preventDefault();
 
   Swal.fire({
-      title: "로그인 중…",
-      html: "잠시만 기다려주세요.",
-      allowOutsideClick: false,
-      didOpen: () => Swal.showLoading(),
+    title: "로그인 중…",
+    html: "잠시만 기다려주세요.",
+    allowOutsideClick: false,
+    didOpen: () => Swal.showLoading(),
   });
 
   try {
     event.preventDefault();
 
-
     await login(username.value, password.value);
     const loggedInName = computed(() => getUsername());
     // alert("로그인 성공");
-    Swal.update({
+    Swal.close();
+    Swal.fire({
       title: "Login Success",
-      html: `반갑습니다, ${ loggedInName.value }님!`,
+      html: `반갑습니다, ${loggedInName.value}님!`,
       allowOutsideClick: true,
-      showConfirmButton: true,
-      icon: "success"
+      // showConfirmButton: true,
+      confirmButtonText: "확인",
+      confirmButtonColor: "#115C5E",
+      icon: "success",
     });
     Swal.hideLoading();
     // router.push("/");
@@ -45,16 +47,15 @@ const handleSubmit = async (event) => {
     router.back();
   } catch (e) {
     console.error("로그인 에러:", e);
-    // alert("로그인 실패");
     Swal.update({
       title: "Login Fail",
       html: `Check Email & Password`,
-      allowOutsideClick: true,
-      showConfirmButton: true,
-      icon: "error"
+      confirmButtonText: "확인",
+      confirmButtonColor: "#115C5E",
+      icon: "error",
     });
     Swal.hideLoading();
-  } 
+  }
 };
 </script>
 
