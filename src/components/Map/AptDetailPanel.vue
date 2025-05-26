@@ -74,6 +74,7 @@
           </table>
         </div>
 
+
         <div  
           class="relative w-full max-w-[500px] aspect-[4/3] mx-auto mt-2 overflow-hidden"
           :class="selectedApt?.imgUrl ? 'cursor-zoom-in' : 'cursor-default'"

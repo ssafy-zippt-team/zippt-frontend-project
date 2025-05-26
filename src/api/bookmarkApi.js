@@ -17,3 +17,8 @@ export function checkBookmark(memberUuid, aptSeq) {
 export function getBookmarkCount(aptSeq) {
   return api.get(`/api/v1/bookmarks/getBookmarkCnt/${aptSeq}`);
 }
+
+// 회원원의 즐겨찾기 조회
+export function getBookmarkList(memberUuid) {
+  return api.get(`/api/v1/bookmarks/list/${memberUuid}`);
+}
