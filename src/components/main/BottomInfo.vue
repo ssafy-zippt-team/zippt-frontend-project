@@ -1,70 +1,78 @@
-  <template>
-    <div class="flex justify-between gap-8 w-full max-w-[1200px] mx-auto mb-16">
-      <!-- 왼쪽: 최근 본 아파트 -->
-      <div class="w-[48%] min-w-[340px] h-[340px] rounded-[14px] bg-white shadow flex flex-col p-8">
-    <div class="border-b border-[#e7e7e7] mb-4">
-      <h2 class="text-xl font-bold text-[#115C5E]">최근 본 아파트</h2>
+ <template>
+  <div class="flex justify-between gap-8 w-full max-w-[1200px] mx-auto mb-16">
+    <!-- 왼쪽: 최근 본 아파트 -->
+<div class="w-[48%] min-w-[340px] h-[340px] rounded-[14px] bg-white shadow flex flex-col p-8">
+  <div class="border-b border-[#e7e7e7] mb-4">
+    <h2 class="text-xl font-bold text-[#115C5E]">최근 본 아파트</h2>
+  </div>
+
+  <div class="flex-1 overflow-y-auto pr-2">
+    <template v-if="recentAptList.length > 0">
+      <div class="grid grid-cols-2 gap-4">
+        <!-- 최근 본 아파트 카드 영역 -->
+<div
+  v-for="apt in recentAptList.slice(0, 6)"
+  :key="apt.aptSeq"
+  @click="goToMapWithApt(apt)"
+  class="flex flex-col border border-gray-200 rounded-lg p-2 shadow-sm hover:shadow-md hover:border-[#115C5E] cursor-pointer transition"
+>
+  <!-- 비율 유지 컨테이너 -->
+  <div class="w-full aspect-[4/3] rounded mb-2 overflow-hidden bg-gray-100">
+    <img
+      :src="apt.imgUrl ? `https://ssafyhomebusan.s3.ap-southeast-2.amazonaws.com${apt.imgUrl}` : errorImage"
+      alt="아파트 이미지"
+      class="w-full h-full object-cover"
+    />
+  </div>
+
+  <!-- 아파트 정보 -->
+  <div class="text-sm font-semibold text-[#23272E] truncate">
+    {{ apt.aptNm }}
+  </div>
+  <p class="text-xs text-gray-500 truncate">
+    {{ apt.roadNm || apt.jibun }} · {{ apt.buildYear }}년 준공
+  </p>
+  <p class="text-xs text-gray-400">
+    실거래가: {{ formatAmount(apt.amountMin) }} ~ {{ formatAmount(apt.amountMax) }}만원
+  </p>
+</div>
+
+      </div>
+    </template>
+
+    <div v-else class="flex items-center justify-center h-full text-gray-400">
+      최근 본 아파트가 없습니다.
     </div>
+  </div>
+</div>
 
-    <div class="flex-1 overflow-y-auto pr-2">
-      <template v-if="recentAptList.length > 0">
-        <div class="grid grid-cols-2 gap-4">
-          <div
-          @click="goToMapWithApt(apt)"
-    v-for="apt in recentAptList.slice(0, 6)"
-    :key="apt.aptSeq"
-
-    class="flex flex-col items-start border border-gray-200 rounded p-2 
-          transition-transform duration-200 ease-in-out 
-          hover:shadow-lg hover:scale-[1.02] hover:border-[#115C5E] cursor-pointer"
-  >
-            <img
-              :src="apt.imgUrl ? `https://ssafyhomebusan.s3.ap-southeast-2.amazonaws.com${apt.imgUrl}` : errorImage"
-              alt="아파트 이미지"
-              class="w-full h-[90px] object-cover rounded mb-2"
+    <!-- 오른쪽: 오늘의 NEWS -->
+    <div class="w-[48%] min-w-[340px] h-[340px] rounded-[14px] bg-white shadow flex flex-col p-8">
+      <div class="border-b border-[#e7e7e7] mb-4">
+        <h2 class="text-xl font-bold text-[#115C5E]">오늘의 NEWS</h2>
+      </div>
+      <div class="flex-1 overflow-y-auto pr-2">
+        <ul class="space-y-5">
+          <li
+            v-for="item in newsItems"
+            :key="item.link"
+            class="flex flex-col items-start border border-gray-200 rounded p-1 transition hover:shadow-lg hover:scale-[1.02] hover:border-[#115C5E] cursor-pointer"
+          >
+            <a
+              :href="item.link"
+              class="block text-base font-semibold text-[#23272E] hover:text-[#115C5E] transition"
+              target="_blank"
+              rel="noopener noreferrer"
+              v-html="item.title"
             />
-            <div class="text-sm font-semibold text-[#23272E] truncate w-full">{{ apt.aptNm }}</div>
-            <p class="text-gray-500 text-xs mt-1 truncate w-full">
-              {{ apt.roadNm || apt.jibun }} · {{ apt.buildYear }}년 준공
-            </p>
-            <p class="text-xs text-gray-400 mt-1 w-full">
-              실거래가: {{ formatAmount(apt.amountMin) }} ~ {{ formatAmount(apt.amountMax) }}만원
-            </p>
-          </div>
-        </div>
-      </template>
-
-      <div v-else class="flex items-center justify-center h-full text-gray-400">
-        최근 본 아파트가 없습니다.
+            <p class="text-gray-500 text-sm mt-1 line-clamp-2" v-html="item.description"></p>
+            <span class="block text-xs text-gray-400 mt-1">{{ formatDate(item.pubDate) }}</span>
+          </li>
+        </ul>
       </div>
     </div>
   </div>
-
-      <!-- 오른쪽: 오늘의 NEWS -->
-      <div class="w-[48%] min-w-[340px] h-[340px] rounded-[14px] bg-white shadow flex flex-col p-8">
-        <div class="border-b border-[#e7e7e7]">
-          <h2 class="text-xl font-bold text-[#115C5E] mb-4">오늘의 NEWS</h2>
-        </div>
-        <div class="flex-1 overflow-y-auto pr-2">
-          <ul class="space-y-5">
-            <li v-for="item in newsItems" :key="item.link"   class="flex flex-col items-start border border-gray-200 rounded p-1
-          transition-transform duration-200 ease-in-out 
-          hover:shadow-lg hover:scale-[1.02] hover:border-[#115C5E] cursor-pointer">
-              <a
-                :href="item.link"
-                class="block text-base font-semibold text-[#23272E] hover:text-[#115C5E] transition"
-                target="_blank"
-                rel="noopener noreferrer"
-                v-html="item.title"
-              />
-              <p class="text-gray-500 text-sm mt-1 line-clamp-2" v-html="item.description"></p>
-              <span class="block text-xs text-gray-400 mt-1">{{ formatDate(item.pubDate) }}</span>
-            </li>
-          </ul>
-        </div>
-      </div>
-    </div>
-  </template>
+</template>
 
   <script setup>
   import { ref, onMounted } from "vue";
