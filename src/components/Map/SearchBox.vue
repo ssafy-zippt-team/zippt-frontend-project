@@ -1,6 +1,6 @@
 <template>
   <div class="search-box-container">
-    <div class="search-box-container">
+    <div class="">
       <form @submit.prevent="onSearch">
         <div class="search-box-toggle">
           <span class="search-box-toggle-title">
@@ -9,7 +9,7 @@
           <ToggleSwitch v-model="isApartment" />
         </div>
         <input
-          :placeholder="isApartment ? '아파트명 또는 단지명을 입력하세요' : '역명 또는 단지명을 입력하세요'"
+          :placeholder="isApartment ? '아파트·오피스텔·빌라명을 입력하세요' : '역·장소명을 입력하세요'"
           v-model="keyword"
           type="text"
           class="w-full pl-16 pr-10 py-4 rounded-full border border-gray-200 focus:outline-none focus:ring-2 focus:ring-[#115C5E] bg-white text-gray-800 placeholder:text-gray-400 text-[14px] shadow"
@@ -45,7 +45,6 @@ import "@/assets/css/SearchBox.css";
 
 const isApartment = ref(false);
 const keyword = ref("");
-
 // eslint-disable-next-line no-undef
 
 // function onSubmit() {

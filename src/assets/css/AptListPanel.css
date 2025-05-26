@@ -4,7 +4,7 @@
 
 /* 패널 전체 */
 .apt-list-panel {
-  @apply absolute inset-y-0 w-[240px]
+  @apply absolute inset-y-0 w-[300px]
          bg-white shadow-lg rounded-lg overflow-y-auto
          z-[1000] flex flex-col;
 }
@@ -14,14 +14,14 @@
 }
 
 .apt-list-panel-price {
-  @apply text-sm text-blue-600 font-semibold;
+  @apply text-sm  text-[#1A7D7F] font-semibold;
 }
 
 /* 카드 */
 .apt-card {
-  @apply transition-colors duration-150 flex items-start gap-3 p-3 hover:bg-gray-50 cursor-pointer border-b last:border-none;
+  @apply transition-colors duration-150 flex items-start gap-7 p-3 hover:bg-gray-50 cursor-pointer border-b last:border-none;
 }
 
 .apt-card img {
-  @apply w-16 h-16 rounded-md object-cover flex-shrink-0;
+  @apply w-20 h-20 rounded-md object-cover flex-shrink-0;
 }

@@ -1,7 +1,7 @@
 <template>
   <div class="flex flex-col items-center w-full mb-6 mt-10">
     <h1 class="text-[32px] font-normal text-[#23272E] text-center">
-      어떤 <span class="font-bold">매물</span>을 <span class="font-bold">찾고</span> 계시나요?
+      전국의 모든 관심있는 <span class="font-bold">매물</span>을 <span class="font-bold">찾아</span> 보세요!
     </h1>
   </div>
   <div class="w-[1300px] pb-[30px]">
@@ -17,7 +17,7 @@
         <ToggleSwitch v-model="isApartment" />
       </div>
       <input
-        :placeholder="isApartment ? '아파트명 또는 단지명을 입력하세요' : '역명 또는 단지명을 입력하세요'"
+        :placeholder="isApartment ? '아파트·오피스텔·빌라명을 입력하세요' : '역·장소명을 입력하세요'"
         v-model="keyword"
         type="text"
         class="w-full pl-24 pr-16 py-4 rounded-full border border-gray-200 focus:outline-none focus:ring-2 focus:ring-[#115C5E] bg-white text-gray-800 placeholder:text-gray-400 text-[16px] shadow"
