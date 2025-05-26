@@ -2,23 +2,23 @@
 import { ref, onMounted } from "vue";
 import { useRouter } from "vue-router";
 import { update, getMypage } from "@/api/mypageApi";
-import { getMemberUuid } from '@/util/auth/auth';
+import { getMemberUuid } from "@/util/auth/auth";
 import "@/assets/css/MypageView.css";
 
 export default {
   setup() {
-    const nickname = ref("");      // 닉네임
-    const username = ref("");      // 이름
-    const userEmail = ref("");     // 이메일
-    const password = ref("");      // 비밀번호 (빈 값 유지)
-    const createdAt = ref("");     // 계정 생성일자
-    const phoneNumber = ref("");   // 휴대폰 번호
-    const memberUuid = ref("");    // 회원 UUID
+    const nickname = ref(""); // 닉네임
+    const username = ref(""); // 이름
+    const userEmail = ref(""); // 이메일
+    const password = ref(""); // 비밀번호 (빈 값 유지)
+    const createdAt = ref(""); // 계정 생성일자
+    const phoneNumber = ref(""); // 휴대폰 번호
+    const memberUuid = ref(""); // 회원 UUID
     const router = useRouter();
 
     onMounted(async () => {
       try {
-        memberUuid.value = getMemberUuid(); 
+        memberUuid.value = getMemberUuid();
         console.log("회원 UUID:", memberUuid.value);
         const res = await getMypage(memberUuid.value);
         const data = res.data.result;
@@ -90,7 +90,14 @@ export default {
 
           <div class="form-group">
             <label class="form-label" for="password">비밀번호</label>
-            <input id="password" v-model="password" type="password" class="form-input bg-gray-100" placeholder="비밀번호는 변경되지 않습니다." readonly />
+            <input
+              id="password"
+              v-model="password"
+              type="password"
+              class="form-input bg-gray-100"
+              placeholder="비밀번호는 변경되지 않습니다."
+              readonly
+            />
           </div>
 
           <!-- <div class="form-group">
