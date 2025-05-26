@@ -4,7 +4,7 @@
     <div class="flex flex-wrap flex-initial gap-5 mb-2">
       <template v-for="(word, idx) in recentSearches" :key="idx">
         <span
-          class="flex items-center bg-slate-200 text-gray-500 text-sm px-3 py-1 rounded-full"
+          class="flex items-center bg-slate-200 text-gray-500 text-sm px-3 py-1 rounded-full cursor-pointer"
           @click="wordClick(word)"
         >
           {{ word }}
