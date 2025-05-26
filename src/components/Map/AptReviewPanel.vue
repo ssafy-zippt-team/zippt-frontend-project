@@ -44,15 +44,15 @@
     </div>
 
     <!-- 페이지네이션 -->
-    <div class="flex justify-center gap-2 mt-4">
+    <div class="deal-pagination">
       <button
         v-for="page in pageList"
         :key="page"
         @click="reload(page)"
         :class="[
-          'px-3 py-1 rounded text-sm border transition duration-150',
+          'px-2 py-1 rounded border text-sm transition',
           page === currentPage
-            ? 'bg-[#115C5E] text-white font-semibold border-[#115C5E] ring-2 ring-[#115C5E] ring-offset-1'
+            ? 'bg-[#115C5E] text-white font-semibold ring-2 ring-[#115C5E] ring-offset-1 border-[#115C5E]'
             : 'bg-white text-gray-700 border-gray-300 hover:bg-gray-100',
         ]"
       >

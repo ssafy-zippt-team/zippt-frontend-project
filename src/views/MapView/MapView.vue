@@ -30,10 +30,11 @@
 
   <div ref="mapContainer" class="map">
     <AptListPanel
-      v-if="showListView && aptListRef.length"
+      v-if="aptListRef.length"
       :apt-list="aptListRef"
       @select-apt="loadDetail"
-      class="absolute top-0 left-0 h-full"
+      class="absolute top-0 left-0 h-full transform transition-transform duration-300 ease-in-out"
+      :class="showListView ? 'translate-x-0' : '-translate-x-full'"
     />
     <AptDetailPanel
       :selected-apt="selectedApt"

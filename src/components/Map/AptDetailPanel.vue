@@ -128,7 +128,7 @@
                 />
               </div>
               <div class="h-12 flex items-center justify-center text-center px-1">
-                <p class="text-gray-700 text-[13px] font-semibold text-base text-center">
+                <p class="truncate text-gray-700 text-[13px] font-semibold text-center w-full" :title="item.aptNm">
                   {{ item.aptNm }}
                 </p>
                 <p v-if="!item.imgUrl" class="text-[10px] text-red-400 italic">이미지 준비중...</p>
