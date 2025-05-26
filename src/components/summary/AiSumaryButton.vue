@@ -1,6 +1,6 @@
 <template>
   <button
-    @click="handleClick"
+    @click="checkLogin"
     class="relative px-6 py-3 rounded-full bg-[#115C5E] text-white font-semibold flex items-center justify-center gap-2 shadow-md hover:bg-[#187879] transition-all duration-300 before:absolute before:inset-0 before:rounded-full before:bg-[#115C5E] before:blur-xl before:opacity-30 before:scale-110 before:z-[-1] mx-auto"
   >
     <Sparkles class="w-5 h-5 text-white -mt-0.5" />
@@ -13,12 +13,19 @@ import Swal from "sweetalert2";
 import { api } from "@/api/authApi";
 import { toRefs } from "vue";
 import { Sparkles } from "lucide-vue-next";
+import { loggedIn } from "@/util/auth/auth";
+import { loginReq } from "@/util/alert/loginReqAlert";
 
 const props = defineProps({
   aptSeq: { type: String, required: true },
   selectedApt: { type: Object, required: true },
 });
 const { aptSeq, selectedApt } = toRefs(props);
+
+function checkLogin() {
+  if (loggedIn.value) handleClick();
+  else loginReq();
+}
 
 async function handleClick() {
   Swal.fire({

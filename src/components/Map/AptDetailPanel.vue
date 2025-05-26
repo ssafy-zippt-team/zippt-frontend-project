@@ -229,23 +229,26 @@ const {
 } = useBookmark(memberUuid, aptSeq);
 
 // ✅ 최초 진입 시 북마크 정보 + 최근 본 아파트 등록
-watch(() => selectedApt.value?.aptSeq, (newVal) => {
-  console.log("selectedCoords : ",selectedCoords)
-  console.log(selectedCoords.value.lat,selectedCoords.value.lng);
-  if (selectedApt.value && memberUuid.value) {
-    const payload = {
-      aptSeq: selectedApt.value.aptSeq,
-      umdNm: selectedApt.value.umdNm,
-      aptNm: selectedApt.value.aptNm,
-      latitude: selectedCoords.value.lat,
-      longitude: selectedCoords.value.lng,
-      jibun: selectedApt.value.jibun,
-      imgUrl: selectedApt.value.imgUrl,
-      roadNm: selectedApt.value.roadNm,
-      buildYear: selectedApt.value.buildYear,
-      amountAvg: selectedApt.value.amountAvg,
-      amountMax: selectedApt.value.amountMax,
-      amountMin: selectedApt.value.amountMin,
+watch(
+  () => selectedApt.value?.aptSeq,
+  (newVal) => {
+    console.log("selectedCoords : ", selectedCoords);
+    console.log(selectedCoords.value.lat, selectedCoords.value.lng);
+    if (selectedApt.value && memberUuid.value) {
+      const payload = {
+        aptSeq: selectedApt.value.aptSeq,
+        umdNm: selectedApt.value.umdNm,
+        aptNm: selectedApt.value.aptNm,
+        latitude: selectedCoords.value.lat,
+        longitude: selectedCoords.value.lng,
+        jibun: selectedApt.value.jibun,
+        imgUrl: selectedApt.value.imgUrl,
+        roadNm: selectedApt.value.roadNm,
+        buildYear: selectedApt.value.buildYear,
+        amountAvg: selectedApt.value.amountAvg,
+        amountMax: selectedApt.value.amountMax,
+        amountMin: selectedApt.value.amountMin,
+      };
       addRecentViewHouse(payload)
         .then(() => console.log("최근 본 아파트 등록 완료"))
         .catch((err) => console.error("최근 본 아파트 등록 실패:", err));

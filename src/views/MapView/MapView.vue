@@ -33,10 +33,10 @@
       v-if="aptListRef.length"
       :apt-list="aptListRef"
       @select-apt="loadDetail"
-      class="absolute top-0 left-0 h-full transform transition-transform duration-300 ease-in-out"
+      class="absolute top-0 left-0 w-[300px] h-full + transform transition-transform duration-300 ease-in-out"
       :class="showListView ? 'translate-x-0' : '-translate-x-full'"
     />
-    <AptDetailPanel
+    <!-- <AptDetailPanel
       :selected-apt="selectedApt"
       :deals-list="dealsList"
       :current-page="currentPage"
@@ -49,11 +49,33 @@
       @close="clearDetail"
       @go-page="handlePage"
       :style="{ left: showListView && aptListRef.length ? '300px' : '0px' }"
-    />
-    <BottomInfo
-       :load-detail="loadDetail"
-      :kakao-map="kakaoMap"
-    />
+    /> -->
+    <transition
+      enter-active-class="transform transition-transform duration-300 ease-in-out"
+      :enter-from-class="showListView ? '-translate-x-[300px]' : '-translate-x-full'"
+      enter-to-class="translate-x-0"
+      leave-active-class="transform transition-transform duration-300 ease-in-out"
+      leave-from-class="translate-x-0"
+      :leave-to-class="showListView ? '-translate-x-[300px]' : '-translate-x-full'"
+    >
+      <AptDetailPanel
+        v-if="selectedApt"
+        :selected-apt="selectedApt"
+        :deals-list="dealsList"
+        :current-page="currentPage"
+        :is-last-page="isLastPage"
+        :similar-items="similarItems"
+        :apt-seq="selectedApt?.aptSeq"
+        :selected-coords="selectedCoords"
+        :load-detail="loadDetail"
+        :kakao-map="kakaoMap"
+        @close="clearDetail"
+        @go-page="handlePage"
+        class="absolute top-0 left-0 h-full transform transition-transform duration-300 ease-in-out"
+        :class="showListView && aptListRef.length ? 'translate-x-[300px]' : 'translate-x-0'"
+      />
+    </transition>
+    <BottomInfo :load-detail="loadDetail" :kakao-map="kakaoMap" />
   </div>
 </template>
 
@@ -64,7 +86,7 @@ import SearchBox from "@/components/Map/SearchBox.vue";
 import AddressSelector from "@/components/Map/AddressSelector.vue";
 import AptListPanel from "@/components/Map/AptListPanel.vue";
 import AptDetailPanel from "@/components/Map/AptDetailPanel.vue";
-import BottomInfo from "@/components/main/BottomInfo.vue"
+import BottomInfo from "@/components/main/BottomInfo.vue";
 import useAddress from "@/composables/useAddress";
 import { makeMap } from "@/util/map/makeMap";
 import useViewHouses from "@/composables/useViewHouses";
@@ -79,7 +101,7 @@ const mapContainer = ref(null);
 const kakaoMap = ref(null);
 const APP_KEY = process.env.VUE_APP_KAKAO_APPKEY;
 const address = useAddress(kakaoMap);
-const showListView = ref(false);
+const showListView = ref(true);
 const route = useRoute();
 
 const { cityList, selectedCity, selectedGu, selectedDong } = address;
@@ -193,7 +215,7 @@ async function updateBoundaries() {
 }
 
 onMounted(async () => {
-   console.log("🧪 mapContainer:", mapContainer.value); // null이면 문제
+  console.log("🧪 mapContainer:", mapContainer.value); // null이면 문제
   // 1. 맵 초기화
   kakaoMap.value = await makeMap({
     container: mapContainer,
@@ -203,16 +225,14 @@ onMounted(async () => {
     markers: [],
   });
   const mapInst = kakaoMap.value;
-   
 
- 
   if (!kakaoMap.value) {
     console.error("❌ kakaoMap 생성 실패!");
     return;
   }
 
   console.log("✅ kakaoMap 생성됨:", kakaoMap.value);
-  
+
   // 2) 초기 경계 그리기
   await updateBoundaries();
 
@@ -227,10 +247,6 @@ onMounted(async () => {
     //   boundaryPolygons = [];
     // }
   });
-
-  
-
-
 
   // // 3) 초기 한 번 호출
   // updateMarkersByView();
@@ -247,11 +263,11 @@ onMounted(async () => {
     });
   }
 
-  const stored = localStorage.getItem('selectedRecentApt');
+  const stored = localStorage.getItem("selectedRecentApt");
   if (stored) {
-    console.log("stored: " , stored);
+    console.log("stored: ", stored);
     const apt = JSON.parse(stored);
-    localStorage.removeItem('selectedRecentApt');
+    localStorage.removeItem("selectedRecentApt");
 
     kakaoMap.value.setCenter(new window.kakao.maps.LatLng(apt.latitude, apt.longitude));
     // kakaoMap.value.setCenter(new window.kakao.maps.LatLng(36.4687, 127.9099));
@@ -260,7 +276,6 @@ onMounted(async () => {
 
     loadDetail(apt); // 자동 상세패널 열기
   }
-
 });
 function zoomIn() {
   if (!kakaoMap.value) return;
