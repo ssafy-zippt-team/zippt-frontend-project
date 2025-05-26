@@ -276,6 +276,21 @@ onMounted(async () => {
 
     loadDetail(apt); // 자동 상세패널 열기
   }
+
+  const bookstored = localStorage.getItem('selectedBookmarkApt');
+  if (bookstored) {
+    console.log("stored: " , bookstored);
+    const apt = JSON.parse(bookstored);
+    localStorage.removeItem('selectedRecentApt');
+
+    kakaoMap.value.setCenter(new window.kakao.maps.LatLng(apt.latitude, apt.longitude));
+    // kakaoMap.value.setCenter(new window.kakao.maps.LatLng(36.4687, 127.9099));
+
+    kakaoMap.value.setLevel(4);
+
+    loadDetail(apt); // 자동 상세패널 열기
+  }
+
 });
 function zoomIn() {
   if (!kakaoMap.value) return;

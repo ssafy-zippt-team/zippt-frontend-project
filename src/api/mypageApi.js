@@ -7,7 +7,7 @@ export function getMypage(memberUuid) {
 }
 
 export function update(memberUuid, memberName, email, phoneNumber) {
-   return api.get("/api/v1/members/memberupdate", {
+   return api.patch("/api/v1/members/memberupdate", {
     params: { memberUuid, memberName, email, phoneNumber},
   });
 }
