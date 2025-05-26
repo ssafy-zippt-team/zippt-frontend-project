@@ -1,6 +1,8 @@
 <template>
   <header class="bg-white shadow sticky top-0 z-50">
-    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex items-center justify-between h-16">
+    <div
+      class="px-4 sm:px-6 lg:px-8 flex items-center justify-between h-16 max-w-[1456px] mx-auto flex justify-between"
+    >
       <div class="flex items-center">
         <!-- 로고 클릭 시 홈으로 이동 -->
         <router-link to="/" class="h-16 w-44 flex items-center">
@@ -8,7 +10,6 @@
         </router-link>
       </div>
       <nav class="hidden md:flex space-x-8">
-        <a href="#" class="text-gray-700 hover:text-[#115C5E] font-medium text-base transition">홈</a>
         <a href="#" class="text-gray-700 hover:text-[#115C5E] font-medium text-base transition">서비스</a>
         <a href="#" class="text-gray-700 hover:text-[#115C5E] font-medium text-base transition">프로젝트</a>
         <a href="#" class="text-gray-700 hover:text-[#115C5E] font-medium text-base transition">문의</a>
@@ -33,12 +34,9 @@
 
         <!-- 로그인 후 -->
         <div v-else class="flex items-center space-x-4">
-           <span
-    class="text-gray-700 font-semibold cursor-pointer hover:underline"
-    @click="$router.push('/mypage')"
-  >
-    {{ username }}님
-  </span>
+          <span class="text-gray-700 font-semibold cursor-pointer hover:underline" @click="$router.push('/mypage')">
+            {{ username }}님
+          </span>
           <button
             @click="logoutAndReload"
             class="h-9 px-4 border border-gray-200 text-gray-800 rounded-full font-medium transition hover:bg-gray-100"

@@ -1,27 +1,31 @@
 <template>
-  
   <SearchBox @search="onKeywordSearch" />
 
   <AddressSelector />
   <div class="absolute top-28 right-4 bg-white rounded-md shadow-md flex flex-col overflow-hidden z-10">
-      <button
-        @click="showList"
-        class="w-10 h-10 flex items-center justify-center border-b border-gray-200 hover:bg-gray-100"
-        >
-        <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" fill="#115C5E"><path d="M80-160v-160h160v160H80Zm240 0v-160h560v160H320ZM80-400v-160h160v160H80Zm240 0v-160h560v160H320ZM80-640v-160h160v160H80Zm240 0v-160h560v160H320Z"/></svg>
-      </button>
-      <button
-        @click="zoomIn"
-        class="w-10 h-10 flex items-center justify-center border-b border-gray-200 hover:bg-gray-100"
-      >
-        <svg xmlns="http://www.w3.org/2000/svg" height="40px" viewBox="0 -960 960 960" width="30px" fill="#115C5E"><path d="M432.12-431.88H174.15v-96.44h257.97v-258.91h96.43v258.91h257.68v96.44H528.55v257.3h-96.43v-257.3Z"/></svg>
-      </button>
-      <button
-        @click="zoomOut"
-        class="w-10 h-10 flex items-center justify-center hover:bg-gray-100"
-      >
-        <svg xmlns="http://www.w3.org/2000/svg" height="40px" viewBox="0 -960 960 960" width="40px" fill="#115C5E"><path d="M174.15-431.88v-96.44h612.08v96.44H174.15Z"/></svg>
-      </button>
+    <button
+      @click="showList"
+      class="w-10 h-10 flex items-center justify-center border-b border-gray-200 hover:bg-gray-100"
+    >
+      <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" fill="#115C5E">
+        <path
+          d="M80-160v-160h160v160H80Zm240 0v-160h560v160H320ZM80-400v-160h160v160H80Zm240 0v-160h560v160H320ZM80-640v-160h160v160H80Zm240 0v-160h560v160H320Z"
+        />
+      </svg>
+    </button>
+    <button
+      @click="zoomIn"
+      class="w-10 h-10 flex items-center justify-center border-b border-gray-200 hover:bg-gray-100"
+    >
+      <svg xmlns="http://www.w3.org/2000/svg" height="40px" viewBox="0 -960 960 960" width="30px" fill="#115C5E">
+        <path d="M432.12-431.88H174.15v-96.44h257.97v-258.91h96.43v258.91h257.68v96.44H528.55v257.3h-96.43v-257.3Z" />
+      </svg>
+    </button>
+    <button @click="zoomOut" class="w-10 h-10 flex items-center justify-center hover:bg-gray-100">
+      <svg xmlns="http://www.w3.org/2000/svg" height="40px" viewBox="0 -960 960 960" width="40px" fill="#115C5E">
+        <path d="M174.15-431.88v-96.44h612.08v96.44H174.15Z" />
+      </svg>
+    </button>
   </div>
 
   <div ref="mapContainer" class="map">
@@ -43,10 +47,9 @@
       :kakao-map="kakaoMap"
       @close="clearDetail"
       @go-page="handlePage"
-      :style="{ left: (showListView && aptListRef.length) ? '240px' : '0px' }"
+      :style="{ left: showListView && aptListRef.length ? '300px' : '0px' }"
     />
   </div>
-  
 </template>
 
 <script setup>
@@ -73,7 +76,6 @@ const address = useAddress(kakaoMap);
 const showListView = ref(false);
 const route = useRoute();
 
-
 const { cityList, selectedCity, selectedGu, selectedDong } = address;
 
 // ① address 상태 공유
@@ -83,24 +85,23 @@ provide("address", address);
 const { searchLocation } = useSearchLocation(kakaoMap);
 // const { showSimilarApts } = useSimilarApt();
 
-
 // kakaoMap ref 를 하위 컴포넌트 전역(scope)에 제공
 provide("kakaoMap", kakaoMap);
 
-
 // --- Apt 상세 조회 훅 ---
-const { selectedApt, 
-  dealsList, 
-  currentPage, 
-  isLastPage, 
-  loadDetail, 
-  clearDetail, 
+const {
+  selectedApt,
+  dealsList,
+  currentPage,
+  isLastPage,
+  loadDetail,
+  clearDetail,
   loadLatest,
-  similarItems, 
-  selectedCoords } = useAptDetail();
-  
-const { showSimilarApts } = useSimilarApt(loadDetail);
+  similarItems,
+  selectedCoords,
+} = useAptDetail();
 
+const { showSimilarApts } = useSimilarApt(loadDetail);
 
 function handlePage(page) {
   console.log("selectedApt.aptSeq : ", selectedApt.value.aptSeq);
@@ -239,7 +240,7 @@ function zoomOut() {
 
 // 리스트패널 view/hide
 function showList() {
-  showListView.value = !showListView.value
+  showListView.value = !showListView.value;
 }
 
 async function onKeywordSearch({ term, isApartment }) {
@@ -267,10 +268,6 @@ async function onKeywordSearch({ term, isApartment }) {
 }
 
 .material-symbols-outlined {
-  font-variation-settings:
-  'FILL' 0,
-  'wght' 300,
-  'GRAD' 0,
-  'opsz' 24
+  font-variation-settings: "FILL" 0, "wght" 300, "GRAD" 0, "opsz" 24;
 }
 </style>

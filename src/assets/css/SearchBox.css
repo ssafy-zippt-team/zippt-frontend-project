@@ -4,7 +4,7 @@
 @tailwind utilities;
 
 .search-box-container {
-  @apply absolute top-1 right-4 z-50 w-80;
+  @apply absolute top-4 right-4 z-50 w-96;
 }
 
 .search-box-container from {

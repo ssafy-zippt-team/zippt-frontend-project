@@ -1,57 +1,41 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
-
-.latest-deal-panel {
-  padding-top: 0.75rem;
-  padding-bottom: 0.75rem;
-}
-.loading,
-.no-data {
-  color: #888;
-  font-size: 0.9rem;
-}
-.latest-deal-panel p {
-  margin: 0.25rem 0;
-  font-size: 0.9rem;
-}
-/* 리스트 컨테이너: 최대 높이 130px, 넘칠 때 스크롤 */
+/* 리스트 컨테이너 */
 .deal-list {
   @apply max-h-[240px] overflow-y-auto divide-y divide-gray-200;
 }
 
-/* 각 항목: flex 레이아웃, 상하 간격, 구분선 */
+/* 각 항목 */
 .deal-item {
-  @apply flex justify-between py-2 border-b last:border-none;
+  @apply flex justify-between py-2 px-2;
 }
 
-/* 마지막 항목은 구분선 없음 (divide-y 로 처리되므로 필요 없을 수도 있습니다) */
-.deal-item:last-child {
-  @apply border-b-0;
-}
-
-/* 거래 정보 텍스트 그룹 */
+/* 거래 정보 */
 .deal-info p {
-  @apply text-sm leading-tight;
-  /* 상하 간격을 조금 주고 싶으면 margin bottom 추가 */
-  margin-bottom: 0.125rem;
+  @apply text-xs text-gray-600 leading-snug;
 }
 
-/* 금액 표시부: 오른쪽 정렬 */
+/* 거래 금액 강조 */
 .deal-amount {
-  @apply text-sm font-medium text-right;
+  @apply text-sm font-semibold text-[#115C5E] text-right;
 }
 
 /* 데이터 없을 때 */
 .no-data {
-  @apply p-4 text-center text-gray-500 text-sm;
+  @apply p-4 text-center text-gray-400 text-sm;
 }
 
-/* 블록 단위 페이지네이션 */
+/* 페이지네이션 */
 .deal-pagination {
-  @apply flex items-center justify-center space-x-1 mt-1;
+  @apply flex items-center justify-center space-x-1 mt-2;
 }
 
 .deal-pagination button {
-  @apply px-2 py-1 border rounded disabled:opacity-50;
+  @apply px-2 py-1 rounded border text-sm transition
+         hover:bg-gray-100 disabled:opacity-40;
+}
+
+.deal-pagination button.bg-\[\#115C5E\] {
+  @apply ring-2 ring-[#115C5E] ring-offset-1;
 }

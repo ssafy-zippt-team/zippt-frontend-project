@@ -5,6 +5,8 @@ import "../src/assets/css/index.css";
 
 // ① custom-marker.css 전역 등록
 import "@/assets/css/custom-marker.css";
+// 폰트 전역설정
+import "@/assets/css/font.css";
 
 // JWT
 // import { refreshToken } from "@/api/authApi";
@@ -21,7 +23,7 @@ library.add(fas, fab);
 
 async function bootstrap() {
   // 1) 새로고침 시 토큰 갱신
-  await refreshAccessToken().catch(() =>{});
+  await refreshAccessToken().catch(() => {});
 
   // 2) Vue 앱 설정 및 마운트
   const app = createApp(App);

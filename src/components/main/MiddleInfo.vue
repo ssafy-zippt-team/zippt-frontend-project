@@ -6,10 +6,11 @@
     >
       <div>
         <strong class="block leading-[32px] text-[22px] font-semibold">
-          <em class="not-italic text-[32px] mr-1">아파트</em>·오피스텔·분양권
+          <em class="not-italic text-[32px] mr-1">아파트</em>·오피스텔·빌라
         </strong>
         <p class="mt-4 leading-[25px] text-[15px]">
-          매매, 전세, 월세 매물을 시세 및 실거래가 정보와 함께<br />지도에서 쉽게 확인하세요!
+          전국의 아파트 매매 정보를 지도에서 쉽게 확인하세요 !<br />
+          거래내역, 리뷰, 상권정보를 참고한 AI의 요약 및 평가 기능도 사용해보세요.
         </p>
       </div>
 
@@ -38,28 +39,39 @@
     </div>
 
     <!-- 오른쪽 흰색 박스(그래프 자리) -->
-    <div class="w-[48%] min-w-[340px] h-[312px] rounded-[14px] bg-white flex flex-col items-center justify-start shadow-sm pt-4">
-      <h2 class="text-2xl font-semibold text-[#115C5E] mb-2">{{currentYear}}년 광역시별 매물 통계</h2>
+    <div
+      class="w-[48%] min-w-[340px] h-[312px] rounded-[14px] bg-white flex flex-col items-center justify-start shadow-sm pt-4"
+    >
+      <h2 class="text-2xl font-semibold text-[#115C5E] mb-2">{{ currentYear }}년 광역시별 매물 통계</h2>
       <div class="w-full h-full">
-        <Chart :data="chartData" :options="chartOptions" style="height: 100%; width: 100%;"/>
+        <Chart :data="chartData" :options="chartOptions" style="height: 100%; width: 100%" />
       </div>
     </div>
   </div>
 </template>
 
 <script setup>
-import { ref, onMounted } from 'vue'
-import { Chart as ChartJS, BarElement, LineElement, CategoryScale, LinearScale, PointElement, Tooltip, Legend } from 'chart.js'
-import { Chart } from 'vue-chartjs'
-import { getAvgPriceStat, getDealCountStat } from '@/api/dealsApi'
+import { ref, onMounted } from "vue";
+import {
+  Chart as ChartJS,
+  BarElement,
+  LineElement,
+  CategoryScale,
+  LinearScale,
+  PointElement,
+  Tooltip,
+  Legend,
+} from "chart.js";
+import { Chart } from "vue-chartjs";
+import { getAvgPriceStat, getDealCountStat } from "@/api/dealsApi";
 
-ChartJS.register(BarElement, LineElement, CategoryScale, LinearScale, PointElement, Tooltip, Legend)
+ChartJS.register(BarElement, LineElement, CategoryScale, LinearScale, PointElement, Tooltip, Legend);
 const currentYear = new Date().getFullYear();
 
 const chartData = ref({
   labels: [],
   datasets: [],
-})
+});
 
 const chartOptions = {
   responsive: true,
@@ -68,93 +80,89 @@ const chartOptions = {
       top: 10,
       bottom: 20,
       left: 10,
-      right: 10
-    }
+      right: 10,
+    },
   },
   plugins: {
     legend: {
-      position: 'top',
+      position: "top",
     },
   },
   scales: {
     y1: {
-      type: 'linear',
-      position: 'left',
-      align: 'start',
+      type: "linear",
+      position: "left",
+      align: "start",
       title: {
         display: true,
-        text: '매매가 (억)',
+        text: "매매가 (억)",
       },
       ticks: {
-        callback: (value) => `${(value / 10000).toFixed(1)}억`
-      }
+        callback: (value) => `${(value / 10000).toFixed(1)}억`,
+      },
     },
     y2: {
-      type: 'linear',
-      position: 'right',
-      align: 'start',
+      type: "linear",
+      position: "right",
+      align: "start",
       title: {
         display: true,
-        text: '거래 건수 (건)',
+        text: "거래 건수 (건)",
       },
       grid: {
         drawOnChartArea: false,
       },
       ticks: {
-        callback: (value) => `${(value ).toLocaleString()}건`
-      }
-    }
-  }
-}
+        callback: (value) => `${value.toLocaleString()}건`,
+      },
+    },
+  },
+};
 
 const regionMap = {
-  seoul: '서울',
-  busan: '부산',
-  ulsan: '울산',
-  daegu: '대구',
-  incheon: '인천',
-  gwangju: '광주',
-  daejeon: '대전'
-}
+  seoul: "서울",
+  busan: "부산",
+  ulsan: "울산",
+  daegu: "대구",
+  incheon: "인천",
+  gwangju: "광주",
+  daejeon: "대전",
+};
 
 onMounted(async () => {
   try {
-    const [avgRes, cntRes] = await Promise.all([
-      getAvgPriceStat(),
-      getDealCountStat()
-    ])
+    const [avgRes, cntRes] = await Promise.all([getAvgPriceStat(), getDealCountStat()]);
 
-    const regions = Object.keys(avgRes.data.result).map(code => regionMap[code] || code)
-    const avgValues = Object.values(avgRes.data.result)
-    const cntValues = Object.values(cntRes.data.result)
+    const regions = Object.keys(avgRes.data.result).map((code) => regionMap[code] || code);
+    const avgValues = Object.values(avgRes.data.result);
+    const cntValues = Object.values(cntRes.data.result);
 
     chartData.value = {
       labels: regions,
       datasets: [
         {
-          type: 'bar',
-          label: '평균 매매가 (억)',
+          type: "bar",
+          label: "평균 매매가 (억)",
           data: avgValues,
-          backgroundColor: 'rgba(75,192,192,0.6)',
-          yAxisID: 'y1'
+          backgroundColor: "rgba(75,192,192,0.6)",
+          yAxisID: "y1",
         },
         {
-          type: 'line',
-          label: '거래 건수 (건)',
+          type: "line",
+          label: "거래 건수 (건)",
           data: cntValues,
-          borderColor: 'rgba(255,99,132,1)',
-          backgroundColor: 'rgba(255,99,132,0.2)',
+          borderColor: "rgba(255,99,132,1)",
+          backgroundColor: "rgba(255,99,132,0.2)",
           borderWidth: 2,
           tension: 0.3,
-          yAxisID: 'y2'
-        }
-      ]
-    }
+          yAxisID: "y2",
+        },
+      ],
+    };
   } catch (err) {
-    console.error('차트 데이터 로딩 실패:', err)
+    console.error("차트 데이터 로딩 실패:", err);
   }
-})
+});
 </script>
 
-<style scoped>
-</style>
+<style scoped></style>

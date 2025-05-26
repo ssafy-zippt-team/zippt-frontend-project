@@ -104,9 +104,11 @@
         </div> -->
 
         <div class="p-1" v-if="selectedApt.imgUrl">
-          <h2 class="text-[12px] font-bold mb-1">유사한 아파트 추천</h2>
-          <p class="text-[8px] text-gray-500 mb-1">지금 보시는 아파트와 비슷한 아파트도 둘러보세요</p>
-
+          <div class="flex items-center gap-2 mb-1">
+            <Building2Icon class="w-4 h-4 text-[#115C5E]" />
+            <h2 class="text-[16px] font-bold">유사 외관의 아파트 추천</h2>
+          </div>
+          <p class="text-[14px] text-gray-500 mb-1">지금 보시는 아파트와 비슷한 아파트도 둘러보세요</p>
           <div class="grid grid-cols-2 gap-2">
             <div
               v-for="(item, idx) in similarItems"
@@ -126,7 +128,9 @@
                 />
               </div>
               <div class="h-12 flex items-center justify-center text-center px-1">
-                <p class="text-[10px] font-bold text-gray-600">{{ item.aptNm }}</p>
+                <p class="text-gray-700 text-[13px] font-semibold text-base text-center">
+                  {{ item.aptNm }}
+                </p>
                 <p v-if="!item.imgUrl" class="text-[10px] text-red-400 italic">이미지 준비중...</p>
               </div>
             </div>
@@ -159,6 +163,7 @@ import AiSumaryButton from "@/components/summary/AiSumaryButton.vue";
 import { loggedIn } from "@/util/auth/auth";
 import { loginReq } from "@/util/alert/loginReqAlert";
 import { addRecentViewHouse } from "@/api/recentApartApi";
+import { Building2Icon } from "lucide-vue-next";
 
 const props = defineProps({
   selectedApt: Object,
