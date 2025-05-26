@@ -1,7 +1,7 @@
 <template>
   <button
     @click="checkLogin"
-    class="relative px-6 py-3 rounded-full bg-[#115C5E] text-white font-semibold flex items-center justify-center gap-2 shadow-md hover:bg-[#187879] transition-all duration-300 before:absolute before:inset-0 before:rounded-full before:bg-[#115C5E] before:blur-xl before:opacity-30 before:scale-110 before:z-[-1] mx-auto"
+    class="relative px-6 py-3 rounded-full bg-[#115C5E] text-white font-semibold flex items-center justify-center gap-2 shadow-md hover:bg-[#187879] transition-all duration-300 mx-auto"
   >
     <Sparkles class="w-5 h-5 text-white -mt-0.5" />
     <span>AI 요약 보기</span>
@@ -29,52 +29,109 @@ function checkLogin() {
 
 async function handleClick() {
   Swal.fire({
-    title: "로딩 중... ⏳",
-    html: "AI가 아파트를 분석하고 있습니다. 최대 20초 정도 소요될 수 있어요.",
-    allowOutsideClick: false,
-    background: "#fff",
+    title: "아파트 요약 리포트",
+    width: 700,
+    background: "#ffffff",
+    buttonsStyling: false,
     showConfirmButton: false,
-    didOpen: () => {
-      Swal.showLoading();
+    showCloseButton: false,
+    allowOutsideClick: false,
+    customClass: {
+      popup: "rounded-2xl shadow-lg",
+      title: "text-center text-2xl font-semibold text-[#115C5E]",
+      htmlContainer: "p-0",       // we'll manage padding 내부에서
+    },
+    html: `
+      <div id="ai-content" class="space-y-4 p-4">
+        <!-- 스켈레톤 블록 -->
+        <div class="h-6 bg-gray-200 rounded animate-pulse"></div>
+        <div class="h-4 bg-gray-200 rounded w-5/6 animate-pulse"></div>
+        <div class="h-4 bg-gray-200 rounded w-4/6 animate-pulse"></div>
+        <div class="h-4 bg-gray-200 rounded w-3/6 animate-pulse"></div>
+      </div>
+    `,
+    didOpen: async () => {
+      const container = Swal.getHtmlContainer().querySelector("#ai-content");
+
+      // 1) API 호출
+      let data;
+      try {
+        const { umdNm, roadNm, aptNm, jibun, buildYear, commercialInfo } = selectedApt.value;
+        const params = {
+          umdNm, roadNm, aptNm, jibun, buildYear,
+          commercialInfo:
+            typeof commercialInfo === "string"
+              ? commercialInfo
+              : JSON.stringify(commercialInfo),
+        };
+        ({ data } = await api.get(`/api/v1/ai/summary/${aptSeq.value}`, {
+          params,
+          timeout: 20000,
+        }));
+      } catch (err) {
+        // 에러 화면
+        container.innerHTML = `
+          <p class="text-red-500">요약 정보를 불러오지 못했습니다.</p>
+        `;
+        return Swal.update({
+          showConfirmButton: true,
+          confirmButtonText: "닫기",
+          confirmButtonColor: "#115C5E",
+          customClass: {
+            confirmButton: "bg-[#115C5E] hover:bg-[#187879] text-white py-2 px-6 rounded-full",
+          },
+          allowOutsideClick: true,
+        });
+      }
+
+       // 1) HTML 파싱해서 텍스트만 꺼내기
+      const parser = new DOMParser();
+      const doc = parser.parseFromString(data.result, "text/html");
+      const fullText = doc.body.textContent || "";
+
+      // 2) 공백(스페이스, 개행 등) 기준으로 단어 배열 만들기
+      const words = fullText
+        .split(/\s+/)    // 연속된 공백 기준 분할
+        .filter((w) => w.trim().length > 0);
+      
+
+      // 2) 스켈레톤 지우기
+      container.innerHTML = "";
+
+      // 3) <p>…</p> 단락 단위로 점진 노출
+      // (정규표현식도 이렇게 실제 리터럴로!)
+      // const segments = data.result.match(/<p[\s\S]*?<\/p>/g) || [data.result];
+      let idx = 0;
+      const timer = setInterval(() => {
+        if (idx < words.length) {
+          // 원하는 태그로 감싸기 (여기선 <span> 사용)
+          container.insertAdjacentHTML(
+            "beforeend",
+            `<span>${words[idx]} </span>`
+          );
+          idx++;
+        } else {
+          clearInterval(timer);
+          // 4) 버튼 노출
+          Swal.update({
+            html:  `
+              <div style="padding-left: 20px;">
+                ${data.result}
+              </div>
+            `,
+            showConfirmButton: true,
+            confirmButtonText: "닫기",
+            confirmButtonColor: "#115C5E",
+            buttonsStyling: false,
+            customClass: {
+              confirmButton: "bg-[#115C5E] hover:bg-[#187879] text-white py-2 px-6 rounded-full",
+            },
+            allowOutsideClick: true,
+          });
+        }
+      }, 100);
     },
   });
-
-  try {
-    const { umdNm, roadNm, aptNm, jibun, buildYear, commercialInfo } = selectedApt.value;
-    const params = {
-      umdNm,
-      roadNm,
-      aptNm,
-      jibun,
-      buildYear,
-      commercialInfo: typeof commercialInfo === "string" ? commercialInfo : JSON.stringify(commercialInfo),
-    };
-
-    const { data } = await api.get(`/api/v1/ai/summary/${aptSeq.value}`, { params, timeout: 20000 });
-    // const { data } = await api.get(
-    //   '/api/v1/ai/summary/11110-128?umdNm=%EB%AA%85%EB%A5%9C1%EA%B0%80&roadNm=%EC%84%B1%EA%B7%A0%EA%B4%80%EB%A1%9C14%EA%B8%B8&aptNm=%EB%A6%AC%EC%B9%98%EC%BA%90%EC%8A%AC%EC%95%84%ED%8C%8C%ED%8A%B8&jibun=33-85&buildYear=2003&commercialInfo=%7B%0A%20%20%22%EB%B3%B4%EA%B1%B4%EC%9D%98%EB%A3%8C%22%3A%201%2C%0A%20%20%22%EC%86%8C%EB%A7%A4%22%3A%207%2C%0A%20%20%22%EA%B5%90%EC%9C%A1%22%3A%201%2C%0A%20%20%22%EC%88%99%EB%B0%95%22%3A%202%2C%0A%20%20%22%EC%98%88%EC%88%A0%C2%B7%EC%8A%A4%ED%8F%AC%EC%B8%A0%22%3A%204%2C%0A%20%20%22%EA%B3%BC%ED%95%99%C2%B7%EA%B8%B0%EC%88%A0%22%3A%205%2C%0A%20%20%22%EC%9D%8C%EC%8B%9D%22%3A%2030%2C%0A%20%20%22%EB%B6%80%EB%8F%99%EC%82%B0%22%3A%204%2C%0A%20%20%22%EC%8B%9C%EC%84%A4%EA%B4%80%EB%A6%AC%C2%B7%EC%9E%84%EB%8C%80%22%3A%203%2C%0A%20%20%22%EC%88%98%EB%A6%AC%C2%B7%EA%B0%9C%EC%9D%B8%22%3A%203%0A%7D',
-    //   { timeout: 20000 }
-    // );
-
-    Swal.fire({
-      title:
-        '<span style="display:flex;align-items:center;gap:8px;"><svg xmlns="http://www.w3.org/2000/svg" class="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 17v-6h13v6M9 13H4v6h5m0 0v-6m0 6l-2.5 2M14 7H7a2 2 0 00-2 2v0a2 2 0 002 2h7a2 2 0 002-2v0a2 2 0 00-2-2z" /></svg>아파트 요약 리포트</span>',
-      html: data.result,
-      width: 700,
-      background: "#ffffff",
-      confirmButtonText: "닫기",
-      confirmButtonColor: "#115C5E",
-    });
-  } catch (err) {
-    console.error("AI 요약 요청 실패:", err); // 여기가 콘솔 로그
-    Swal.fire({
-      icon: "error",
-      title: "오류 발생",
-      text: "요약 정보를 불러오지 못했습니다.",
-      confirmButtonColor: "#115C5E",
-    });
-  }
 }
-</script>
 
-<style scoped></style>
+</script>
