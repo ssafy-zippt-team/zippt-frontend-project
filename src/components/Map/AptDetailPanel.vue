@@ -246,6 +246,7 @@ watch(() => selectedApt.value?.aptSeq, (newVal) => {
       amountAvg: selectedApt.value.amountAvg,
       amountMax: selectedApt.value.amountMax,
       amountMin: selectedApt.value.amountMin,
+    };
       addRecentViewHouse(payload)
         .then(() => console.log("최근 본 아파트 등록 완료"))
         .catch((err) => console.error("최근 본 아파트 등록 실패:", err));
