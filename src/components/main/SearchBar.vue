@@ -41,13 +41,16 @@
       </button>
     </form>
   </div>
+  <SearchedList v-if="loggedIn" @selected-word="inputWord" />
 </template>
 
 <script setup>
 import { ref } from "vue";
 import ToggleSwitch from "@/components/main/ToggleSwitch.vue";
 import { useRouter } from "vue-router";
-import { addSearchWord } from "@/api/cacheForSearch"
+import { addSearchWord } from "@/api/cacheForSearch";
+import SearchedList from "@/components/main/SearchedList.vue";
+import { loggedIn } from "@/util/auth/auth";
 
 const isApartment = ref(false);
 const keyword = ref("");
@@ -61,6 +64,10 @@ async function onSearch() {
   } catch (e) {
     console.warn("최근 검색어 등록 실패", e);
   }
+  search(term, isApartment);
+}
+
+function search(term, isApartment) {
   router.push({
     path: "/map",
     query: {
@@ -68,5 +75,13 @@ async function onSearch() {
       isApartment: isApartment.value ? "1" : "0",
     },
   });
+}
+
+function inputWord(word) {
+  if (word) {
+    // keyword.value = word;
+    search(word, isApartment);
+  }
+  // else keyword.value = null;
 }
 </script>

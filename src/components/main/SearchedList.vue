@@ -5,12 +5,10 @@
       <template v-for="(word, idx) in recentSearches" :key="idx">
         <span
           class="flex items-center bg-slate-200 text-gray-500 text-sm px-3 py-1 rounded-full"
+          @click="wordClick(word)"
         >
           {{ word }}
-          <button
-            @click="removeSearch(word)"
-            class="ml-1 focus:outline-none"
-          >
+          <button @click="removeSearch(word)" class="ml-1 focus:outline-none">
             <svg
               xmlns="http://www.w3.org/2000/svg"
               class="w-4 h-4 text-gray-500 hover:text-gray-700"
@@ -19,11 +17,7 @@
               stroke-width="2"
               viewBox="0 0 24 24"
             >
-              <path
-                stroke-linecap="round"
-                stroke-linejoin="round"
-                d="M6 18L18 6M6 6l12 12"
-              />
+              <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" />
             </svg>
           </button>
         </span>
@@ -36,7 +30,7 @@
 </template>
 
 <script setup>
-import { ref, onMounted } from "vue";
+import { ref, onMounted, defineEmits } from "vue";
 import { getSearched, deleteSearchedWord } from "@/api/cacheForSearch";
 
 const recentSearches = ref([]);
@@ -50,6 +44,12 @@ async function fetchRecent() {
   } catch (e) {
     console.error("최근 검색어 조회 실패", e);
   }
+}
+
+const emit = defineEmits(["selectedWord"]);
+
+function wordClick(word) {
+  emit("selectedWord", word);
 }
 
 onMounted(fetchRecent);
