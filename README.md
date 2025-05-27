@@ -78,251 +78,1246 @@
 
 ### API SPEC
 
-<details>
-  <summary><strong>📌 최근 검색어 등록</strong> <code>POST</code></summary>
+🧑‍💻 회원 / 인증
+<details> <summary><strong>🧑‍💻 회원가입</strong> <code>POST</code></summary>
+  
+- API Path: /api/v1/join
 
-  - **API Path**: `/api/v1/cache/search/word`
-  - **설명**: 검색어를 캐시에 등록
+- 설명: 신규 사용자 등록
 
-</details>
+    ##  JoinRequest
+    ### Header
 
-<details>
-  <summary><strong>📌 최근 아파트 조회</strong> <code>GET</code></summary>
+    ```json
+    {}
 
-  - **API Path**: `/api/v1/cache/recent-view-houses`
-  - **설명**: 최근 본 아파트 조회
+    ```
 
-</details>
+    ### Param
 
-<details>
-  <summary><strong>📌 최근 검색어 조회</strong> <code>GET</code></summary>
+    ```json
+    {}
 
-  - **API Path**: `/api/v1/cache/search/list`
-  - **설명**: 검색어 목록 조회
+    ```
 
-</details>
+    ### Body
 
-<details>
-  <summary><strong>📌 검색어 삭제</strong> <code>DELETE</code></summary>
+    ```json
+    {
+    "nickname": "string",
+    "username": "string",
+    "userEmail": "string",
+    "password": "string",
+    "phoneNumber": "string"
+    }
+    ```
+    ## JoinResponse
+    ### Header
 
-  - **API Path**: `/api/v1/cache/search/words`
-  - **설명**: 저장된 검색어 삭제
+    ```json
+    {}
 
-</details>
+    ```
 
-<details>
-  <summary><strong>📌 회원가입</strong> <code>POST</code></summary>
+    ### Body
 
-  - **API Path**: `/api/v1/join`
-  - **설명**: 신규 사용자 등록
+    ```json
+    "ok"
 
-</details>
+    ```
 
-<details>
-  <summary><strong>📌 로그아웃 (AccessToken)</strong> <code>POST</code></summary>
 
-  - **API Path**: `/api/v1/logout/Token`
-  - **설명**: 로그아웃 처리
+</details> <details> <summary><strong>🧑‍💻 로그아웃 (AccessToken)</strong> <code>POST</code></summary>
 
-</details>
+- API Path: /api/v1/logout/Token
 
-<details>
-  <summary><strong>📌 로그아웃 (RefreshToken)</strong> <code>POST</code></summary>
+- 설명: 로그아웃 처리
+  ## LogoutAToken Request
+    ### Header
+    ```json
+    {
+    "Authorization": "Bearer {accessToken}"
+    }
+    ```
+    ### Param
+    ```json
+    {}
+    ```
+    ---
 
-  - **API Path**: `/api/v1/logout/Token`
-  - **설명**: 로그아웃 처리
+</details> <details> <summary><strong>🧑‍💻 로그아웃 (RefreshToken)</strong> <code>POST</code></summary>
 
-</details>
+- API Path: /api/v1/logout/Token
 
-<details>
-  <summary><strong>📌 반경 내 상권</strong> <code>GET</code></summary>
+- 설명: 로그아웃 처리
+    ## Logout Request
+    ### Header
+    ```json
+    {}
+    ```
+    ### Param
 
-  - **API Path**: `/api/v1/Commercials/radius`
-  - **설명**: 반경 내 상권 조회
+    ```json
+    {
+    "refreshToken": "string"  // from cookie
+    }
+    ```
+    ---
 
-</details>
+</details> <details> <summary><strong>🧑‍💻 회원 정보 수정</strong> <code>PATCH</code></summary>
 
-<details>
-  <summary><strong>📌 상권 업종 통계</strong> <code>GET</code></summary>
+- API Path: /api/v1/members/memberUpdate
 
-  - **API Path**: `/api/v1/Commercials/stat`
-  - **설명**: 상권 업종별 통계
+- 설명: 회원 정보 수정
 
-</details>
+</details> <details> <summary><strong>🧑‍💻 마이페이지 조회</strong> <code>GET</code></summary>
 
-<details>
-  <summary><strong>📌 상권별 업종 리스트</strong> <code>GET</code></summary>
+- API Path: /api/v1/members/mypage/{memberUuid}
 
-  - **API Path**: `/api/v1/Commercials/storeListInArea/{branch}`
-  - **설명**: 상권별 업종 리스트
-
-</details>
-
-<details>
-  <summary><strong>📌 시 조회</strong> <code>GET</code></summary>
-
-  - **API Path**: `/api/v1/addresses/getCityList`
-  - **설명**: 시 리스트 조회
-
-</details>
-
-<details>
-  <summary><strong>📌 동 조회</strong> <code>GET</code></summary>
-
-  - **API Path**: `/api/v1/addresses/getDongList/{citySeq}`
-  - **설명**: 동 리스트 조회
-
-</details>
-
-<details>
-  <summary><strong>📌 구 조회</strong> <code>GET</code></summary>
-
-  - **API Path**: `/api/v1/addresses/getGuList/{citySeq}`
-  - **설명**: 구 리스트 조회
+- 설명: 마이페이지 정보
 
 </details>
+🏠 아파트
+<details> <summary><strong>🏠 유사 아파트 조회</strong> <code>GET</code></summary>
 
-<details>
-  <summary><strong>📌 아파트 요약</strong> <code>GET</code></summary>
+- API Path: /api/v1/houses/search
 
-  - **API Path**: `/api/v1/Ai/summary/{aptSeq}`
-  - **설명**: AI 기반 아파트 요약
+- 설명: 외관 유사 아파트 추천
+    ## HouseTermSimilar Request
+    ### Header
+
+    ```json
+    {}
+    ```
+    ### Param
+    ```json
+    {
+    "term": "string"
+    }
+    ```
+    ---
+    ## HouseTermSimilar Response
+    ### Header
+
+    ```json
+    {}
+    ```
+    ### Body
+    ```json
+    {
+      "httpStatus": {
+        "error": true,
+        "is4xxClientError": true,
+        "is5xxServerError": true,
+        "is1xxInformational": true,
+        "is2xxSuccessful": true,
+        "is3xxRedirection": true
+      },
+      "isSuccess": true,
+      "message": "string",
+      "code": 1073741824,
+      "result": [
+        {
+          "aptSeq": "string",
+          "aptNm": "string",
+          "imgUrl": "string",
+          "latitude": 0.1,
+          "longitude": 0.1
+        }
+      ]
+    }
+    ```
+
+</details> <details> <summary><strong>🏠 조건 검색</strong> <code>GET</code></summary>
+
+- API Path: /api/v1/houses/condition-list
+
+- 설명: 조건 기반 아파트 필터링
+  ## HouseListByCondition Request
+  ### Header
+  ```json
+  {}
+  ```
+  ### Param
+  ```json
+  {
+    "page": number,
+    "size": number,
+    "guCode": "string",
+    "dongCode": "string",
+    "sortBy": "string"  // e.g. "buildYear" 또는 "bookmark"
+  }
+  ```
+  ## HouseListByCondition Response
+  ### Header
+  ```json
+  {}
+  ```
+  ### Body
+  ```json
+  {
+    "dtoList": [
+      {
+        "aptSeq": "string",
+        "umdNm": "string",
+        "jibun": "string",
+        "aptNm": "string",
+        "buildYear": number,
+        "latitude": number,
+        "longitude": number,
+        "imgUrl": "string"
+      }
+    ],
+    "pageNumList": [number],
+    "pageRequestDTO": {
+      "page": number,
+      "size": number
+    },
+    "prev": boolean,
+    "next": boolean,
+    "totalCount": number,
+    "prevPage": number,
+    "nextPage": number,
+    "totalPage": number,
+    "current": number
+  }
+  ```
+
+</details> <details> <summary><strong>🏠 아파트 요약</strong> <code>GET</code></summary>
+
+- API Path: /api/v1/Ai/summary/{aptSeq}
+
+- 설명: AI 기반 아파트 요약
+  ## HouseSummary Request
+  ### Header
+  ```json
+  {}
+  ```
+  ### Param
+  ```json
+  {
+    "aptSeq": "string",
+    "umdNm": "string",
+    "roadNm": "string",
+    "aptNm": "string",
+    "jibun": "string",
+    "buildYear": number,
+    "commercialInfo": "string"
+  }
+  ```
+  ## HouseSummary Response
+  ### Header
+  ```json
+  {}
+  ```
+  ### Body
+  ```json
+  {
+    "httpStatus": {
+      "error": true,
+      "is4xxClientError": true,
+      "is5xxServerError": true,
+      "is1xxInformational": true,
+      "is2xxSuccessful": true,
+      "is3xxRedirection": true
+    },
+    "isSuccess": true,
+    "message": "string",
+    "code": 1073741824,
+    "result": "string"
+  }
+  ```
+</details>
+💰 실거래
+<details> <summary><strong>💰 최신 거래 리스트 조회</strong> <code>GET</code></summary>
+
+- API Path: /api/v1/deals/latest-list/{aptSeq}
+
+- 설명: 최신 거래 리스트
+  ## LatestDealList Request
+  ### Header
+  ```json
+  {}
+  ```
+  ### Param
+  ```json
+  {
+    "aptSeq": "string",
+    "limit": number
+  }
+  ```
+  ---
+  ## LatestDealList Response
+  ### Header
+  ```json
+  {}
+  ```
+  ### Body
+  ```json
+  {
+    "httpStatus": {
+      "error": true,
+      "is4xxClientError": true,
+      "is5xxServerError": true,
+      "is1xxInformational": true,
+      "is2xxSuccessful": true,
+      "is3xxRedirection": true
+    },
+    "isSuccess": true,
+    "message": "string",
+    "code": 1073741824,
+    "result": [
+      {
+        "dealDate": "string",
+        "floor": "string",
+        "exclusiveAr": "string",
+        "dealAmount": "string"
+      }
+    ]
+  }
+  ```
+</details> <details> <summary><strong>💰 금년도 광역시별 거래량 조회</strong> <code>GET</code></summary>
+
+- API Path: /api/v1/deals/amountStatResponseList
+
+- 설명: 금액별 통계
+  ## AmountStatCntResponseList Response
+  ### Header
+  ```json
+  {}
+  ```
+  ### Body
+  ```json
+  {
+    "httpStatus": {
+      "error": true,
+      "is4xxClientError": true,
+      "is5xxServerError": true,
+      "is1xxInformational": true,
+      "is2xxSuccessful": true,
+      "is3xxRedirection": true
+    },
+    "isSuccess": true,
+    "message": "string",
+    "code": 1073741824,
+    "result": {
+      "seoul": 0.1,
+      "busan": 0.1,
+      "ulsan": 0.1,
+      "daegu": 0.1,
+      "incheon": 0.1,
+      "gwangju": 0.1,
+      "daejeon": 0.1
+    }
+  }
+  ```
+
+</details> <details> <summary><strong>💰 실거래 리스트</strong> <code>GET</code></summary>
+
+- API Path: /api/v1/deals/list/{aptSeq}
+
+- 설명: 실거래 상세 리스트
+  ## DealListByAptSeq Request
+  ### Header
+  ```json
+  {}
+  ```
+  ### Param
+  ```json
+  {
+    "page": number,
+    "size": number,
+    "aptSeq": "string"
+  }
+  ```
+  ---
+  ## DealListByAptSeq Response
+  ### Header
+  ```json
+  {}
+  ```
+  ### Body
+  ```json
+  {
+    "dtoList": [
+      {
+        "dealDate": "string",
+        "floor": "string",
+        "exclusiveAr": "string",
+        "dealAmount": "string"
+      }
+    ],
+    "pageNumList": [number],
+    "pageRequestDTO": {
+      "page": number,
+      "size": number
+    },
+    "prev": boolean,
+    "next": boolean,
+    "totalCount": number,
+    "prevPage": number,
+    "nextPage": number,
+    "totalPage": number,
+    "current": number
+  }
+  ```
+</details>
+💬 리뷰
+<details> <summary><strong>💬 리뷰 작성</strong> <code>POST</code></summary>
+
+- API Path: /api/v1/reviews/reviewInsert
+
+- 설명: 새 리뷰 등록
+  ## ReviewInsert Request
+  ### Header
+  ```json
+  {
+    "Authorization": "Bearer {accessToken}"
+  }
+  ```
+  ### Body
+  ```json
+  {
+    /* ReviewSaveVo 필드들 */
+      memberUuid: String 
+      aptSeq: String                          
+      content: String                      
+      createdAt: LocalDateTime 
+      updatedAt: LocalDateTime 
+  }
+  ```
+  ---
+  ## ReviewInsert Response
+  ### Header
+  ```json
+  {}
+  ```
+  ### Body
+  ```json
+  {
+    "httpStatus": {
+      "error": true,
+      "is4xxClientError": true,
+      "is5xxServerError": true,
+      "is1xxInformational": true,
+      "is2xxSuccessful": true,
+      "is3xxRedirection": true
+    },
+    "isSuccess": true,
+    "message": "string",
+    "code": 1073741824,
+    "result": "string"
+  }
+  ```
+</details> <details> <summary><strong>💬 리뷰 수정</strong> <code>PATCH</code></summary>
+
+- API Path: /api/v1/reviews/reviewUpdate
+
+- 설명: 기존 리뷰 수정
+  ## ReviewUpdate Request
+  ### Header
+  ```json
+  {}
+  ```
+  ### Param
+  ```json
+  {
+    "reviewId": number,
+    "content": "string",
+    "memberUuid": "string",
+    "aptSeq": "string",
+    "createdAt": "string",   // ISO 8601 date-time, optional
+    "updatedAt": "string"    // ISO 8601 date-time, optional
+  }
+  ```
+  ## ReviewUpdate Response
+  ### Header
+  ```json
+  {}
+  ```
+  ### Body
+  ```json
+  {
+    "httpStatus": {
+      "error": true,
+      "is4xxClientError": true,
+      "is5xxServerError": true,
+      "is1xxInformational": true,
+      "is2xxSuccessful": true,
+      "is3xxRedirection": true
+    },
+    "isSuccess": true,
+    "message": "string",
+    "code": 1073741824,
+    "result": "string"
+  }
+  ```
+
+</details> <details> <summary><strong>💬 리뷰 삭제</strong> <code>DELETE</code></summary>
+
+- API Path: /api/v1/reviews/{reviewId}
+
+- 설명: 작성된 리뷰 삭제
+  ## ReviewDelete Request
+  ### Header
+  ```json
+  {}
+  ```
+  ### Param
+  ```json
+  {
+    "reviewId": "string"
+  }
+  ```
+  ---
+  ## ReviewDelete Response
+  ### Header
+  ```json
+  {}
+  ```
+  ### Body
+  ```json
+  {
+    "httpStatus": {
+      "error": true,
+      "is4xxClientError": true,
+      "is5xxServerError": true,
+      "is1xxInformational": true,
+      "is2xxSuccessful": true,
+      "is3xxRedirection": true
+    },
+    "isSuccess": true,
+    "message": "string",
+    "code": 1073741824,
+    "result": "string"
+  }
+  ```
+
+</details> <details> <summary><strong>💬 아파트 리뷰 조회</strong> <code>GET</code></summary>
+
+- API Path: /api/v1/reviews/{aptSeq}
+
+- 설명: 해당 아파트 리뷰 조회
+  ## HouseAptReviewSimple Request
+  ### Header
+  ```json
+  {}
+  ```
+  ### Param
+  ```json
+  {
+    "page": number,
+    "size": number,
+    "aptSeq": "string"
+  }
+  ```
+  ---
+  ## HouseAptReviewSimple Response
+  ### Header
+  ```json
+  {}
+  ```
+  ### Body
+  ```json
+  {
+    "dtoList": [
+      {
+        "memberName": "string",
+        "content": "string",
+        "updatedAt": "string"
+      }
+    ],
+    "pageNumList": [number],
+    "pageRequestDTO": {
+      "page": number,
+      "size": number
+    },
+    "prev": boolean,
+    "next": boolean,
+    "totalCount": number,
+    "prevPage": number,
+    "nextPage": number,
+    "totalPage": number,
+    "current": number
+  }
+  ```
+  ## 
+
+</details> <details> <summary><strong>💬 회원 리뷰 조회</strong> <code>GET</code></summary>
+
+- API Path: /api/v1/reviews/{memberUuid}/{aptSeq}
+
+- 설명: 회원이 작성한 리뷰 조회
+  ## ReviewList Request
+  ### Header
+
+  ```json
+  {}
+  ```
+  ### Param
+  
+  ```json
+  {
+    "memberUuid": "string",
+    "aptSeq": "string",
+    "page": number,
+    "size": number
+  }
+  ```
+  ---
+  ## ReviewList Response
+  ### Header
+  ```json
+  {}
+  ```
+  ### Body
+  ```json
+  {
+    "dtoList": [
+      {
+        "reviewId": number,
+        "memberUuid": "string",
+        "memberName": "string",
+        "content": "string",
+        "createdAt": "string",
+        "updatedAt": "string"
+      }
+    ],
+    "pageNumList": [number],
+    "pageRequestDTO": {
+      "page": number,
+      "size": number
+    },
+    "prev": boolean,
+    "next": boolean,
+    "totalCount": number,
+    "prevPage": number,
+    "nextPage": number,
+    "totalPage": number,
+    "current": number
+  }
+  ```
+  
+</details>
+⭐ 즐겨찾기 (북마크)
+<details> <summary><strong>⭐ 즐겨찾기 여부 확인</strong> <code>GET</code></summary>
+
+- API Path: /api/v1/bookmarks/check
+
+- 설명: 즐겨찾기 여부 확인
+  ## BookmarkCheck Request
+  ### Header
+  ```json
+  {}
+  ```
+  ### Param
+  ```json
+  {
+    "aptSeq": "string",
+    "memberUuid": "string"
+  }
+  ```
+  ---
+  ## BookmarkCheck Response
+  ### Header
+  ```json
+  {}
+  ```
+  ### Body
+  ```json
+  {
+    "httpStatus": {
+      "error": true,
+      "is4xxClientError": true,
+      "is5xxServerError": true,
+      "is1xxInformational": true,
+      "is2xxSuccessful": true,
+      "is3xxRedirection": true
+    },
+    "isSuccess": true,
+    "message": "string",
+    "code": 1073741824,
+    "result": true
+  }
+  ```
+</details> <details> <summary><strong>⭐ 즐겨찾기 삭제</strong> <code>DELETE</code></summary>
+
+- API Path: /api/v1/bookmarks/{bookmarkId}
+
+- 설명: 즐겨찾기 삭제
+  ## BookmarkDelete Request
+  ### Header
+  ```json
+  {}
+  ```
+  ### Param
+  ```json
+  {
+    "bookmarkId": "string"
+  }
+  ```
+  ## BookmarkDelete Response
+  ### Header
+  ```json
+  {}
+  ```
+  ### Body
+  ```json
+  {
+    "httpStatus": {
+      "error": true,
+      "is4xxClientError": true,
+      "is5xxServerError": true,
+      "is1xxInformational": true,
+      "is2xxSuccessful": true,
+      "is3xxRedirection": true
+    },
+    "isSuccess": true,
+    "message": "string",
+    "code": 1073741824,
+    "result": "string"
+  }
+  ```
+
+</details> <details> <summary><strong>⭐ 즐겨찾기 수 조회</strong> <code>GET</code></summary>
+
+- API Path: /api/v1/bookmarks/getBookmarkCnt/{aptSeq}
+
+- 설명: 해당 아파트 즐겨찾기 수
+  ## BookmarkCount Request
+  ### Header
+  ```json
+  {}
+  ```
+  ### Param
+  ```json
+  {
+    "aptSeq": "string"
+  }
+  ```
+  ---
+  ## BookmarkCount Response
+  ### Header
+  ```json
+  {}
+  ```
+  ### Body
+  ```json
+  {
+    "httpStatus": {
+      "error": true,
+      "is4xxClientError": true,
+      "is5xxServerError": true,
+      "is1xxInformational": true,
+      "is2xxSuccessful": true,
+      "is3xxRedirection": true
+    },
+    "isSuccess": true,
+    "message": "string",
+    "code": number,
+    "result": number
+  }
+  ```
+
+</details> <details> <summary><strong>⭐ 즐겨찾기 토글</strong> <code>PATCH</code></summary>
+
+- API Path: /api/v1/bookmarks/toggle/{memberUuid}
+
+- 설명: 즐겨찾기 추가/제거
+  ## FavoriteToggle Request
+  ### Header
+  ```json
+  {}
+  ```
+  ### Param
+  ```json
+  {
+    "memberUuid": "string",
+    "aptSeq": "string"
+  }
+  ```
+  ---
+  ## FavoriteToggle Response
+  ### Header
+  ```json
+  {}
+  ```
+  ### Body
+  ```json
+  {
+    "httpStatus": {
+      "error": true,
+      "is4xxClientError": true,
+      "is5xxServerError": true,
+      "is1xxInformational": true,
+      "is2xxSuccessful": true,
+      "is3xxRedirection": true
+    },
+    "isSuccess": true,
+    "message": "string",
+    "code": 1073741824,
+    "result": "string"
+  }
+  ```
+  
+</details> <details> <summary><strong>⭐ 즐겨찾기 목록</strong> <code>GET</code></summary>
+
+- API Path: /api/v1/bookmarks/list/{memberUuid}
+
+- 설명: 회원 즐겨찾기 목록
+  ## BookmarkList Request
+  ### Header
+  ```json
+  {}
+  ```
+  ### Param
+  ```json
+  {
+    "memberUuid": "string"
+  }
+  ```
+  ---
+  ## BookmarkList Response
+  ### Header
+  ```json
+  {}
+  ```
+  ### Body
+  ```json
+  {
+    "httpStatus": {
+      "error": true,
+      "is4xxClientError": true,
+      "is5xxServerError": true,
+      "is1xxInformational": true,
+      "is2xxSuccessful": true,
+      "is3xxRedirection": true
+    },
+    "isSuccess": true,
+    "message": "string",
+    "code": number,
+    "result": [
+      {
+        "bookmarkId": number,
+        "memberUuid": "string",
+        "memberName": "string",
+        "aptSeq": "string",
+        "aptName": "string",
+        "createdAt": "string",   // ISO 8601 date-time
+        "updatedAt": "string"    // ISO 8601 date-time
+      }
+    ]
+  }
+  ```
 
 </details>
+📌 검색 캐시
+<details> <summary><strong>📌 최근 검색어 등록</strong> <code>POST</code></summary>
 
-<details>
-  <summary><strong>📌 최신 거래 리스트 조회</strong> <code>GET</code></summary>
+- API Path: /api/v1/cache/search/word
 
-  - **API Path**: `/api/v1/deals/latest-list/{aptSeq}`
-  - **설명**: 최신 거래 리스트
+- 설명: 검색어를 캐시에 등록
+  ## CacheSearchRequest
+  ### Header
+  ```json
+  {
+  	"Authorization": accessToekn;
+  }
+  ```
+  ### Param
+  ```json
+  {
+  	
+  }
+  ```
+  ### Body
+  ```json
+  {
+  	searchWord: string;
+  }
+  ```
+</details> <details> <summary><strong>📌 최근 검색어 조회</strong> <code>GET</code></summary>
+
+- API Path: /api/v1/cache/search/list
+
+- 설명: 검색어 목록 조회
+  ## SearchList Request
+  ### Header
+  ```json
+  {
+    "Authorization": "Bearer {accessToken}"
+  }
+  ```
+  ### Param
+  ```json
+  {
+    "userId": "string"
+  }
+  ```
+  ---
+  ## SearchList Response
+  ### Header
+  ```json
+  {}
+  ```
+  ### Param
+  ```json
+  {
+    "userId": "string"
+  }
+  ```
+  ### Body
+  ```json
+  [
+    {
+      "searchWord": "string"
+    }
+  ]
+  ```
+
+</details> <details> <summary><strong>📌 검색어 삭제</strong> <code>DELETE</code></summary>
+
+- API Path: /api/v1/cache/search/words
+
+- 설명: 저장된 검색어 삭제
+  ## DeleteWords Request
+  ### Header
+  ```json
+  {
+    "Authorization": "Bearer {accessToken}"
+  }
+  ```
+  ### Param
+  ```json
+  {
+    "userId": "string"
+  }
+  ```
+  ---
+
+</details> <details> <summary><strong>📌 검색어 개별 삭제</strong> <code>DELETE</code></summary>
+
+- API Path: /api/v1/cache/search/word/{searchWord}
+
+- 설명: 저장된 검색어 삭제
+  ## DeleteWord Request
+  ### Header
+  ```json
+  {
+  "Authorization": "Bearer {accessToken}"
+  }
+  ```
+  ### Param
+  ```json
+  {
+  "userId": "string",
+  "searchWord": "string"
+  }
+  ```
+  ---
+  
+</details> <details> <summary><strong>📌 최근 아파트 조회</strong> <code>GET</code></summary>
+
+- API Path: /api/v1/cache/recent-view-houses
+
+- 설명: 최근 본 아파트 조회
+  ## Recent View Houses Response 
+  ### Header
+  ```json
+  {
+  }
+  ```
+  ### Param
+  
+  ```json
+  {
+  }
+  ```
+  ### Body
+  ```json
+  {
+  	res: list;
+  }
+  ```
 
 </details>
+🛍 상권 및 주소
+<details> <summary><strong>🛍 반경 내 상권</strong> <code>GET</code></summary>
 
-<details>
-  <summary><strong>📌 금액별 통계 요약</strong> <code>GET</code></summary>
+- API Path: /api/v1/Commercials/radius
 
-  - **API Path**: `/api/v1/deals/amountStatResponseList`
-  - **설명**: 금액별 통계
+- 설명: 반경 내 상권 조회
+  ## CommercialRadius Request
+  ### Header
+  ```json
+  {}
+  ```
+  ### Param
+  ```json
+  {
+    "cx": number,
+    "cy": number,
+    "radius": number
+  }
+  ```
+  ---
+  ## CommercialRadius Response
+  ### Header
+  ```json
+  {}
+  ```
+  ### Body
+  ```json
+  [
+    {
+      "description": "string",
+      "columns": "string",
+      "resultCode": "string",
+      "resultMsg": "string",
+      "trarNo": "string",
+      "mainTrarNm": "string",
+      "ctrprvnCd": "string",
+      "ctrprvnNm": "string",
+      "signguCd": "string",
+      "signguNm": "string",
+      "trarArea": "string",
+      "coordNum": "string",
+      "coords": "string",
+      "stdrt": "string"
+    }
+  ]
+  ```
 
-</details>
+</details> <details> <summary><strong>🛍 상권 업종 통계</strong> <code>GET</code></summary>
 
-<details>
-  <summary><strong>📌 금액별 상세 리스트</strong> <code>GET</code></summary>
+- API Path: /api/v1/Commercials/stat
 
-  - **API Path**: `/api/v1/deals/list/{aptSeq}`
-  - **설명**: 실거래 상세 리스트
+- 설명: 상권 업종별 통계
+  ## CommercialStat Request
+  ### Header
+  ```json
+  {}
+  ```
+  ### Param
+  ```json
+  {
+    "cx": number,
+    "cy": number,
+    "radius": number
+  }
+  ```
+  ---
+  ## CommercialStat Response
+  ### Header
+  ```json
+  {}
+  ```
+  ### Body
+  ```json
+  {
+    "httpStatus": {
+      "error": true,
+      "is4xxClientError": true,
+      "is5xxServerError": true,
+      "is1xxInformational": true,
+      "is2xxSuccessful": true,
+      "is3xxRedirection": true
+    },
+    "isSuccess": true,
+    "message": "string",
+    "code": 1073741824,
+    "result": {
+      "categoryCountMap": {
+        "additionalProp1": number,
+        "additionalProp2": number,
+        "additionalProp3": number
+      }
+    }
+  }
+  ```
+  
 
-</details>
+</details> <details> <summary><strong>🛍 상권별 업종 리스트</strong> <code>GET</code></summary>
 
-<details>
-  <summary><strong>📌 회원 정보 수정</strong> <code>PATCH</code></summary>
+- API Path: /api/v1/Commercials/storeListInArea/{branch}
 
-  - **API Path**: `/api/v1/members/memberUpdate`
-  - **설명**: 회원 정보 수정
+- 설명: 상권별 업종 리스트
+  ## StoreListInArea Request
+  ### Header
+  ```json
+  {}
+  ```
+  ### Param
+  ```json
+  {
+    "trarNo": "string"
+  }
+  ```
+  ---
+  ## StoreListInArea Response
+  ### Header
+  ```json
+  {}
+  ```
+  ### Body
+  ```json
+  [
+    {
+      "bizesId": "string",
+      "bizesNm": "string",
+      "brchNm": "string",
+      "indstClsfCd": "string",
+      "indstClsfNm": "string",
+      "indstMclsCd": "string",
+      "indstMclsNm": "string",
+      "indstSclsCd": "string",
+      "indstSclsNm": "string",
+      "ksicCd": "string",
+      "ksicNm": "string",
+      "lon": "string",
+      "lat": "string"
+    }
+  ]
+  ```
 
-</details>
+</details> <details> <summary><strong>🛍 시 조회</strong> <code>GET</code></summary>
 
-<details>
-  <summary><strong>📌 마이페이지 조회</strong> <code>GET</code></summary>
+- API Path: /api/v1/addresses/getCityList
 
-  - **API Path**: `/api/v1/members/mypage/{memberUuid}`
-  - **설명**: 마이페이지 정보
+- 설명: 시 리스트 조회
+  ## CityList Response
+  ### Header
+  ```json
+  {}
+  ```
+  ### Body
+  ```json
+  {
+    "httpStatus": {
+      "error": true,
+      "is4xxClientError": true,
+      "is5xxServerError": true,
+      "is1xxInformational": true,
+      "is2xxSuccessful": true,
+      "is3xxRedirection": true
+    },
+    "isSuccess": true,
+    "message": "string",
+    "code": 1073741824,
+    "result": [
+      {
+        "adressSeq": "string",
+        "citySeq": "string",
+        "guSeq": "string",
+        "dongSeq": "string",
+        "cityName": "string",
+        "guName": "string",
+        "dongName": "string"
+      }
+    ]
+  }
+  ```
+</details> <details> <summary><strong>🛍 구 조회</strong> <code>GET</code></summary>
 
-</details>
+- API Path: /api/v1/addresses/getGuList/{citySeq}
 
-<details>
-  <summary><strong>📌 북마크 여부 확인</strong> <code>GET</code></summary>
+- 설명: 구 리스트 조회
+  ## GuList Request
+  ### Header
+  ```json
+  {}
+  ```
+  ### Param
+  ```json
+  {
+    "citySeq": "string"
+  }
+  ```
+  ---
+  ## GuList Response
+  ### Header
+  ```json
+  {}
+  ```
+  ### Body
+  ```json
+  {
+    "httpStatus": {
+      "error": true,
+      "is4xxClientError": true,
+      "is5xxServerError": true,
+      "is1xxInformational": true,
+      "is2xxSuccessful": true,
+      "is3xxRedirection": true
+    },
+    "isSuccess": true,
+    "message": "string",
+    "code": 1073741824,
+    "result": [
+      {
+        "adressSeq": "string",
+        "citySeq": "string",
+        "guSeq": "string",
+        "dongSeq": "string",
+        "cityName": "string",
+        "guName": "string",
+        "dongName": "string"
+      }
+    ]
+  }
+  ```
 
-  - **API Path**: `/api/v1/bookmarks/check`
-  - **설명**: 즐겨찾기 여부 확인
+</details> <details> <summary><strong>🛍 동 조회</strong> <code>GET</code></summary>
 
-</details>
+- API Path: /api/v1/addresses/getDongList/{citySeq}
 
-<details>
-  <summary><strong>📌 즐겨찾기 삭제</strong> <code>DELETE</code></summary>
-
-  - **API Path**: `/api/v1/bookmarks/{bookmarkId}`
-  - **설명**: 즐겨찾기 삭제
-
-</details>
-
-<details>
-  <summary><strong>📌 즐겨찾기 수 조회</strong> <code>GET</code></summary>
-
-  - **API Path**: `/api/v1/bookmarks/getBookmarkCnt/{aptSeq}`
-  - **설명**: 해당 아파트 즐겨찾기 수
-
-</details>
-
-<details>
-  <summary><strong>📌 즐겨찾기 토글</strong> <code>PATCH</code></summary>
-
-  - **API Path**: `/api/v1/bookmarks/toggle/{memberUuid}`
-  - **설명**: 즐겨찾기 추가/제거
-
-</details>
-
-<details>
-  <summary><strong>📌 즐겨찾기 목록</strong> <code>GET</code></summary>
-
-  - **API Path**: `/api/v1/bookmarks/list/{memberUuid}`
-  - **설명**: 회원 즐겨찾기 목록
-
-</details>
-
-<details>
-  <summary><strong>📌 리뷰 삭제</strong> <code>DELETE</code></summary>
-
-  - **API Path**: `/api/v1/reviews/{reviewId}`
-  - **설명**: 작성된 리뷰 삭제
-
-</details>
-
-<details>
-  <summary><strong>📌 아파트 리뷰 조회</strong> <code>GET</code></summary>
-
-  - **API Path**: `/api/v1/reviews/{aptSeq}`
-  - **설명**: 해당 아파트 리뷰 조회
-
-</details>
-
-<details>
-  <summary><strong>📌 최신 리뷰 조회</strong> <code>GET</code></summary>
-
-  - **API Path**: `/api/v1/reviews/reviewList/{aptSeq}`
-  - **설명**: 최신 리뷰 목록
-
-</details>
-
-<details>
-  <summary><strong>📌 리뷰 수정</strong> <code>PATCH</code></summary>
-
-  - **API Path**: `/api/v1/reviews/reviewUpdate`
-  - **설명**: 기존 리뷰 수정
-
-</details>
-
-<details>
-  <summary><strong>📌 리뷰 작성</strong> <code>POST</code></summary>
-
-  - **API Path**: `/api/v1/reviews/reviewInsert`
-  - **설명**: 새 리뷰 등록
-
-</details>
-
-<details>
-  <summary><strong>📌 유사 아파트 조회</strong> <code>GET</code></summary>
-
-  - **API Path**: `/api/v1/houses/search`
-  - **설명**: 외관 유사 아파트 추천
-
-</details>
-
-<details>
-  <summary><strong>📌 조건 검색</strong> <code>GET</code></summary>
-
-  - **API Path**: `/api/v1/houses/condition-list`
-  - **설명**: 조건 기반 아파트 필터링
+- 설명: 동 리스트 조회
+  ## DongList Request
+  ```
+  ### Header
+  ```json
+  {}
+  ```
+  ### Param
+  ```json
+  {
+    "citySeq": "string",
+    "guSeq": "string"
+  }
+  ```
+  ---
+  ## DongList Response
+  ### Header
+  ```json
+  {}
+  ```
+  ### Body
+  ```json
+  {
+    "httpStatus": {
+      "error": true,
+      "is4xxClientError": true,
+      "is5xxServerError": true,
+      "is1xxInformational": true,
+      "is2xxSuccessful": true,
+      "is3xxRedirection": true
+    },
+    "isSuccess": true,
+    "message": "string",
+    "code": 1073741824,
+    "result": [
+      {
+        "adressSeq": "string",
+        "citySeq": "string",
+        "guSeq": "string",
+        "dongSeq": "string",
+        "cityName": "string",
+        "guName": "string",
+        "dongName": "string"
+      }
+    ]
+  }
+  ```
 
 </details>
 
