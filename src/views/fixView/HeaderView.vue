@@ -34,6 +34,7 @@
 
         <!-- 로그인 후 -->
         <div v-else class="flex items-center space-x-4">
+          <button><BookMarked class="w-5 h-5 -mt-0.5" @click="goBookMark" /></button>
           <span class="text-gray-700 font-semibold cursor-pointer hover:underline" @click="$router.push('/mypage')">
             {{ username }}님
           </span>
@@ -83,11 +84,16 @@ import { loggedIn } from "@/util/auth/auth";
 import { getUsername, logout } from "@/util/auth/auth";
 import { computed } from "vue";
 import { useRouter } from "vue-router";
+import { BookMarked } from "lucide-vue-next";
 
 const router = useRouter();
 const username = computed(() => getUsername());
 
 function logoutAndReload() {
   logout().then(() => router.go(0));
+}
+
+function goBookMark() {
+  router.push("/MybookmarkView");
 }
 </script>
