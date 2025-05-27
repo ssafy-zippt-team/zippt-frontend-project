@@ -4,46 +4,45 @@
 
 🏠**메인 페이지(Web)**
 
-|  |
+| ![메인 화면](https://github.com/user-attachments/assets/c87a260f-313d-4881-a88b-393c579ec718)|
 | --- |
 | **메인 화면** <br> 서비스의 첫 진입 페이지로, 로그인, 검색, 최근 검색 기록, 뉴스 기능 등의 카테고리를 사용할 수 있습니다. |
 
 🔐 **로그인 기능**
 
-|![로그인 화면](https://github.com/user-attachments/assets/15f221c8-89c9-4aed-9586-b048731fc7a9) |![회원가입 화면](https://github.com/user-attachments/assets/759cb131-108e-4119-be9d-a027fcd3184a)|
+| ![로그인 화면](https://github.com/user-attachments/assets/0acba9d6-ef6d-4724-ba9c-bb60b4ae25cc) |![회원가입 화면](https://github.com/user-attachments/assets/691c147e-e603-4883-a207-331550f5dd12)|
 | --- | --- |
-| **로그인 화면** <br> 로그인을 진행하며 회원가입 페이지로 이동가능합니다. | **회원가입 화면** <br> 회원가입을 진행할 수 있습니다. |
+| **로그인 화면** <br> 로그인을 진행하며 회원가입 페이지로 이동 가능합니다. | **회원가입 화면** <br> 회원가입을 진행할 수 있습니다. |
 
 🔎 **메인 화면 : 검색 기능**
 
-| ![장소와 아파트 검색](https://github.com/user-attachments/assets/747c4756-924d-4d15-b4b5-ce4887916b22) | ![최근 검색어 기능](https://github.com/user-attachments/assets/12e3773a-13db-4fe0-91ab-72bc55869693)|
+| ![장소와 아파트 검색](https://github.com/user-attachments/assets/0059fba5-6bc4-4aa4-9fa4-391d4ec8b5f9) | ![최근 검색어 기능](https://github.com/user-attachments/assets/04cdc345-cdc3-4a95-a5c8-52a4464b3b4f)|
 | --- | --- |
 | **장소와 아파트 검색** <br> 장소와 아파트 토글 기능으로 사용자가 원하는 필터링 검색기능이 제공됩니다. | **최근 검색어 기능** <br> 최근에 검색한 내역을 저장합니다. 저장된 검색어는 UI 상단에 표시되며, 클릭 시 바로 재검색이 가능해 검색의 편의성을 높입니다. |
 
 📊 **메인 화면 :** **사용자 편의 기능**
 
-|  |
+| ![광역시별 매물 통계](https://github.com/user-attachments/assets/45901d72-b444-4d65-aa0c-eedd03041868)|
 | --- |
 | **광역시별 매물 통계** <br> 당해 광역시별 매물 통계 데이터를 가져오며, 사용자는 **매물 건수와 평균 매매가** 를 확인할 수 있습니다. |
-|  |
+| ![오늘의 NEWS](https://github.com/user-attachments/assets/8f0be2de-b447-4c63-994e-55b008b411cd) |
 | **오늘의 NEWS** <br> 해당 일자의 최신 뉴스를 사용자가 확인할 수 있는 기능입니다. 매일 업데이트 되는 뉴스 리스트를 통해 부동산 관련 정보에 빠르게 접근 할 수 있습니다. |
-|  |
+| ![최근 본 아파트](https://github.com/user-attachments/assets/ea253563-21ef-4311-bac0-7ad47611f776) |
 | **최근 본 아파트**  <br> 
-최근 본 아파트는 유지되며,
-사용자 편의를 위해 **슬라이드 카드형 UI로** 구성되어 있습니다. |
+최근 본 아파트는 유지되며,사용자 편의를 위해 **슬라이드 카드형 UI로** 구성되어 있습니다. |
 
 🗺️ **지도(Map)**
 
 👤 **지도 :** **기본 UI**
 
-|  |
+| ![행정 지역 단위 경계 적용](https://github.com/user-attachments/assets/8603566c-feeb-49b2-b183-43575bee7e3a) |
 | --- |
 | **행정 지역 단위 경계 적용** <br> 지도의 가독성과 상호작 용성을 높이기 위한 기능으로, 사용자가 지도 위 행정 구역(시,군,구)에 커서를 올리거나 클릭할 때 해당 지역의 경계선이 시각적으로 표시됩니다. |
-|  |
+| ![행정 단위 검색](https://github.com/user-attachments/assets/a57419f4-90c8-4a81-ac9a-7e3dc0772bb3) |
 | **행정 단위 검색** <br> 지도 상단의 행정단위 검색 UI를 통해 사용자가 관심 지역을 빠르게 탐색할 수 있습니다. |
-|  |
+| ![*검색된 아파트 마킹](https://github.com/user-attachments/assets/623aa89e-b3de-4001-93ca-06ca2f54a9b7) |
 | **검색된 아파트 마킹** <br> 검색된 아파트의 마커를 클릭하면 해당 위치로 이동하며 상세 정보가 함께 표시됩니다. |
-|  |
+| ![맵 확대/축소, 스플릿 UI](https://github.com/user-attachments/assets/18a10b2c-a6f8-469b-a3da-0c94db677536) |
 | **맵 확대/축소, 스플릿 UI**  <br> 
 지도 확대/축소 기능과 리스트 연동형 스플릿 UI를 통해 직관적인 탐색 경험을 제공합니다. |
 
@@ -68,5 +67,5 @@
 | **AI 요약 리뷰 기능**  <br> 선택한 아파트 정보를 기반으로 AI가 요약 리뷰를 자동 생성해 제공합니다. |
 |  |
 |  **즐겨 찾기 기능**  <br> 회원이 아파트를 즐겨찾기에 추가할 수 있으며, 아파트에 등록된 즐겨찾기 수를 집계합니다. |
-|  |
+| ![회원별 즐겨찾기 목록](https://github.com/user-attachments/assets/701c0365-5e4a-4c86-b605-60ef5d2c8f9c) |
 |  **회원별 즐겨찾기 목록**  <br> 회원이 추가한 즐겨찾기 목록을 조회합니다. |
