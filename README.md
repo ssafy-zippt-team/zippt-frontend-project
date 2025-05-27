@@ -76,8 +76,256 @@
 
 ---
 
-
 ### API SPEC
+
+<details>
+  <summary><strong>📌 최근 검색어 등록</strong> <code>POST</code></summary>
+
+  - **API Path**: `/api/v1/cache/search/word`
+  - **설명**: 검색어를 캐시에 등록
+
+</details>
+
+<details>
+  <summary><strong>📌 최근 아파트 조회</strong> <code>GET</code></summary>
+
+  - **API Path**: `/api/v1/cache/recent-view-houses`
+  - **설명**: 최근 본 아파트 조회
+
+</details>
+
+<details>
+  <summary><strong>📌 최근 검색어 조회</strong> <code>GET</code></summary>
+
+  - **API Path**: `/api/v1/cache/search/list`
+  - **설명**: 검색어 목록 조회
+
+</details>
+
+<details>
+  <summary><strong>📌 검색어 삭제</strong> <code>DELETE</code></summary>
+
+  - **API Path**: `/api/v1/cache/search/words`
+  - **설명**: 저장된 검색어 삭제
+
+</details>
+
+<details>
+  <summary><strong>📌 회원가입</strong> <code>POST</code></summary>
+
+  - **API Path**: `/api/v1/join`
+  - **설명**: 신규 사용자 등록
+
+</details>
+
+<details>
+  <summary><strong>📌 로그아웃 (AccessToken)</strong> <code>POST</code></summary>
+
+  - **API Path**: `/api/v1/logout/Token`
+  - **설명**: 로그아웃 처리
+
+</details>
+
+<details>
+  <summary><strong>📌 로그아웃 (RefreshToken)</strong> <code>POST</code></summary>
+
+  - **API Path**: `/api/v1/logout/Token`
+  - **설명**: 로그아웃 처리
+
+</details>
+
+<details>
+  <summary><strong>📌 반경 내 상권</strong> <code>GET</code></summary>
+
+  - **API Path**: `/api/v1/Commercials/radius`
+  - **설명**: 반경 내 상권 조회
+
+</details>
+
+<details>
+  <summary><strong>📌 상권 업종 통계</strong> <code>GET</code></summary>
+
+  - **API Path**: `/api/v1/Commercials/stat`
+  - **설명**: 상권 업종별 통계
+
+</details>
+
+<details>
+  <summary><strong>📌 상권별 업종 리스트</strong> <code>GET</code></summary>
+
+  - **API Path**: `/api/v1/Commercials/storeListInArea/{branch}`
+  - **설명**: 상권별 업종 리스트
+
+</details>
+
+<details>
+  <summary><strong>📌 시 조회</strong> <code>GET</code></summary>
+
+  - **API Path**: `/api/v1/addresses/getCityList`
+  - **설명**: 시 리스트 조회
+
+</details>
+
+<details>
+  <summary><strong>📌 동 조회</strong> <code>GET</code></summary>
+
+  - **API Path**: `/api/v1/addresses/getDongList/{citySeq}`
+  - **설명**: 동 리스트 조회
+
+</details>
+
+<details>
+  <summary><strong>📌 구 조회</strong> <code>GET</code></summary>
+
+  - **API Path**: `/api/v1/addresses/getGuList/{citySeq}`
+  - **설명**: 구 리스트 조회
+
+</details>
+
+<details>
+  <summary><strong>📌 아파트 요약</strong> <code>GET</code></summary>
+
+  - **API Path**: `/api/v1/Ai/summary/{aptSeq}`
+  - **설명**: AI 기반 아파트 요약
+
+</details>
+
+<details>
+  <summary><strong>📌 최신 거래 리스트 조회</strong> <code>GET</code></summary>
+
+  - **API Path**: `/api/v1/deals/latest-list/{aptSeq}`
+  - **설명**: 최신 거래 리스트
+
+</details>
+
+<details>
+  <summary><strong>📌 금액별 통계 요약</strong> <code>GET</code></summary>
+
+  - **API Path**: `/api/v1/deals/amountStatResponseList`
+  - **설명**: 금액별 통계
+
+</details>
+
+<details>
+  <summary><strong>📌 금액별 상세 리스트</strong> <code>GET</code></summary>
+
+  - **API Path**: `/api/v1/deals/list/{aptSeq}`
+  - **설명**: 실거래 상세 리스트
+
+</details>
+
+<details>
+  <summary><strong>📌 회원 정보 수정</strong> <code>PATCH</code></summary>
+
+  - **API Path**: `/api/v1/members/memberUpdate`
+  - **설명**: 회원 정보 수정
+
+</details>
+
+<details>
+  <summary><strong>📌 마이페이지 조회</strong> <code>GET</code></summary>
+
+  - **API Path**: `/api/v1/members/mypage/{memberUuid}`
+  - **설명**: 마이페이지 정보
+
+</details>
+
+<details>
+  <summary><strong>📌 북마크 여부 확인</strong> <code>GET</code></summary>
+
+  - **API Path**: `/api/v1/bookmarks/check`
+  - **설명**: 즐겨찾기 여부 확인
+
+</details>
+
+<details>
+  <summary><strong>📌 즐겨찾기 삭제</strong> <code>DELETE</code></summary>
+
+  - **API Path**: `/api/v1/bookmarks/{bookmarkId}`
+  - **설명**: 즐겨찾기 삭제
+
+</details>
+
+<details>
+  <summary><strong>📌 즐겨찾기 수 조회</strong> <code>GET</code></summary>
+
+  - **API Path**: `/api/v1/bookmarks/getBookmarkCnt/{aptSeq}`
+  - **설명**: 해당 아파트 즐겨찾기 수
+
+</details>
+
+<details>
+  <summary><strong>📌 즐겨찾기 토글</strong> <code>PATCH</code></summary>
+
+  - **API Path**: `/api/v1/bookmarks/toggle/{memberUuid}`
+  - **설명**: 즐겨찾기 추가/제거
+
+</details>
+
+<details>
+  <summary><strong>📌 즐겨찾기 목록</strong> <code>GET</code></summary>
+
+  - **API Path**: `/api/v1/bookmarks/list/{memberUuid}`
+  - **설명**: 회원 즐겨찾기 목록
+
+</details>
+
+<details>
+  <summary><strong>📌 리뷰 삭제</strong> <code>DELETE</code></summary>
+
+  - **API Path**: `/api/v1/reviews/{reviewId}`
+  - **설명**: 작성된 리뷰 삭제
+
+</details>
+
+<details>
+  <summary><strong>📌 아파트 리뷰 조회</strong> <code>GET</code></summary>
+
+  - **API Path**: `/api/v1/reviews/{aptSeq}`
+  - **설명**: 해당 아파트 리뷰 조회
+
+</details>
+
+<details>
+  <summary><strong>📌 최신 리뷰 조회</strong> <code>GET</code></summary>
+
+  - **API Path**: `/api/v1/reviews/reviewList/{aptSeq}`
+  - **설명**: 최신 리뷰 목록
+
+</details>
+
+<details>
+  <summary><strong>📌 리뷰 수정</strong> <code>PATCH</code></summary>
+
+  - **API Path**: `/api/v1/reviews/reviewUpdate`
+  - **설명**: 기존 리뷰 수정
+
+</details>
+
+<details>
+  <summary><strong>📌 리뷰 작성</strong> <code>POST</code></summary>
+
+  - **API Path**: `/api/v1/reviews/reviewInsert`
+  - **설명**: 새 리뷰 등록
+
+</details>
+
+<details>
+  <summary><strong>📌 유사 아파트 조회</strong> <code>GET</code></summary>
+
+  - **API Path**: `/api/v1/houses/search`
+  - **설명**: 외관 유사 아파트 추천
+
+</details>
+
+<details>
+  <summary><strong>📌 조건 검색</strong> <code>GET</code></summary>
+
+  - **API Path**: `/api/v1/houses/condition-list`
+  - **설명**: 조건 기반 아파트 필터링
+
+</details>
+
 
 ## **🖥️ 주요 기능**
 
