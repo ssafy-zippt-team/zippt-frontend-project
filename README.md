@@ -29,7 +29,7 @@
 
 <img src="https://github.com/user-attachments/assets/c9271593-9bc1-4721-817a-486ecf254ebe" width="140"/>
 
-- **담당**:  
+- **담당**: FrontEnd, BackEnd(Security)
 - **이메일**: dylee@example.com
 
 ---
@@ -38,7 +38,7 @@
 
 <img src="https://github.com/user-attachments/assets/57ff48a5-61bc-42ca-b493-d5249e8e0531" width="140"/>
 
-- **담당**:  
+- **담당**: FrontEnd, BackEnd(AI)
 - **이메일**: hjh@example.com
 
 ---
@@ -47,7 +47,7 @@
 
 <img src="https://github.com/user-attachments/assets/45efa241-4c19-4431-a345-1cf5e8ccaff7" width="140"/>
 
-- **담당**:  
+- **담당**: FrontEnd, BackEnd(DB)
 - **이메일**: jh.hong@example.com
 
 ---
