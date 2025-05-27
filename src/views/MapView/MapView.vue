@@ -274,7 +274,7 @@ onMounted(async () => {
   if (bookstored) {
     console.log("stored: ", bookstored);
     const apt = JSON.parse(bookstored);
-    localStorage.removeItem("selectedRecentApt");
+    localStorage.removeItem("selectedBookmarkApt");
 
     kakaoMap.value.setCenter(new window.kakao.maps.LatLng(apt.latitude, apt.longitude));
     // kakaoMap.value.setCenter(new window.kakao.maps.LatLng(36.4687, 127.9099));
