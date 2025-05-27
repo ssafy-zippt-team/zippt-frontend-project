@@ -1,65 +1,105 @@
 <script>
-import { ref, onMounted } from "vue";
-import { useRouter } from "vue-router";
+import { ref } from "vue";
+// import { useRouter } from "vue-router";
 import { update, getMypage } from "@/api/mypageApi";
 import { getMemberUuid } from "@/util/auth/auth";
+import { checkPassword as apiCheckPassword } from "@/api/checkPasswordApi.js";
+import Swal from "sweetalert2";
 import "@/assets/css/MypageView.css";
 
 export default {
   setup() {
+    const memberUuid = ref(getMemberUuid());
+    const password = ref(""); // 확인용 비밀번호
     const nickname = ref(""); // 닉네임
-    const username = ref(""); // 이름
+    const username = ref(""); // 이름(읽기 전용)
     const userEmail = ref(""); // 이메일
-    const password = ref(""); // 비밀번호 (빈 값 유지)
-    const createdAt = ref(""); // 계정 생성일자
+    const createdAt = ref(""); // 가입일
     const phoneNumber = ref(""); // 휴대폰 번호
-    const memberUuid = ref(""); // 회원 UUID
-    const router = useRouter();
+    const checkP = ref(false); // 비밀번호 인증 여부
 
-    onMounted(async () => {
+    // const router = useRouter();
+
+    // 인증 후 호출: 실제 마이페이지 데이터 로드
+    const loadMypageData = async () => {
       try {
-        memberUuid.value = getMemberUuid();
-        console.log("회원 UUID:", memberUuid.value);
         const res = await getMypage(memberUuid.value);
         const data = res.data.result;
-
         nickname.value = data.memberName;
         username.value = data.name;
         userEmail.value = data.email;
-        password.value = ""; // 비밀번호는 빈 값 유지
         createdAt.value = data.createdAt;
         phoneNumber.value = data.phoneNumber;
-      } catch (e) {
-        console.error("회원 정보 조회 실패", e);
+      } catch (err) {
+        console.error("회원 정보 조회 실패:", err);
       }
-    });
+    };
 
-    const handleSubmit = async () => {
+    // 비밀번호 확인 핸들러
+    const startChecking = async (event) => {
+      event.preventDefault();
+      Swal.fire({
+        title: "확인 중…",
+        html: "잠시만 기다려주세요.",
+        allowOutsideClick: false,
+        didOpen: () => Swal.showLoading(),
+      });
+
+      try {
+        // API 스펙에 따라 객체 형태로 넘기세요.
+        await apiCheckPassword({ password: password.value });
+        Swal.close();
+        await Swal.fire({
+          title: "비밀번호 확인 완료",
+          icon: "success",
+          confirmButtonText: "확인",
+          confirmButtonColor: "#115C5E",
+          allowOutsideClick: true,
+        });
+
+        checkP.value = true;
+        await loadMypageData();
+      } catch (err) {
+        Swal.close();
+        await Swal.fire({
+          title: "비밀번호 확인 실패",
+          html: "비밀번호가 일치하지 않습니다.",
+          icon: "error",
+          confirmButtonText: "다시 시도",
+          confirmButtonColor: "#D33",
+          allowOutsideClick: true,
+        });
+        console.error("비밀번호 확인 에러:", err);
+      }
+    };
+
+    // 정보 수정 핸들러
+    const handleSubmit = async (event) => {
+      event.preventDefault();
       const phoneRegex = /^01[016789]-?\d{3,4}-?\d{4}$/;
       if (!phoneRegex.test(phoneNumber.value)) {
-        alert("올바른 휴대폰 번호 형식이 아닙니다.");
-        return;
+        return Swal.fire({ title: "오류", html: "올바른 휴대폰 번호 형식이 아닙니다.", icon: "warning" });
       }
 
       try {
         await update(memberUuid.value, nickname.value, userEmail.value, phoneNumber.value);
-        alert("개인정보 수정 완료!");
-      } catch (e) {
-        alert("개인정보 수정 실패");
-        console.error(e);
+        Swal.fire({ title: "수정 완료", icon: "success" });
+      } catch (err) {
+        Swal.fire({ title: "수정 실패", icon: "error" });
+        console.error("개인정보 수정 에러:", err);
       }
     };
 
     return {
+      password,
       nickname,
       username,
       userEmail,
-      password,
       createdAt,
       phoneNumber,
-      memberUuid,
+      checkP,
+      startChecking,
       handleSubmit,
-      router,
     };
   },
 };
@@ -69,13 +109,30 @@ export default {
   <div class="login-page">
     <div class="login-container">
       <div class="login-card">
-        <form class="login-form" @submit.prevent="handleSubmit">
+        <!-- 1) 비밀번호 확인 폼 -->
+        <form v-if="!checkP" class="login-form" @submit="startChecking">
+          <div class="form-group">
+            <label class="form-label" for="password">비밀번호 확인</label>
+            <input
+              id="password"
+              v-model="password"
+              type="password"
+              class="form-input bg-gray-100"
+              placeholder="비밀번호를 입력하세요."
+              required
+            />
+          </div>
+          <button type="submit" class="login-button">확인</button>
+        </form>
+
+        <!-- 2) 인증 후 개인정보 수정 폼 -->
+        <form v-else class="login-form" @submit="handleSubmit">
           <h1 class="login-title">마이 페이지</h1>
           <p class="login-subtitle">회원님의 정보입니다.</p>
 
           <div class="form-group">
             <label class="form-label" for="nickname">닉네임</label>
-            <input id="nickname" v-model="nickname" type="text" class="form-input bg-gray-100" />
+            <input id="nickname" v-model="nickname" type="text" class="form-input bg-gray-100" required />
           </div>
 
           <div class="form-group">
@@ -85,29 +142,12 @@ export default {
 
           <div class="form-group">
             <label class="form-label" for="userEmail">이메일</label>
-            <input id="userEmail" v-model="userEmail" type="email" class="form-input bg-gray-100" />
+            <input id="userEmail" v-model="userEmail" type="email" class="form-input bg-gray-100" required />
           </div>
-
-          <div class="form-group">
-            <label class="form-label" for="password">비밀번호</label>
-            <input
-              id="password"
-              v-model="password"
-              type="password"
-              class="form-input bg-gray-100"
-              placeholder="비밀번호는 변경되지 않습니다."
-              readonly
-            />
-          </div>
-
-          <!-- <div class="form-group">
-            <label class="form-label" for="createdAt">계정생성일자</label>
-            <input id="createdAt" v-model="createdAt" type="text" readonly class="form-input bg-gray-100" />
-          </div> -->
 
           <div class="form-group">
             <label class="form-label" for="phoneNumber">휴대폰 번호</label>
-            <input id="phoneNumber" v-model="phoneNumber" type="tel" class="form-input bg-gray-100" />
+            <input id="phoneNumber" v-model="phoneNumber" type="tel" class="form-input bg-gray-100" required />
           </div>
 
           <button type="submit" class="login-button">수정하기</button>
