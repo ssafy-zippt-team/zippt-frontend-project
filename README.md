@@ -29,8 +29,17 @@
 
 <img src="https://github.com/user-attachments/assets/c9271593-9bc1-4721-817a-486ecf254ebe" width="140"/>
 
-- **담당**: FrontEnd, BackEnd(Security)
-- **이메일**: dylee@example.com
+- **이메일**
+    - liftyun@gmail.com
+- **담당**
+    - FRONTEND
+        - 카카오맵 API를 활용한 지도기반 부동산 검색 페이지 구성 및 지도 마커 · 폴리곤 작업
+        - Sweet Alert2 적용해 alert 커스텀 작업
+        - 지도화면 리스트 및 디테일 컴포넌트 작업
+        - JWT 를 활용한 인증/인가 요청 및 회원정보 수정 화면 작업
+        - AI 요약 및 평가 기능 컴포넌트 작업
+    - BACKEND
+        - Spring Security 적용 및 회원 도메인 작업
 
 ---
 
@@ -38,8 +47,19 @@
 
 <img src="https://github.com/user-attachments/assets/57ff48a5-61bc-42ca-b493-d5249e8e0531" width="140"/>
 
-- **담당**: FrontEnd, BackEnd(AI)
-- **이메일**: hjh@example.com
+- **이메일**
+    - gjgmlwjd9@gmail.com
+- **담당**
+    - FRONTEND
+        - 메인화면 디자인 및 퍼블리싱 작업
+        - 네이버 검색 API를 활용한 부동산 뉴스 컴포넌트 작업
+    - BACKEND
+        - AI를 활용한 부동산 평가 및 요약 핵심기능 작업
+        - Vector Store를 활용한 텍스트 및 이미지 유사도 검색기능 작업
+        - 부동산 · 거래내역 도메인 작업
+        - 패키지 구조 설계 및 컨트롤러 공통 응답 클래스 작업
+        - 공통 페이지네이션 처리 객체 작업
+        - AWS EC2 , S3 등 영속성 인프라 작업
 
 ---
 
@@ -47,8 +67,17 @@
 
 <img src="https://github.com/user-attachments/assets/45efa241-4c19-4431-a345-1cf5e8ccaff7" width="140"/>
 
-- **담당**: FrontEnd, BackEnd(DB)
-- **이메일**: jh.hong@example.com
+- **이메일**
+    - wlgns9807@naver.com
+- **담당**
+  - FRONTEND
+      - 회원관련 로그인, 회원가입, 즐겨찾기, 리뷰, 마이페이지 작업
+      - Chart.js 를 활용한 광역시별 매물 통계 및 상권 그래프 컴포넌트 작업
+      - vue image zoomer 플러그인을 활용해 디테일 컴포넌트에 Image Zoom on Hover 적용
+      - 이미지 유사도 기반 부동산 추천 컴포넌트 작업
+  - BACKEND
+      - 리뷰, 즐겨찾기, 주소 도메인 작업
+      - 공공데이터포탈 OPEN API를 활용해 상권 데이터 가공을 통한 도메인 작업
 
 ---
 
@@ -90,18 +119,12 @@
 
     ```json
     {}
-
     ```
-
     ### Param
-
     ```json
     {}
-
     ```
-
     ### Body
-
     ```json
     {
     "nickname": "string",
@@ -116,11 +139,8 @@
 
     ```json
     {}
-
     ```
-
     ### Body
-
     ```json
     "ok"
 
@@ -169,12 +189,89 @@
 - API Path: /api/v1/members/memberUpdate
 
 - 설명: 회원 정보 수정
+  ## MypageUpdate Request
+  ### Header
+  ```json
+  {}
+  ```
+  ### Param
+  ```json
+  {
+    "memberUuid": "string",
+    "memberName": "string",
+    "email": "string",
+    "phoneNumber": "string",
+  }
+  ```
+  ## MypageUpdate Response
+  ### Header
+  ```json
+  {}
+  ```
+  ### Body
+  ```json
+  {
+    "httpStatus": {
+      "error": true,
+      "is3xxRedirection": true,
+      "is2xxSuccessful": true,
+      "is1xxInformational": true,
+      "is4xxClientError": true,
+      "is5xxServerError": true
+    },
+    "isSuccess": true,
+    "message": "string",
+    "code": 1073741824,
+    "result": "string"
+  }
+  ```
 
 </details> <details> <summary><strong>🧑‍💻 마이페이지 조회</strong> <code>GET</code></summary>
 
 - API Path: /api/v1/members/mypage/{memberUuid}
 
 - 설명: 마이페이지 정보
+  ## MypageList Request
+    ### Header
+    ```json
+    {}
+    ```
+    ### Param
+
+    ```json
+    {
+    "memberUuid": "string"  
+    }
+    ```
+    ---
+  ## MypageList Response
+    ### Header
+    ```json
+    {}
+    ```
+    ### Body
+    ```json
+    {
+      "httpStatus": {
+        "error": true,
+        "is3xxRedirection": true,
+        "is2xxSuccessful": true,
+        "is1xxInformational": true,
+        "is4xxClientError": true,
+        "is5xxServerError": true
+      },
+      "isSuccess": true,
+      "message": "string",
+      "code": 1073741824,
+      "result": {
+        "name": "string",
+        "memberName": "string",
+        "email": "string",
+        "phoneNumber": "string",
+        "createdAt": "string"
+      }
+    }
+    ```
 
 </details>
 🏠 아파트
