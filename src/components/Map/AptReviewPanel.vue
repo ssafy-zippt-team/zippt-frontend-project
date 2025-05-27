@@ -38,7 +38,10 @@
       <div class="flex items-center gap-3 mb-1">
         <span class="font-bold">{{ comment.memberName }}</span>
         <span class="text-xs text-gray-500">{{ formatDate(comment.updatedAt) }}</span>
-        <span v-if="index < 3" class="bg-red-500 text-white text-[10px] px-1 rounded"> NEW </span>
+        <span
+  v-if="isNew(comment.updatedAt)"
+  class="bg-red-500 text-white text-[10px] px-1 rounded"
+> NEW </span>
       </div>
       <p class="mb-1">{{ comment.content }}</p>
     </div>
@@ -87,6 +90,14 @@ onMounted(() => {
 });
 
 const commentText = ref("");
+
+function isNew(updatedAt) {
+  const updatedDate = new Date(updatedAt);
+  const now = new Date();
+  const diff = now - updatedDate; // 밀리초 차이
+  const daysDiff = diff / (1000 * 60 * 60 * 24);
+  return daysDiff <= 3;
+}
 
 function checkLogin() {
   if (!loggedIn.value) {
