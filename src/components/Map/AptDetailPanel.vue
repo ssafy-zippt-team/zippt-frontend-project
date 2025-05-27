@@ -74,8 +74,7 @@
           </table>
         </div>
 
-
-        <div  
+        <div
           class="relative w-full max-w-[500px] aspect-[4/3] mx-auto mt-2 overflow-hidden"
           :class="selectedApt?.imgUrl ? 'cursor-zoom-in' : 'cursor-default'"
           ref="container"
@@ -231,12 +230,42 @@ const {
 } = useBookmark(memberUuid, aptSeq);
 
 // ✅ 최초 진입 시 북마크 정보 + 최근 본 아파트 등록
+// watch(
+//   () => selectedApt.value?.aptSeq,
+//   (newVal) => {
+//     console.log("selectedCoords : ", selectedCoords);
+//     console.log(selectedCoords.value.lat, selectedCoords.value.lng);
+//     if (selectedApt.value && memberUuid.value) {
+//       const payload = {
+//         aptSeq: selectedApt.value.aptSeq,
+//         umdNm: selectedApt.value.umdNm,
+//         aptNm: selectedApt.value.aptNm,
+//         latitude: selectedCoords.value.lat,
+//         longitude: selectedCoords.value.lng,
+//         jibun: selectedApt.value.jibun,
+//         imgUrl: selectedApt.value.imgUrl,
+//         roadNm: selectedApt.value.roadNm,
+//         buildYear: selectedApt.value.buildYear,
+//         amountAvg: selectedApt.value.amountAvg,
+//         amountMax: selectedApt.value.amountMax,
+//         amountMin: selectedApt.value.amountMin,
+//       };
+//       addRecentViewHouse(payload)
+//         .then(() => console.log("최근 본 아파트 등록 완료"))
+//         .catch((err) => console.error("최근 본 아파트 등록 실패:", err));
+//     }
+
+//     if (newVal) {
+//       fetchBookmarkStatus();
+//       fetchBookmarkCount(); // ✅ 최초 진입 시에만 fetch
+//     }
+//   }
+// );
 watch(
-  () => selectedApt.value?.aptSeq,
-  (newVal) => {
-    console.log("selectedCoords : ", selectedCoords);
-    console.log(selectedCoords.value.lat, selectedCoords.value.lng);
-    if (selectedApt.value && memberUuid.value) {
+  [() => selectedApt.value?.aptSeq, () => memberUuid.value],
+  ([aptSeq, uuid]) => {
+    if (aptSeq && uuid) {
+      // ────────────── 최근 본 아파트 등록 ──────────────
       const payload = {
         aptSeq: selectedApt.value.aptSeq,
         umdNm: selectedApt.value.umdNm,
@@ -254,13 +283,13 @@ watch(
       addRecentViewHouse(payload)
         .then(() => console.log("최근 본 아파트 등록 완료"))
         .catch((err) => console.error("최근 본 아파트 등록 실패:", err));
-    }
 
-    if (newVal) {
+      // ────────────── 북마크 상태/개수 조회 ──────────────
       fetchBookmarkStatus();
-      fetchBookmarkCount(); // ✅ 최초 진입 시에만 fetch
+      fetchBookmarkCount();
     }
-  }
+  },
+  { immediate: true }
 );
 
 // 렌즈 확대 관련
