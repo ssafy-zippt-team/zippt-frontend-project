@@ -4,6 +4,12 @@
   <AddressSelector />
   <div class="absolute top-28 right-4 bg-white rounded-md shadow-md flex flex-col overflow-hidden z-10">
     <button
+      @click="showDetail"
+      class="w-10 h-10 flex items-center justify-center border-b border-gray-200 hover:bg-gray-100"
+    >
+      <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" fill="#115C5E"><path d="M298-243.91 223.91-318l108-109H60.78v-106h271.13l-108-109L298-716.09 534.09-480 298-243.91ZM524.52-241v-106h374.7v106h-374.7Zm0-372v-106h374.7v106h-374.7Zm120 186v-106h254.7v106h-254.7Z"/></svg>
+    </button>
+    <button
       @click="showList"
       class="w-10 h-10 flex items-center justify-center border-b border-gray-200 hover:bg-gray-100"
     >
@@ -32,11 +38,13 @@
     <AptListPanel
       v-if="aptListRef.length"
       :apt-list="aptListRef"
-      @select-apt="loadDetail"
+      @select-apt="openDetail"
       class="absolute top-0 left-0 w-[300px] h-full + transform transition-transform duration-300 ease-in-out"
       :class="showListView ? 'translate-x-0' : '-translate-x-full'"
     />
-    <!-- <AptDetailPanel
+
+    <AptDetailPanel
+      v-if="selectedApt && showDetailView"
       :selected-apt="selectedApt"
       :deals-list="dealsList"
       :current-page="currentPage"
@@ -46,35 +54,11 @@
       :selected-coords="selectedCoords"
       :load-detail="loadDetail"
       :kakao-map="kakaoMap"
-      @close="clearDetail"
+      @close="closeDetail"
       @go-page="handlePage"
-      :style="{ left: showListView && aptListRef.length ? '300px' : '0px' }"
-    /> -->
-    <transition
-      enter-active-class="transform transition-transform duration-300 ease-in-out"
-      :enter-from-class="showListView ? '-translate-x-[300px]' : '-translate-x-full'"
-      enter-to-class="translate-x-0"
-      leave-active-class="transform transition-transform duration-300 ease-in-out"
-      leave-from-class="translate-x-0"
-      :leave-to-class="showListView ? '-translate-x-[300px]' : '-translate-x-full'"
-    >
-      <AptDetailPanel
-        v-if="selectedApt"
-        :selected-apt="selectedApt"
-        :deals-list="dealsList"
-        :current-page="currentPage"
-        :is-last-page="isLastPage"
-        :similar-items="similarItems"
-        :apt-seq="selectedApt?.aptSeq"
-        :selected-coords="selectedCoords"
-        :load-detail="loadDetail"
-        :kakao-map="kakaoMap"
-        @close="clearDetail"
-        @go-page="handlePage"
-        class="absolute top-0 left-0 h-full transform transition-transform duration-300 ease-in-out"
-        :class="showListView && aptListRef.length ? 'translate-x-[300px]' : 'translate-x-0'"
-      />
-    </transition>
+      class="absolute top-0 left-0 h-full transform transition-transform duration-300 ease-in-out"
+      :class="showListView && aptListRef.length ? 'translate-x-[300px]' : 'translate-x-0'"
+    />
     <BottomInfo :load-detail="loadDetail" :kakao-map="kakaoMap" />
   </div>
 </template>
@@ -102,6 +86,7 @@ const kakaoMap = ref(null);
 const APP_KEY = process.env.VUE_APP_KAKAO_APPKEY;
 const address = useAddress(kakaoMap);
 const showListView = ref(true);
+const showDetailView = ref(true);
 const route = useRoute();
 
 const { cityList, selectedCity, selectedGu, selectedDong } = address;
@@ -123,11 +108,17 @@ const {
   currentPage,
   isLastPage,
   loadDetail,
-  clearDetail,
   loadLatest,
   similarItems,
   selectedCoords,
 } = useAptDetail();
+
+function openDetail(apt) {
+  // 1) 상세 로드
+  loadDetail(apt);
+  // 2) 상세 패널 보이기
+  showDetailView.value = true;
+}
 
 const { showSimilarApts } = useSimilarApt(loadDetail);
 
@@ -144,7 +135,9 @@ provide("isLastPage", isLastPage);
 // --- 지도 + 오버레이(마커) 관리 훅 ---
 // const { updateMarkersByView, bindIdle } = useViewHouses(kakaoMap, {
 const { aptListRef, updateMarkersByView } = useViewHouses(kakaoMap, {
-  onMarkerClick: (apt) => loadDetail(apt),
+  onMarkerClick: (apt) => {
+    openDetail(apt);
+  },
   selectedDong: address.selectedDong,
 });
 
@@ -305,6 +298,12 @@ function zoomOut() {
 // 리스트패널 view/hide
 function showList() {
   showListView.value = !showListView.value;
+}
+function showDetail() { 
+  showDetailView.value = !showDetailView.value;
+}
+function closeDetail() { 
+  showDetailView.value = !showDetailView.value;
 }
 
 async function onKeywordSearch({ term, isApartment }) {

@@ -89,17 +89,11 @@ export default function useAptDetail() {
     }
   }
 
-  // 패널 닫기
-  function clearDetail() {
-    selectedApt.value = null;
-    similarItems.value = [];
-  }
 
   return {
     selectedApt,
     dealsList,
     loadDetail,
-    clearDetail,
     currentPage,
     isLastPage,
     nextPage,
